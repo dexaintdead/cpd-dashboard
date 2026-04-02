@@ -419,19 +419,15 @@ var repSlug = '';
 // ── INIT ─────────────────────────────────────────────────────
 document.getElementById('tb-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
 
-// Listen for member ID from Wix parent page via postMessage
-window.addEventListener('message', function(event) {
-  if (event.data && event.data.type === 'MEMBER_DATA') {
-    WIX_MEMBER_ID = event.data.memberId;
-    loadOverview();
-  }
-});
+// Get member ID from URL parameter — passed by Wix page code
+var params = new URLSearchParams(window.location.search);
+var urlMemberId = params.get('member');
 
-// Tell the Wix parent page we are ready to receive member data
-if (window.parent && window.parent !== window) {
-  window.parent.postMessage({ type: 'DASHBOARD_READY' }, '*');
+if (urlMemberId) {
+  WIX_MEMBER_ID = urlMemberId;
+  loadOverview();
 } else {
-  // Running standalone (not in iFrame) — use fallback ID for testing
+  // Fallback for standalone testing
   WIX_MEMBER_ID = '9204920e-edf6-48ca-9cef-f20f57480152';
   loadOverview();
 }
