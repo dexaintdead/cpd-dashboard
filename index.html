@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPD Blackbook — Sales Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#D63030;--red-lo:rgba(214,48,48,0.1);--red-border:rgba(214,48,48,0.22);
+  --gold:#BF9A42;--gold-lo:rgba(191,154,66,0.1);
+  --green:#28B870;--green-lo:rgba(40,184,112,0.1);--green-border:rgba(40,184,112,0.25);
+  --blue:#3478C8;--blue-lo:rgba(52,120,200,0.1);
+  --bg:#0C0C0C;--bg2:#131313;--bg3:#1A1A1A;--bg4:#222;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --text:#EDE9E4;--dim:#807C78;--muted:#3A3835;
+  --font-d:'Bebas Neue',sans-serif;--font-b:'Syne',sans-serif;--font-m:'JetBrains Mono',monospace;
+}
+html{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:14px}
+body{display:flex;min-height:100vh;overflow-x:hidden}
+
+/* ── SIDEBAR ── */
+.sidebar{width:210px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;position:sticky;top:0}
+.s-logo{padding:22px 18px 18px;border-bottom:1px solid var(--border)}
+.s-logo-mark{font-family:var(--font-d);font-size:20px;letter-spacing:.06em;line-height:1}
+.s-logo-mark span{color:var(--red)}
+.s-logo-sub{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-top:3px}
+.s-nav{padding:14px 10px;flex:1;overflow-y:auto}
+.s-sec{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);padding:0 8px;margin:14px 0 5px}
+.s-sec:first-child{margin-top:0}
+.nav-i{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:6px;cursor:pointer;color:var(--dim);font-size:12px;font-weight:500;border:none;background:none;width:100%;text-align:left;transition:all .15s}
+.nav-i:hover{background:var(--bg3);color:var(--text)}
+.nav-i.active{background:var(--red-lo);color:var(--text);border:1px solid var(--red-border)}
+.nav-i.active svg{color:var(--red)}
+.nav-i svg{width:14px;height:14px;flex-shrink:0;opacity:.7}
+.s-user{padding:14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.s-avatar{width:32px;height:32px;border-radius:50%;background:var(--red-lo);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:14px;flex-shrink:0}
+.s-uname{font-size:12px;font-weight:600}
+.s-urole{font-size:10px;color:var(--gold);letter-spacing:.04em;margin-top:1px}
+
+/* ── MAIN ── */
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;padding:14px 24px;border-bottom:1px solid var(--border);background:var(--bg2);position:sticky;top:0;z-index:20;gap:12px}
+.topbar-title{font-family:var(--font-d);font-size:18px;letter-spacing:.07em;flex:1}
+.tb-date{font-size:10px;color:var(--dim);font-family:var(--font-m)}
+.tb-status{width:auto;padding:0 10px;font-size:11px;color:var(--green);border:1px solid var(--green-border);background:var(--green-lo);border-radius:6px;height:32px;display:flex;align-items:center;gap:6px}
+.tb-dot-live{width:6px;height:6px;border-radius:50%;background:var(--green)}
+
+/* ── PAGES ── */
+.page{display:none;padding:22px 24px;flex:1}
+.page.active{display:block}
+
+/* ── LOADING STATE ── */
+.loading-wrap{display:flex;align-items:center;justify-content:center;padding:60px;flex-direction:column;gap:12px}
+.loading-spinner{width:28px;height:28px;border:2px solid var(--border2);border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite}
+.loading-text{font-size:12px;color:var(--dim)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── ERROR STATE ── */
+.error-box{background:var(--red-lo);border:1px solid var(--red-border);border-radius:8px;padding:14px 16px;font-size:12px;color:#E07070;margin-bottom:16px}
+
+/* ── STAT CARDS ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;position:relative;overflow:hidden;animation:fadeUp .4s ease both}
+.sc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--ac,var(--border))}
+.sc.r{--ac:var(--red)}.sc.g{--ac:var(--green)}.sc.go{--ac:var(--gold)}.sc.b{--ac:var(--blue)}
+.sc-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.sc-val{font-family:var(--font-d);font-size:30px;letter-spacing:.02em;line-height:1;margin-bottom:5px}
+.sc-delta{font-size:11px;font-family:var(--font-m);color:var(--dim)}
+.sc-delta.up{color:var(--green)}
+
+/* ── PANELS ── */
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:16px;overflow:hidden}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
+.ph-title{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.ph-action{font-size:11px;color:var(--red);cursor:pointer;background:none;border:none;font-family:var(--font-b);letter-spacing:.04em}
+.pb{padding:16px}
+
+/* ── PRODUCT CATALOG ── */
+.cat-filters{display:flex;gap:6px;padding:12px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.cf{padding:4px 12px;border-radius:20px;font-size:11px;cursor:pointer;border:1px solid var(--border);background:none;color:var(--dim);font-family:var(--font-b);transition:all .15s}
+.cf.on{background:var(--red-lo);border-color:var(--red-border);color:var(--text)}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;padding:14px 16px}
+.prod{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg3);transition:border-color .2s,transform .15s;cursor:pointer}
+.prod:hover{border-color:var(--red-border);transform:translateY(-2px)}
+.prod-thumb{height:64px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:10px;letter-spacing:.14em}
+.prod-body{padding:11px 12px}
+.prod-brand{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:3px}
+.prod-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px;line-height:1.3}
+.prod-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.prod-price{font-family:var(--font-m);font-size:12px;color:var(--text)}
+.prod-comm{font-size:10px;padding:2px 7px;border-radius:10px;background:var(--green-lo);color:var(--green);border:1px solid var(--green-border);font-family:var(--font-m)}
+.prod-btn{width:100%;padding:6px;background:var(--bg4);border:1px solid var(--border);border-radius:5px;color:var(--dim);font-size:11px;font-family:var(--font-b);cursor:pointer;transition:all .15s;font-weight:500}
+.prod-btn:hover{background:var(--red-lo);border-color:var(--red-border);color:var(--text)}
+
+/* ── CRM ── */
+.crm-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px 16px}
+.crm-col-head{font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border-radius:6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.crm-card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 11px;margin-bottom:7px;cursor:pointer;transition:border-color .15s}
+.crm-card:hover{border-color:var(--border2)}
+.crm-contact{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px}
+.crm-prod{font-size:10px;color:var(--dim);margin-bottom:5px}
+.crm-meta{display:flex;justify-content:space-between;align-items:center}
+.crm-val{font-size:10px;font-family:var(--font-m);color:var(--green)}
+.crm-date{font-size:10px;color:var(--muted)}
+.crm-tag{font-size:9px;padding:1px 6px;border-radius:8px;margin-top:5px;display:inline-block}
+.add-lead-btn{width:100%;padding:7px;border:1px dashed var(--border2);border-radius:6px;background:none;color:var(--dim);font-size:11px;cursor:pointer;font-family:var(--font-b);transition:all .15s;margin-top:4px}
+.add-lead-btn:hover{border-color:var(--red-border);color:var(--text)}
+.crm-toolbar{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center}
+.crm-search{flex:1;padding:7px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none}
+.crm-search::placeholder{color:var(--muted)}
+
+/* ── BRAND INTEL ── */
+.brand-row{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.brand-row:hover{background:var(--bg3)}
+.brand-row:last-child{border-bottom:none}
+.brand-logo{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:11px;letter-spacing:.06em;flex-shrink:0}
+.brand-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px}
+.brand-cat-tag{font-size:10px;color:var(--dim)}
+.brand-pills{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
+.bp{font-size:10px;padding:1px 7px;border-radius:10px;border:1px solid var(--border2);color:var(--dim);background:var(--bg3)}
+.bcr-pct{font-family:var(--font-d);font-size:22px;color:var(--green);line-height:1}
+.bcr-lbl{font-size:10px;color:var(--dim)}
+
+/* ── DRAWER ── */
+.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center}
+.drawer-overlay.open{display:flex}
+.drawer{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;width:520px;max-width:95vw;max-height:80vh;overflow-y:auto}
+.drawer-head{display:flex;align-items:center;gap:14px;padding:18px 20px;border-bottom:1px solid var(--border)}
+.drawer-logo{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:12px;flex-shrink:0}
+.drawer-title{font-family:var(--font-d);font-size:22px;letter-spacing:.05em;flex:1}
+.drawer-close{width:30px;height:30px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);cursor:pointer;color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:16px}
+.drawer-body{padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.d-sec-label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.d-pitch{font-size:13px;color:var(--text);line-height:1.6;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:12px}
+.d-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.d-stat{background:var(--bg3);border-radius:6px;padding:10px;text-align:center}
+.d-stat-val{font-family:var(--font-d);font-size:20px;color:var(--text);line-height:1}
+.d-stat-lbl{font-size:10px;color:var(--dim);margin-top:2px}
+.d-points{display:flex;flex-direction:column;gap:6px}
+.d-point{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text);line-height:1.5}
+.d-point::before{content:'—';color:var(--red);flex-shrink:0;margin-top:1px}
+.d-prods{display:flex;flex-direction:column;gap:6px}
+.d-prod-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg3);border-radius:6px;font-size:12px}
+.d-prod-name{color:var(--text)}
+.d-prod-comm{color:var(--green);font-family:var(--font-m);font-size:11px}
+.d-actions{display:flex;gap:8px}
+.d-btn{flex:1;padding:9px;border-radius:6px;font-size:12px;font-family:var(--font-b);cursor:pointer;font-weight:500;transition:all .15s}
+.d-btn-p{background:var(--red);color:#fff;border:none}
+.d-btn-p:hover{background:#B82828}
+.d-btn-s{background:none;color:var(--dim);border:1px solid var(--border2)}
+.d-btn-s:hover{background:var(--bg3);color:var(--text)}
+
+/* ── EARNINGS ── */
+.earn-top{display:grid;grid-template-columns:1fr 280px;gap:14px;margin-bottom:16px}
+.earn-chart-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px}
+.earn-chart-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.earn-chart-title{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.earn-total-val{font-family:var(--font-d);font-size:28px;color:var(--green);line-height:1}
+.bar-chart{display:flex;align-items:flex-end;gap:8px;height:100px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar{width:100%;border-radius:3px 3px 0 0;min-height:4px;transition:opacity .2s;cursor:pointer}
+.bar:hover{opacity:.75}
+.bar-lbl{font-size:9px;color:var(--muted);font-family:var(--font-m)}
+.earn-breakdown{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px}
+.eb-title{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
+.eb-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
+.eb-row:last-child{border-bottom:none}
+.eb-label{color:var(--dim)}
+.eb-val{font-family:var(--font-m);color:var(--green)}
+.payout-strip{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;align-items:center;gap:20px;margin-bottom:16px}
+.ps-amt{font-family:var(--font-d);font-size:38px;color:var(--green);line-height:1}
+.ps-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:3px}
+.ps-sub{font-size:11px;color:var(--dim);margin-top:3px}
+.ps-div{width:1px;height:44px;background:var(--border)}
+.ps-info{flex:1}
+.ps-row{display:flex;justify-content:space-between;font-size:11px;padding:3px 0}
+.ps-row-l{color:var(--dim)}
+.ps-row-v{font-family:var(--font-m);color:var(--text)}
+.ps-btn{padding:9px 18px;background:var(--green);color:#0C0C0C;border:none;border-radius:6px;font-size:12px;font-family:var(--font-b);font-weight:700;cursor:pointer;white-space:nowrap}
+.ps-btn:hover{background:#22A060}
+.txn-row{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);font-size:12px}
+.txn-row:last-child{border-bottom:none}
+.txn-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.txn-info{flex:1}
+.txn-name{color:var(--text);font-weight:500}
+.txn-meta{color:var(--dim);font-size:11px;margin-top:1px}
+.txn-amt{font-family:var(--font-m);color:var(--green);font-size:12px}
+.txn-date{font-size:10px;color:var(--muted);font-family:var(--font-m)}
+
+/* ── TEAM ── */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.team-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px}
+.tc-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.tc-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:15px;flex-shrink:0}
+.tc-name{font-size:13px;font-weight:600;color:var(--text)}
+.tc-since{font-size:10px;color:var(--dim)}
+.tc-status{width:7px;height:7px;border-radius:50%;margin-left:auto;flex-shrink:0}
+.tc-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.tc-stat{background:var(--bg3);border-radius:5px;padding:7px 8px}
+.tc-stat-v{font-family:var(--font-m);font-size:13px;color:var(--text)}
+.tc-stat-l{font-size:9px;color:var(--dim);margin-top:1px}
+.tc-override{font-size:11px;color:var(--dim);margin-top:9px;padding-top:9px;border-top:1px solid var(--border);font-family:var(--font-m)}
+.tc-override span{color:var(--green)}
+
+
+/* ── CPD DRIVE INLINE ─────────────────────────────────────────── */
+.drive-home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:24px}
+.drive-channel-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:26px 22px;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;gap:14px;min-height:160px}
+.drive-channel-card:hover{transform:translateY(-3px);border-color:var(--border2);background:var(--bg3)}
+.drive-channel-card .dc-icon{font-size:32px;line-height:1}
+.drive-channel-card .dc-name{font-family:var(--font-d);font-size:20px;letter-spacing:.08em;line-height:1}
+.drive-channel-card .dc-desc{font-size:12px;color:var(--dim);line-height:1.6}
+.drive-channel-card .dc-cta{font-size:11px;font-family:var(--font-m);margin-top:auto;letter-spacing:.06em;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05)}
+.drive-channel-card .dc-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:6px;animation:pulse 2s infinite}
+
+.drive-feed-wrap{display:none;flex-direction:column;gap:0}
+.drive-feed-wrap.active{display:flex}
+
+.df-topbar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.df-back{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-family:var(--font-m);font-size:11px;color:var(--dim);cursor:pointer;letter-spacing:.05em;white-space:nowrap}
+.df-back:hover{color:var(--text)}
+.df-channel-name{font-family:var(--font-d);font-size:16px;letter-spacing:.08em;flex:1}
+.df-live{display:flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:11px;color:var(--dim)}
+.df-live-dot{width:6px;height:6px;border-radius:50%;animation:pulse 2s infinite}
+
+.df-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.df-filter{background:none;border:1px solid var(--border);color:var(--dim);font-family:var(--font-b);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;cursor:pointer;border-radius:3px;transition:all .15s}
+.df-filter:hover{border-color:var(--border2);color:var(--text)}
+.df-filter.on{color:#fff}
+
+.df-status{font-size:11px;color:var(--muted);font-family:var(--font-m);letter-spacing:.04em;margin-bottom:12px;min-height:18px}
+
+.df-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:14px}
+
+.df-featured{grid-column:1 / -1;display:grid;grid-template-columns:1.4fr 1fr;background:var(--bg2)}
+.df-feat-main{padding:22px 20px;border-right:1px solid var(--border);text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:10px;transition:background .15s}
+.df-feat-main:hover{background:var(--bg3)}
+.df-feat-title{font-family:var(--font-d);font-size:28px;letter-spacing:.03em;line-height:1.1;color:var(--text);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.df-feat-main:hover .df-feat-title{color:#fff}
+.df-feat-side{display:flex;flex-direction:column}
+.df-feat-side .df-card{border-bottom:1px solid var(--border);flex:1}
+.df-feat-side .df-card:last-child{border-bottom:none}
+
+.df-card{background:var(--bg2);padding:16px 18px;display:flex;flex-direction:column;gap:7px;text-decoration:none;color:inherit;transition:background .15s}
+.df-card:hover{background:var(--bg3)}
+.df-card-meta{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.df-card-source{font-size:11px;font-family:var(--font-m);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.df-card-age{font-size:11px;font-family:var(--font-m);color:var(--muted);white-space:nowrap;flex-shrink:0}
+.df-card-title{font-size:14px;font-weight:500;line-height:1.5;color:var(--dim);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.df-card:hover .df-card-title{color:var(--text)}
+.df-card-desc{font-size:12px;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.df-card-tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-top:1px solid rgba(255,255,255,0.04);padding-top:7px;margin-top:auto}
+
+.df-empty{grid-column:1/-1;padding:48px 20px;text-align:center;color:var(--muted);font-size:12px;font-family:var(--font-m)}
+
+@media(max-width:700px){
+  .df-featured{grid-template-columns:1fr}
+  .df-feat-main{border-right:none;border-bottom:1px solid var(--border);padding:16px}
+  .df-feat-title{font-size:22px}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px}
+@media(max-width:860px){.sidebar{display:none}.stats{grid-template-columns:repeat(2,1fr)}.crm-cols{grid-template-columns:repeat(2,1fr)}.earn-top{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="s-logo">
+    <div class="s-logo-mark">CPD <span>BLACKBOOK</span></div>
+    <div class="s-logo-sub">Sales Agency Portal</div>
+  </div>
+  <nav class="s-nav">
+    <div class="s-sec">Overview</div>
+    <button class="nav-i active" onclick="showPage('overview',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/></svg>Dashboard
+    </button>
+    <button class="nav-i" onclick="showPage('earnings',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M7 1a6 6 0 100 12A6 6 0 007 1zm1 8.5H6V6.5h2V9.5zm0-4H6V4h2v1.5z"/></svg>Earnings & Payouts
+    </button>
+    <div class="s-sec">Sales</div>
+    <button class="nav-i" onclick="showPage('catalog',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M1 1h4v4H1V1zm0 8h4v4H1V9zm8-8h4v4H9V1zm0 8h4v4H9V9z"/></svg>Product Catalog
+    </button>
+    <button class="nav-i" onclick="showPage('crm',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M1 3h12v1.5H1V3zm0 3.5h8v1.5H1V6.5zm0 3.5h6v1.5H1V10z"/></svg>Pipeline / CRM
+    </button>
+    <div class="s-sec">Intelligence</div>
+    <button class="nav-i" onclick="showPage('brands',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M7 1L8.5 5h4L9.5 7.5 11 12 7 9.5 3 12l1.5-4.5L1.5 5h4z"/></svg>Brand Intel
+    </button>
+    <button class="nav-i" onclick="showPage('scanner',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M1 3h12v1H1V3zm0 3h12v1H1V6zm0 3h8v1H1V9zm10 0l2 2-2 2v-1.5H9v-1h2V9z"/></svg>Culture Scanner
+    </button>
+    <button class="nav-i" onclick="showPage('brief',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M2 1h10a1 1 0 011 1v10a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1zm1 2v2h8V3H3zm0 4v1h8V7H3zm0 3v1h5v-1H3z"/></svg>Blackbook Brief
+    </button>
+    <button class="nav-i" onclick="showPage('drive',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M1 2h12v2H1V2zm1 3h10l-1 7H3L2 5zm3 2v4h4V7H5zm1 1h2v2H6V8z"/></svg>CPD Drive
+    </button>
+    <button class="nav-i" onclick="showPage('team',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M5 6a2 2 0 100-4 2 2 0 000 4zm0 1C3 7 1 8 1 10v1h8v-1c0-2-2-3-4-3zm6-1a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm0 1c-1.2 0-2.2.6-2.7 1.5.5.3.7.7.7 1.5v.5H13v-1c0-1.4-1-2-2-2z"/></svg>My Team
+    </button>
+    <div class="s-sec">Community</div>
+    <button class="nav-i" onclick="showPage('classifieds',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M1 1h12v2H1V1zm0 4h8v1H1V5zm0 3h12v2H1V8zm0 4h6v1H1v-1z"/></svg>The Plug
+    </button>
+  </nav>
+  <div class="s-user">
+    <div class="s-avatar" id="sb-avatar">—</div>
+    <div>
+      <div class="s-uname" id="sb-name">Loading...</div>
+      <div class="s-urole" id="sb-tier">★ Rep</div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="page-title">DASHBOARD</div>
+    <div class="tb-date" id="tb-date"></div>
+    <div class="tb-status"><div class="tb-dot-live"></div>Live</div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="page active" id="pg-overview">
+    <div id="ov-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading your dashboard...</div></div>
+    <div id="ov-content" style="display:none">
+      <div style="margin-bottom:18px;padding-top:4px">
+        <div style="font-size:11px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">Welcome back</div>
+        <div style="font-family:var(--font-d);font-size:26px;letter-spacing:.06em" id="ov-welcome">— APRIL 2026</div>
+      </div>
+      <div class="stats">
+        <div class="sc g"><div class="sc-lbl">Total earned (MTD)</div><div class="sc-val" id="sc-earned">—</div><div class="sc-delta up">Commission this month</div></div>
+        <div class="sc r"><div class="sc-lbl">Open pipeline</div><div class="sc-val" id="sc-pipe">—</div><div class="sc-delta" id="sc-pipe-leads" style="color:var(--dim)">Active leads</div></div>
+        <div class="sc go"><div class="sc-lbl">Total sales</div><div class="sc-val" id="sc-sales">—</div><div class="sc-delta" style="color:var(--dim)">All time</div></div>
+        <div class="sc b"><div class="sc-lbl">Pending payout</div><div class="sc-val" id="sc-payout">—</div><div class="sc-delta" style="color:var(--dim)">Available to withdraw</div></div>
+      </div>
+
+      <!-- Sales link -->
+      <div class="panel">
+        <div class="ph"><span class="ph-title">Your sales link</span></div>
+        <div class="pb">
+          <div style="display:flex;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;overflow:hidden;margin-bottom:12px">
+            <div style="flex:1;padding:9px 12px;font-family:var(--font-m);font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="ov-link">Loading...</div>
+            <button id="main-copy-btn" onclick="copyMainLink()" style="padding:9px 13px;background:var(--red);color:#fff;border:none;font-size:11px;font-family:var(--font-b);font-weight:600;cursor:pointer">COPY</button>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="prod-btn" style="flex:1" onclick="shareToIG()">Share to IG</button>
+            <button class="prod-btn" style="flex:1" onclick="shareToX()">Share to X</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent activity -->
+      <div class="panel">
+        <div class="ph"><span class="ph-title">Recent sales</span></div>
+        <div id="ov-activity"></div>
+      </div>
+
+      <!-- Top products -->
+      <div class="panel">
+        <div class="ph"><span class="ph-title">Top products</span><button class="ph-action" onclick="showPage('catalog',document.querySelector('[onclick*=catalog]'))">Full catalog →</button></div>
+        <div style="padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px" id="ov-top-prods"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EARNINGS -->
+  <div class="page" id="pg-earnings">
+    <div id="earn-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading earnings...</div></div>
+    <div id="earn-content" style="display:none">
+      <div class="payout-strip">
+        <div><div class="ps-lbl">Available to withdraw</div><div class="ps-amt" id="ps-amt">$0</div><div class="ps-sub">Request anytime · $20 minimum</div></div>
+        <div class="ps-div"></div>
+        <div class="ps-info">
+          <div class="ps-row"><span class="ps-row-l">Total earned (all time)</span><span class="ps-row-v" id="ps-total">$0</span></div>
+          <div class="ps-row"><span class="ps-row-l">This month</span><span class="ps-row-v" id="ps-mtd">$0</span></div>
+          <div class="ps-row"><span class="ps-row-l">Total sales closed</span><span class="ps-row-v" id="ps-count">0</span></div>
+        </div>
+        <button class="ps-btn" onclick="requestPayout()">Request Payout</button>
+      </div>
+      <div class="earn-top">
+        <div class="earn-chart-wrap">
+          <div class="earn-chart-head">
+            <span class="earn-chart-title">Monthly earnings</span>
+            <span class="earn-total-val" id="earn-total-val">$0</span>
+          </div>
+          <div class="bar-chart" id="earn-bars"></div>
+          <div style="display:flex;gap:8px;margin-top:6px" id="earn-lbls"></div>
+        </div>
+        <div class="earn-breakdown">
+          <div class="eb-title">By product</div>
+          <div id="earn-by-product"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="ph-title">Recent sales</span></div>
+        <div id="earn-txns"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATALOG -->
+  <div class="page" id="pg-catalog">
+    <div class="panel">
+      <div class="ph"><span class="ph-title">Product catalog</span><span style="font-size:11px;color:var(--dim)" id="cat-count">Loading...</span></div>
+      <div class="cat-filters">
+        <button class="cf on" onclick="filterCat('all',this)">All</button>
+        <button class="cf" onclick="filterCat('cpd',this)">CPD Originals</button>
+        <button class="cf" onclick="filterCat('event',this)">Events</button>
+        <button class="cf" onclick="filterCat('brand',this)">Brand Partners</button>
+        <button class="cf" onclick="filterCat('media',this)">Media / Promo</button>
+      </div>
+      <div id="cat-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading catalog...</div></div>
+      <div class="prod-grid" id="prod-grid" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- CRM -->
+  <div class="page" id="pg-crm">
+    <div class="panel">
+      <div class="ph"><span class="ph-title">Pipeline tracker</span>
+        <button class="ph-action" onclick="showAddLead()">+ Add lead</button>
+      </div>
+      <div class="crm-toolbar">
+        <input class="crm-search" placeholder="Search contacts..." type="text" id="crm-search" oninput="filterLeads()">
+      </div>
+      <div id="crm-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading pipeline...</div></div>
+      <div class="crm-cols" id="crm-board" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- BRANDS -->
+  <div class="page" id="pg-brands">
+    <div class="panel">
+      <div class="ph"><span class="ph-title">Brand partners & intel</span><span style="font-size:11px;color:var(--dim)">Click any brand for full brief</span></div>
+      <div id="brand-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading brands...</div></div>
+      <div id="brand-list" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- TEAM -->
+  <!-- CPD DRIVE — INLINE FEEDS -->
+  <div class="page" id="pg-drive">
+
+    <!-- CHANNEL HOME GRID -->
+    <div id="drive-home">
+      <div style="margin-bottom:16px;padding-top:2px">
+        <div style="font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Members Intelligence Hub</div>
+        <div style="font-family:var(--font-d);font-size:22px;letter-spacing:.06em">CPD DRIVE</div>
+      </div>
+      <div class="drive-home-grid">
+        <div class="drive-channel-card" onclick="openDriveChannel('culture')" style="--ch:#c8102e;border-color:rgba(200,16,46,0.2)">
+          <div class="dc-icon">🎭</div>
+          <div class="dc-name">CULTURE DRIVE</div>
+          <div class="dc-desc">Music · Arts · Street · Entertainment</div>
+          <div class="dc-cta" style="color:#c8102e"><span class="dc-dot" style="background:#c8102e"></span>LIVE FEED →</div>
+        </div>
+        <div class="drive-channel-card" onclick="openDriveChannel('sports')" style="--ch:#e8a100;border-color:rgba(232,161,0,0.2)">
+          <div class="dc-icon">🏆</div>
+          <div class="dc-name">SPORTS DRIVE</div>
+          <div class="dc-desc">NBA · NFL · MLB · NHL · Betting</div>
+          <div class="dc-cta" style="color:#e8a100"><span class="dc-dot" style="background:#e8a100"></span>LIVE FEED →</div>
+        </div>
+        <div class="drive-channel-card" onclick="openDriveChannel('fashion')" style="--ch:#e8c4d0;border-color:rgba(232,196,208,0.2)">
+          <div class="dc-icon">👔</div>
+          <div class="dc-name">FASHION DRIVE</div>
+          <div class="dc-desc">Luxury · Runway · Streetwear · Drops</div>
+          <div class="dc-cta" style="color:#e8c4d0"><span class="dc-dot" style="background:#e8c4d0"></span>LIVE FEED →</div>
+        </div>
+        <div class="drive-channel-card" onclick="openDriveChannel('nightlife')" style="--ch:#d946a8;border-color:rgba(217,70,168,0.2)">
+          <div class="dc-icon">🌃</div>
+          <div class="dc-name">NIGHTLIFE DRIVE</div>
+          <div class="dc-desc">Miami · NYC · Houston · LA · Vegas</div>
+          <div class="dc-cta" style="color:#d946a8"><span class="dc-dot" style="background:#d946a8"></span>LIVE FEED →</div>
+        </div>
+        <div class="drive-channel-card" onclick="openDriveChannel('finance')" style="--ch:#00c27a;border-color:rgba(0,194,122,0.2)">
+          <div class="dc-icon">💰</div>
+          <div class="dc-name">FINANCE DRIVE</div>
+          <div class="dc-desc">Stocks · Crypto · Economy · Trading</div>
+          <div class="dc-cta" style="color:#00c27a"><span class="dc-dot" style="background:#00c27a"></span>LIVE FEED →</div>
+        </div>
+        <div class="drive-channel-card" onclick="openDriveChannel('beverage')" style="--ch:#c8820a;border-color:rgba(200,130,10,0.2)">
+          <div class="dc-icon">🥂</div>
+          <div class="dc-name">BEVERAGE DRIVE</div>
+          <div class="dc-desc">Whiskey · Wine · Tequila · Industry</div>
+          <div class="dc-cta" style="color:#c8820a"><span class="dc-dot" style="background:#c8820a"></span>LIVE FEED →</div>
+        </div>
+        <div class="drive-channel-card" onclick="openDriveChannel('aviation')" style="--ch:#00aaff;border-color:rgba(0,170,255,0.2)">
+          <div class="dc-icon">✈️</div>
+          <div class="dc-name">AVIATION DRIVE</div>
+          <div class="dc-desc">Commercial · Private · Space · Tech</div>
+          <div class="dc-cta" style="color:#00aaff"><span class="dc-dot" style="background:#00aaff"></span>LIVE FEED →</div>
+        </div>
+        <div class="drive-channel-card" onclick="openDriveChannel('gaming')" style="--ch:#7b5cf0;border-color:rgba(123,92,240,0.2)">
+          <div class="dc-icon">🎮</div>
+          <div class="dc-name">GAMING DRIVE</div>
+          <div class="dc-desc">PS5 · Xbox · PC · Nintendo · Esports</div>
+          <div class="dc-cta" style="color:#7b5cf0"><span class="dc-dot" style="background:#7b5cf0"></span>LIVE FEED →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE FEED VIEW (shown when channel opened) -->
+    <div class="drive-feed-wrap" id="drive-feed-wrap">
+      <div class="df-topbar">
+        <button class="df-back" onclick="closeDriveChannel()">← ALL DRIVES</button>
+        <div class="df-channel-name" id="df-channel-name"></div>
+        <div class="df-live">
+          <div class="df-live-dot" id="df-live-dot"></div>
+          <span id="df-live-label">LIVE</span>
+        </div>
+      </div>
+      <div class="df-filters" id="df-filters"></div>
+      <div class="df-status" id="df-status">Connecting to feeds...</div>
+      <div class="df-grid" id="df-grid"></div>
+    </div>
+
+  </div>
+
+  <!-- CULTURE SCANNER -->
+  <div class="page" id="pg-scanner">
+    <div style="margin-bottom:18px;padding-top:4px">
+      <div style="font-size:11px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">CPD Blackbook Intelligence</div>
+      <div style="font-family:var(--font-d);font-size:22px;letter-spacing:.06em">CULTURE SCANNER</div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;height:calc(100vh - 140px);">
+      <iframe
+        src="https://dexaintdead.github.io/culture-scanner"
+        style="width:100%;height:100%;border:none;display:block;"
+        title="Culture Scanner"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
+        loading="lazy"
+      ></iframe>
+    </div>
+  </div>
+
+  <!-- BLACKBOOK BRIEF -->
+  <div class="page" id="pg-brief">
+    <div style="margin-bottom:18px;padding-top:4px">
+      <div style="font-size:11px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">CPD Blackbook Intelligence</div>
+      <div style="font-family:var(--font-d);font-size:22px;letter-spacing:.06em">BLACKBOOK BRIEF</div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;height:calc(100vh - 140px);">
+      <iframe
+        src="https://dexaintdead.github.io/blackbook-brief"
+        style="width:100%;height:100%;border:none;display:block;"
+        title="Blackbook Brief"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
+        loading="lazy"
+      ></iframe>
+    </div>
+  </div>
+
+<div class="page" id="pg-team">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div style="font-family:var(--font-d);font-size:20px;letter-spacing:.06em">MY TEAM</div>
+      <button class="ph-action" style="padding:7px 14px;background:var(--red-lo);border:1px solid var(--red-border);border-radius:6px;color:var(--text)">+ Invite rep</button>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--blue);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--dim);line-height:1.6">
+      Team building is <span style="color:var(--text)">optional</span> — you earn a <span style="color:var(--green)">5% override</span> on every sale your team closes.
+    </div>
+    <div id="team-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading team...</div></div>
+    <div class="team-grid" id="team-grid" style="display:none"></div>
+    <div id="team-empty" style="display:none;text-align:center;padding:40px;color:var(--dim);font-size:13px">No team members yet. Invite your first rep to get started.</div>
+  </div>
+
+  <!-- THE PLUG — CLASSIFIEDS -->
+  <div class="page" id="pg-classifieds">
+
+    <!-- POST FORM + ADMIN PANEL TABS -->
+    <div style="display:flex;gap:10px;margin-bottom:18px;padding-top:2px;flex-wrap:wrap;align-items:flex-end">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Community Board</div>
+        <div style="font-family:var(--font-d);font-size:22px;letter-spacing:.06em">THE PLUG</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button id="cl-tab-post" onclick="clTab('post')" style="padding:7px 16px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:11px;cursor:pointer;letter-spacing:.04em">+ Post Listing</button>
+        <button id="cl-tab-admin" onclick="clTab('admin')" style="padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;color:var(--dim);font-family:var(--font-m);font-size:11px;cursor:pointer;letter-spacing:.04em">⚙ Admin</button>
+      </div>
+    </div>
+
+    <!-- POST FORM PANEL -->
+    <div id="cl-panel-post" class="panel" style="margin-bottom:16px">
+      <div class="ph"><span class="ph-title">Post a New Listing</span><span style="font-size:11px;color:var(--green)">Goes live instantly</span></div>
+      <div class="pb">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div>
+            <div style="font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px">Title *</div>
+            <input id="cl-title" type="text" placeholder="What are you offering?" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none"/>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px">Category *</div>
+            <select id="cl-cat" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none">
+              <option value="">Select category...</option>
+              <option value="gigs">Gigs / Services</option>
+              <option value="events">Events</option>
+              <option value="jobs">Jobs / Collabs</option>
+              <option value="gear">Gear</option>
+              <option value="housing">Housing</option>
+              <option value="offers">Offers</option>
+              <option value="requests">Random Requests</option>
+              <option value="questions">Questions</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:12px">
+          <div style="font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px">Description *</div>
+          <textarea id="cl-desc" placeholder="Give the community all the details..." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none;resize:vertical;min-height:80px"></textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px">
+          <div>
+            <div style="font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px">Location</div>
+            <input id="cl-loc" type="text" placeholder="City or Remote" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none"/>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px">Price / Rate</div>
+            <input id="cl-price" type="text" placeholder="$50/hr, Free..." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none"/>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px">Contact *</div>
+            <input id="cl-contact" type="text" placeholder="email or link" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none"/>
+          </div>
+        </div>
+        <div style="margin-bottom:14px">
+          <div style="font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px">Your Name / Handle</div>
+          <input id="cl-poster" type="text" placeholder="@yourhandle" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none"/>
+        </div>
+        <button id="cl-submit-btn" onclick="clSubmit()" style="background:var(--red);color:#fff;border:none;border-radius:6px;padding:10px 24px;font-family:var(--font-m);font-size:12px;cursor:pointer;letter-spacing:.04em;font-weight:600">Post Listing →</button>
+        <span id="cl-submit-msg" style="margin-left:12px;font-size:11px;color:var(--dim)"></span>
+      </div>
+    </div>
+
+    <!-- ADMIN PANEL (hidden by default) -->
+    <div id="cl-panel-admin" style="display:none">
+      <div class="panel" style="margin-bottom:16px">
+        <div class="ph">
+          <span class="ph-title">All Listings — Admin View</span>
+          <button class="ph-action" onclick="loadClassifieds()">↻ Refresh</button>
+        </div>
+        <div id="cl-admin-loading" class="loading-wrap" style="display:none"><div class="loading-spinner"></div><div class="loading-text">Loading...</div></div>
+        <div id="cl-admin-list"></div>
+      </div>
+    </div>
+
+    <!-- LIVE FEED PREVIEW -->
+    <div id="cl-panel-feed">
+      <div class="panel">
+        <div class="ph">
+          <span class="ph-title">Live Listings</span>
+          <span id="cl-feed-count" style="font-size:11px;color:var(--dim)">Loading...</span>
+        </div>
+        <div id="cl-feed-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading classifieds...</div></div>
+        <div id="cl-feed-grid" style="display:none;padding:14px 16px;display:none;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px"></div>
+        <div id="cl-feed-empty" style="display:none;padding:24px 16px;text-align:center;font-size:12px;color:var(--dim)">No listings yet. Be the first to post!</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- BRAND DRAWER -->
+<div class="drawer-overlay" id="drawer" onclick="if(event.target===this)closeDrawer()">
+  <div class="drawer">
+    <div class="drawer-head">
+      <div class="drawer-logo" id="d-logo"></div>
+      <div class="drawer-title" id="d-title"></div>
+      <button class="drawer-close" onclick="closeDrawer()">×</button>
+    </div>
+    <div class="drawer-body" id="d-body"></div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ───────────────────────────────────────────────────
+// Replace with your actual Wix site domain
+var BASE = 'https://www.cpdblackbook.com/_functions';
+
+// Replace with the logged-in rep's Wix Member ID
+// In production this comes from Wix Members getCurrentMember()
+// For testing, paste a real member ID here
+// Read member ID from URL parameter (passed by Wix Velo)
+var urlParams = new URLSearchParams(window.location.search);
+var WIX_MEMBER_ID = urlParams.get('member_id') || '';
+
+// If no member ID in URL, show a not-logged-in state
+if (!WIX_MEMBER_ID) {
+  document.addEventListener('DOMContentLoaded', function() {
+    var main = document.querySelector('.main');
+    if (main) {
+      main.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:16px"><div style="font-family:var(--font-d);font-size:28px;letter-spacing:.06em">ACCESS DENIED</div><div style="font-size:13px;color:var(--dim)">Please log in through cpdblackbook.com to access your dashboard.</div></div>';
+    }
+  });
+}
+
+// ── STATE ────────────────────────────────────────────────────
+var allProducts = [];
+var allLeads = [];
+var repData = null;
+var repSlug = '';
+
+// ── INIT ─────────────────────────────────────────────────────
+document.getElementById('tb-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+
+// Load dashboard on start
+loadOverview();
+
+// ── NAV ──────────────────────────────────────────────────────
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.nav-i').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('pg-' + id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  var titles = {overview:'DASHBOARD',earnings:'EARNINGS & PAYOUTS',catalog:'PRODUCT CATALOG',crm:'PIPELINE / CRM',brands:'BRAND INTEL',scanner:'CULTURE SCANNER',brief:'BLACKBOOK BRIEF',drive:'CPD DRIVE',team:'MY TEAM',classifieds:'THE PLUG — CLASSIFIEDS'};
+  document.getElementById('page-title').textContent = titles[id] || 'DASHBOARD';
+  if(id === 'catalog' && allProducts.length === 0) loadCatalog();
+  if(id === 'crm') loadCRM();
+  if(id === 'brands') loadBrands();
+  if(id === 'earnings') loadEarnings();
+  if(id === 'team') loadTeam();
+  if(id === 'classifieds') loadClassifieds();
+}
+
+// ── FETCH HELPER ─────────────────────────────────────────────
+function api(endpoint) {
+  return fetch(BASE + endpoint).then(function(r){ return r.json(); });
+}
+
+// ── OVERVIEW ─────────────────────────────────────────────────
+function loadOverview() {
+  document.getElementById('ov-loading').style.display = 'flex';
+  document.getElementById('ov-content').style.display = 'none';
+
+  api('/repDashboard?wix_member_id=' + WIX_MEMBER_ID)
+    .then(function(data) {
+      if(data.error) { showError('ov-loading', data.error); return; }
+
+      repData = data.rep;
+      repSlug = data.rep.ref_slug;
+
+      // Sidebar
+      document.getElementById('sb-name').textContent = data.rep.full_name;
+      document.getElementById('sb-avatar').textContent = data.rep.full_name.split(' ').map(function(n){ return n[0]; }).join('').slice(0,2).toUpperCase();
+      document.getElementById('sb-tier').textContent = '★ ' + (data.rep.tier || 'Rep').replace('_',' ');
+      document.getElementById('ov-welcome').textContent = data.rep.full_name.toUpperCase() + ' — ' + new Date().toLocaleString('en-US',{month:'long',year:'numeric'}).toUpperCase();
+      document.getElementById('ov-link').textContent = 'cpdblackbook.com/s/' + repSlug;
+
+      // Stat cards
+      var e = data.earnings;
+      animateCount(document.getElementById('sc-earned'), (e.mtd_commission_cents || 0) / 100, '$');
+      animateCount(document.getElementById('sc-pipe'), (data.pipeline.open_pipeline_cents || 0) / 100, '$');
+      document.getElementById('sc-pipe-leads').textContent = (data.pipeline.open_leads || 0) + ' open leads';
+      animateCount(document.getElementById('sc-sales'), e.total_sales || 0, '');
+      animateCount(document.getElementById('sc-payout'), (e.pending_payout_cents || 0) / 100, '$');
+
+      // Recent sales
+      var actEl = document.getElementById('ov-activity');
+      if(!data.recent_sales || data.recent_sales.length === 0) {
+        actEl.innerHTML = '<div style="padding:20px 16px;font-size:12px;color:var(--dim);text-align:center">No sales yet — share your link to get started</div>';
+      } else {
+        actEl.innerHTML = data.recent_sales.map(function(s) {
+          var comm = Math.round(s.sale_amount_cents * s.commission_pct / 100);
+          var prodName = s.products ? s.products.name : 'Product';
+          var date = new Date(s.sold_at).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+          return '<div class="txn-row"><div class="txn-dot" style="background:var(--green)"></div><div class="txn-info"><div class="txn-name">' + prodName + '</div><div class="txn-meta">' + (s.source || 'direct') + '</div></div><div><div class="txn-amt">+$' + (comm/100).toFixed(2) + '</div><div class="txn-date">' + date + '</div></div></div>';
+        }).join('');
+      }
+
+      // Top products preview
+      api('/products').then(function(prods) {
+        allProducts = prods;
+        var topEl = document.getElementById('ov-top-prods');
+        topEl.innerHTML = (prods || []).slice(0,4).map(function(p) {
+          var comm = (p.price_cents * p.commission_pct / 100 / 100).toFixed(2);
+          return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:11px 12px;display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:6px;background:' + p.thumb_bg + ';color:' + p.thumb_color + ';display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:9px;letter-spacing:.1em;flex-shrink:0">' + (p.thumb_label || '') + '</div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + p.name + '</div><div style="font-size:10px;color:var(--green);margin-top:2px;font-family:var(--font-m)">+$' + comm + ' per sale</div></div></div>';
+        }).join('');
+      });
+
+      document.getElementById('ov-loading').style.display = 'none';
+      document.getElementById('ov-content').style.display = 'block';
+    })
+    .catch(function(e) {
+      showError('ov-loading', 'Could not load dashboard: ' + e.message);
+    });
+}
+
+// ── CATALOG ──────────────────────────────────────────────────
+function loadCatalog() {
+  document.getElementById('cat-loading').style.display = 'flex';
+  document.getElementById('prod-grid').style.display = 'none';
+
+  api('/products').then(function(prods) {
+    allProducts = prods || [];
+    document.getElementById('cat-count').textContent = allProducts.length + ' products active';
+    renderCatalog(allProducts);
+    document.getElementById('cat-loading').style.display = 'none';
+    document.getElementById('prod-grid').style.display = 'grid';
+  }).catch(function(e){ showError('cat-loading', e.message); });
+}
+
+function renderCatalog(prods) {
+  var grid = document.getElementById('prod-grid');
+  grid.innerHTML = prods.map(function(p) {
+    var price = p.is_recurring ? '$' + (p.price_cents/100).toFixed(0) + '/mo' : '$' + (p.price_cents/100).toFixed(0);
+    var comm = '$' + (p.price_cents * p.commission_pct / 100 / 100).toFixed(2) + (p.is_recurring ? '/mo' : '');
+    var brandName = p.brands ? p.brands.name : 'CPD Blackbook';
+    return '<div class="prod"><div class="prod-thumb" style="background:' + (p.thumb_bg||'#1A1A1A') + ';color:' + (p.thumb_color||'#fff') + '">' + (p.thumb_label||'') + '</div><div class="prod-body"><div class="prod-brand">' + brandName + '</div><div class="prod-name">' + p.name + '</div><div class="prod-row"><span class="prod-price">' + price + '</span><span class="prod-comm">' + comm + '</span></div><button class="prod-btn" onclick="copyProdLink(\'' + p.slug + '\',this)">Copy tracked link</button></div></div>';
+  }).join('');
+}
+
+function filterCat(cat, btn) {
+  document.querySelectorAll('.cf').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+  var filtered = cat === 'all' ? allProducts : allProducts.filter(function(p){ return p.category === cat; });
+  renderCatalog(filtered);
+}
+
+// ── CRM ──────────────────────────────────────────────────────
+function loadCRM() {
+  document.getElementById('crm-loading').style.display = 'flex';
+  document.getElementById('crm-board').style.display = 'none';
+
+  api('/leads?wix_member_id=' + WIX_MEMBER_ID).then(function(leads) {
+    allLeads = leads || [];
+    renderCRM(allLeads);
+    document.getElementById('crm-loading').style.display = 'none';
+    document.getElementById('crm-board').style.display = 'grid';
+  }).catch(function(e){ showError('crm-loading', e.message); });
+}
+
+function renderCRM(leads) {
+  var stages = ['prospecting','pitched','negotiating','closed_won'];
+  var stageLabels = {prospecting:'Prospecting',pitched:'Pitched',negotiating:'Negotiating',closed_won:'Closed'};
+  var stageColors = {prospecting:'#555',pitched:'#3478C8',negotiating:'#BF9A42',closed_won:'#28B870'};
+  var board = document.getElementById('crm-board');
+  board.innerHTML = stages.map(function(stage) {
+    var stageleads = leads.filter(function(l){ return l.stage === stage; });
+    var cards = stageleads.map(function(l) {
+      var val = l.deal_value_cents ? '$' + (l.deal_value_cents/100).toFixed(0) : '—';
+      var date = l.updated_at ? new Date(l.updated_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '';
+      var prodName = l.products ? l.products.name : '';
+      return '<div class="crm-card"><div class="crm-contact">' + l.contact_name + '</div><div class="crm-prod">' + prodName + '</div><div class="crm-meta"><span class="crm-val">' + val + '</span><span class="crm-date">' + date + '</span></div></div>';
+    }).join('');
+    return '<div><div class="crm-col-head" style="background:' + stageColors[stage] + '18;color:' + stageColors[stage] + ';border:1px solid ' + stageColors[stage] + '33"><span>' + stageLabels[stage] + '</span><span style="font-size:10px;font-family:var(--font-m)">' + stageleads.length + '</span></div>' + cards + '<button class="add-lead-btn" onclick="showAddLead()">+ Add</button></div>';
+  }).join('');
+}
+
+function filterLeads() {
+  var q = document.getElementById('crm-search').value.toLowerCase();
+  var filtered = allLeads.filter(function(l){ return l.contact_name.toLowerCase().includes(q) || (l.notes||'').toLowerCase().includes(q); });
+  renderCRM(filtered);
+}
+
+function showAddLead() {
+  alert('Add lead form — connect to your Wix Members page to capture leads directly from the dashboard.');
+}
+
+// ── BRANDS ───────────────────────────────────────────────────
+var brandsData = [];
+
+function loadBrands() {
+  document.getElementById('brand-loading').style.display = 'flex';
+  document.getElementById('brand-list').style.display = 'none';
+
+  api('/brands').then(function(brands) {
+    brandsData = brands || [];
+    var listEl = document.getElementById('brand-list');
+    listEl.innerHTML = brands.map(function(b, i) {
+      var maxComm = b.products && b.products.length ? Math.max.apply(null, b.products.map(function(p){ return p.commission_pct; })) : 0;
+      return '<div class="brand-row" onclick="openBrand(' + i + ')"><div class="brand-logo" style="background:' + (b.logo_bg||'#1A1A1A') + ';color:' + (b.logo_color||'#fff') + '">' + (b.logo_initials||'?') + '</div><div><div class="brand-name">' + b.name + '</div><div class="brand-cat-tag">' + (b.category||'') + '</div></div><div style="text-align:right"><div class="bcr-pct">' + maxComm + '%</div><div class="bcr-lbl">commission</div></div></div>';
+    }).join('');
+    document.getElementById('brand-loading').style.display = 'none';
+    document.getElementById('brand-list').style.display = 'block';
+  }).catch(function(e){ showError('brand-loading', e.message); });
+}
+
+function openBrand(i) {
+  var b = brandsData[i];
+  document.getElementById('d-logo').style.cssText = 'background:' + (b.logo_bg||'#1A1A1A') + ';color:' + (b.logo_color||'#fff');
+  document.getElementById('d-logo').textContent = b.logo_initials || '?';
+  document.getElementById('d-title').textContent = b.name;
+  var points = (b.talking_points || []).map(function(p){ return '<div class="d-point">' + p + '</div>'; }).join('');
+  var prods = (b.products || []).map(function(p){
+    var comm = '+$' + (p.price_cents * p.commission_pct / 100 / 100).toFixed(2);
+    return '<div class="d-prod-row"><span class="d-prod-name">' + p.name + '</span><span class="d-prod-comm">' + comm + '</span></div>';
+  }).join('');
+  document.getElementById('d-body').innerHTML = '<div><div class="d-sec-label">Brand pitch brief</div><div class="d-pitch">' + (b.pitch_brief||'No brief yet.') + '</div></div>' +
+    (points ? '<div><div class="d-sec-label">Selling points</div><div class="d-points">' + points + '</div></div>' : '') +
+    (prods ? '<div><div class="d-sec-label">Products you can sell</div><div class="d-prods">' + prods + '</div></div>' : '') +
+    '<div class="d-actions"><button class="d-btn d-btn-p" onclick="copyBrandLink(\'' + b.id + '\')">Copy sales link</button><button class="d-btn d-btn-s" onclick="closeDrawer()">Close</button></div>';
+  document.getElementById('drawer').classList.add('open');
+}
+
+function closeDrawer() { document.getElementById('drawer').classList.remove('open'); }
+
+// ── EARNINGS ─────────────────────────────────────────────────
+function loadEarnings() {
+  document.getElementById('earn-loading').style.display = 'flex';
+  document.getElementById('earn-content').style.display = 'none';
+
+  Promise.all([
+    api('/earnings?wix_member_id=' + WIX_MEMBER_ID),
+    api('/sales?wix_member_id=' + WIX_MEMBER_ID + '&limit=20')
+  ]).then(function(results) {
+    var data = results[0];
+    var sales = results[1] || [];
+
+    var s = data.summary || {};
+    document.getElementById('ps-amt').textContent = '$' + ((s.pending_payout_cents||0)/100).toFixed(2);
+    document.getElementById('ps-total').textContent = '$' + ((s.total_commission_cents||0)/100).toFixed(2);
+    document.getElementById('ps-mtd').textContent = '$' + ((s.mtd_commission_cents||0)/100).toFixed(2);
+    document.getElementById('ps-count').textContent = s.total_sales || 0;
+
+    // Chart
+    var chart = data.monthly_chart || {};
+    var months = Object.keys(chart);
+    var vals = months.map(function(m){ return chart[m]; });
+    var maxVal = Math.max.apply(null, vals) || 1;
+    var total = vals.reduce(function(a,b){ return a+b; }, 0);
+    var barsEl = document.getElementById('earn-bars');
+    var lblsEl = document.getElementById('earn-lbls');
+    barsEl.innerHTML = '';
+    lblsEl.innerHTML = '';
+    months.forEach(function(month, i) {
+      var h = Math.round((vals[i] / maxVal) * 100);
+      var isLast = i === months.length - 1;
+      var wrap = document.createElement('div'); wrap.className = 'bar-wrap';
+      var bar = document.createElement('div'); bar.className = 'bar';
+      bar.style.background = isLast ? 'var(--green)' : '#3A3A3A';
+      bar.style.height = '0px';
+      bar.title = '$' + (vals[i]/100).toFixed(2);
+      wrap.appendChild(bar); barsEl.appendChild(wrap);
+      var lbl = document.createElement('div'); lbl.className = 'bar-lbl'; lbl.style.flex='1'; lbl.style.textAlign='center'; lbl.textContent = month;
+      lblsEl.appendChild(lbl);
+      setTimeout(function(){ bar.style.transition='height .8s ease'; bar.style.height = h + 'px'; }, 300 + i * 60);
+    });
+    document.getElementById('earn-total-val').textContent = '$' + (total/100).toFixed(2);
+
+    // By product
+    var byProd = data.by_product || {};
+    var prodEl = document.getElementById('earn-by-product');
+    prodEl.innerHTML = Object.keys(byProd).map(function(name) {
+      return '<div class="eb-row"><span class="eb-label">' + name + '</span><span class="eb-val">$' + (byProd[name]/100).toFixed(2) + '</span></div>';
+    }).join('') || '<div style="padding:10px 0;font-size:12px;color:var(--dim)">No sales yet</div>';
+
+    // Transactions
+    var txnEl = document.getElementById('earn-txns');
+    txnEl.innerHTML = (sales || []).map(function(s) {
+      var comm = Math.round(s.sale_amount_cents * s.commission_pct / 100);
+      var prodName = s.products ? s.products.name : 'Product';
+      var date = new Date(s.sold_at).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      return '<div class="txn-row"><div class="txn-dot" style="background:var(--green)"></div><div class="txn-info"><div class="txn-name">' + prodName + '</div><div class="txn-meta">' + (s.source||'direct') + ' · ' + (s.buyer_email||'anonymous') + '</div></div><div><div class="txn-amt">+$' + (comm/100).toFixed(2) + '</div><div class="txn-date">' + date + '</div></div></div>';
+    }).join('') || '<div style="padding:20px 16px;font-size:12px;color:var(--dim);text-align:center">No transactions yet</div>';
+
+    document.getElementById('earn-loading').style.display = 'none';
+    document.getElementById('earn-content').style.display = 'block';
+  }).catch(function(e){ showError('earn-loading', e.message); });
+}
+
+// ── TEAM ─────────────────────────────────────────────────────
+function loadTeam() {
+  document.getElementById('team-loading').style.display = 'flex';
+  document.getElementById('team-grid').style.display = 'none';
+  document.getElementById('team-empty').style.display = 'none';
+
+  api('/myTeam?wix_member_id=' + WIX_MEMBER_ID).then(function(team) {
+    document.getElementById('team-loading').style.display = 'none';
+    if(!team || team.length === 0) {
+      document.getElementById('team-empty').style.display = 'block';
+      return;
+    }
+    var grid = document.getElementById('team-grid');
+    grid.innerHTML = team.map(function(m) {
+      var initials = m.full_name.split(' ').map(function(n){ return n[0]; }).join('').slice(0,2).toUpperCase();
+      var e = m.earnings || {};
+      var since = new Date(m.joined_at).toLocaleDateString('en-US',{month:'short',year:'numeric'});
+      var override = ((e.total_commission_cents||0) * 0.05 / 100).toFixed(2);
+      return '<div class="team-card"><div class="tc-top"><div class="tc-avatar" style="background:var(--bg3);border:1px solid var(--border2)">' + initials + '</div><div><div class="tc-name">' + m.full_name + '</div><div class="tc-since">Since ' + since + '</div></div><div class="tc-status" style="background:' + (m.status==='active'?'var(--green)':'var(--muted)') + '"></div></div><div class="tc-stats"><div class="tc-stat"><div class="tc-stat-v">$' + ((e.total_commission_cents||0)/100).toFixed(0) + '</div><div class="tc-stat-l">Their earnings</div></div><div class="tc-stat"><div class="tc-stat-v">' + (e.total_sales||0) + '</div><div class="tc-stat-l">Sales closed</div></div></div><div class="tc-override">Your override: <span>$' + override + '</span> earned</div></div>';
+    }).join('');
+    grid.style.display = 'grid';
+  }).catch(function(e){ showError('team-loading', e.message); });
+}
+
+// ── PAYOUT ───────────────────────────────────────────────────
+function requestPayout() {
+  fetch(BASE + '/requestPayout', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ wix_member_id: WIX_MEMBER_ID, method: 'paypal' })
+  }).then(function(r){ return r.json(); })
+    .then(function(d) {
+      if(d.error) { alert('Error: ' + d.error); return; }
+      alert('Payout requested — $' + (d.amount_cents/100).toFixed(2) + ' sent to your PayPal within 2 business days.');
+      loadEarnings();
+    }).catch(function(e){ alert('Error: ' + e.message); });
+}
+
+// ── COPY UTILS ───────────────────────────────────────────────
+function copyMainLink() {
+  var url = 'https://cpdblackbook.com/s/' + repSlug;
+  navigator.clipboard.writeText(url).catch(function(){});
+  var btn = document.getElementById('main-copy-btn');
+  btn.textContent = 'COPIED!'; btn.style.background = 'var(--green)'; btn.style.color = '#0C0C0C';
+  setTimeout(function(){ btn.textContent = 'COPY'; btn.style.background = ''; btn.style.color = ''; }, 2000);
+}
+
+function copyProdLink(slug, btn) {
+  var url = 'https://cpdblackbook.com/s/' + repSlug + '/' + slug;
+  navigator.clipboard.writeText(url).catch(function(){});
+  btn.textContent = 'Copied!'; btn.style.color = 'var(--green)';
+  setTimeout(function(){ btn.textContent = 'Copy tracked link'; btn.style.color = ''; }, 2000);
+}
+
+function copyBrandLink(brandId) {
+  var url = 'https://cpdblackbook.com/s/' + repSlug + '?brand=' + brandId;
+  navigator.clipboard.writeText(url).catch(function(){});
+  alert('Brand sales link copied!');
+}
+
+function shareToIG() { alert('Copy your link and paste it in your Instagram bio or story.'); }
+function shareToX()  { window.open('https://twitter.com/intent/tweet?text=Check+this+out+cpdblackbook.com/s/' + repSlug, '_blank'); }
+
+// ── COUNTER ANIMATION ────────────────────────────────────────
+function animateCount(el, target, prefix) {
+  if(!el) return;
+  var start = performance.now();
+  var dur = 1000;
+  function tick(now) {
+    var t = Math.min((now - start) / dur, 1);
+    var ease = 1 - Math.pow(1 - t, 3);
+    var val = Math.round(ease * target * 100) / 100;
+    el.textContent = prefix + (target % 1 === 0 ? Math.round(val).toLocaleString() : val.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}));
+    if(t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+// ── ERROR HELPER ─────────────────────────────────────────────
+function showError(loadingId, msg) {
+  var el = document.getElementById(loadingId);
+  el.innerHTML = '<div class="error-box" style="margin:0">Error: ' + msg + '</div>';
+}
+
+// ── CPD DRIVE — INLINE ENGINE ──────────────────────────────────
+var DRIVE_API = 'https://api.rss2json.com/v1/api.json?api_key=fhprejwbwbyanfwhphl7gp7su0ckwloatbxierd5&rss_url=';
+
+var DRIVE_CHANNELS = {
+  culture: {
+    name: 'CULTURE DRIVE', color: '#c8102e', icon: '🎭', tickerLabel: 'Trending',
+    filters: ['all','music','culture','street','entertainment','news'],
+    filterLabels: {all:'All',music:'Music',culture:'Culture',street:'Street',entertainment:'Entertainment',news:'News'},
+    feeds: [
+      {url:'https://pitchfork.com/rss/news/',source:'Pitchfork',tag:'music'},
+      {url:'https://www.rollingstone.com/music/music-news/feed/',source:'Rolling Stone',tag:'music'},
+      {url:'https://hiphopdx.com/rss',source:'HipHopDX',tag:'music'},
+      {url:'https://thefader.com/rss',source:'The FADER',tag:'music'},
+      {url:'https://www.vibe.com/feed/',source:'Vibe',tag:'music'},
+      {url:'https://www.complex.com/feed',source:'Complex',tag:'culture'},
+      {url:'https://www.theroot.com/rss',source:'The Root',tag:'culture'},
+      {url:'https://www.revolt.tv/feed',source:'Revolt',tag:'culture'},
+      {url:'https://hypebeast.com/feed',source:'Hypebeast',tag:'street'},
+      {url:'https://www.highsnobiety.com/feed/',source:'Highsnobiety',tag:'street'},
+      {url:'https://variety.com/feed/',source:'Variety',tag:'entertainment'},
+      {url:'https://deadline.com/feed/',source:'Deadline',tag:'entertainment'},
+    ]
+  },
+  sports: {
+    name: 'SPORTS DRIVE', color: '#e8a100', icon: '🏆', tickerLabel: 'Live',
+    filters: ['all','nba','nfl','mlb','nhl','golf','betting','general'],
+    filterLabels: {all:'All',nba:'NBA',nfl:'NFL',mlb:'MLB',nhl:'NHL',golf:'Golf',betting:'Betting',general:'General'},
+    feeds: [
+      {url:'https://www.espn.com/espn/rss/nba/news',source:'ESPN NBA',tag:'nba'},
+      {url:'https://bleacherreport.com/nba.rss',source:'Bleacher Report NBA',tag:'nba'},
+      {url:'https://hoopshype.com/feed/',source:'HoopsHype',tag:'nba'},
+      {url:'https://www.espn.com/espn/rss/nfl/news',source:'ESPN NFL',tag:'nfl'},
+      {url:'https://bleacherreport.com/nfl.rss',source:'Bleacher Report NFL',tag:'nfl'},
+      {url:'https://www.profootballtalk.com/feed/',source:'Pro Football Talk',tag:'nfl'},
+      {url:'https://www.espn.com/espn/rss/mlb/news',source:'ESPN MLB',tag:'mlb'},
+      {url:'https://bleacherreport.com/mlb.rss',source:'Bleacher Report MLB',tag:'mlb'},
+      {url:'https://www.mlbtraderumors.com/feed',source:'MLB Trade Rumors',tag:'mlb'},
+      {url:'https://www.espn.com/espn/rss/nhl/news',source:'ESPN NHL',tag:'nhl'},
+      {url:'https://bleacherreport.com/nhl.rss',source:'Bleacher Report NHL',tag:'nhl'},
+      {url:'https://www.espn.com/espn/rss/golf/news',source:'ESPN Golf',tag:'golf'},
+      {url:'https://golfweek.usatoday.com/feed/',source:'Golfweek',tag:'golf'},
+      {url:'https://www.actionnetwork.com/rss/all',source:'Action Network',tag:'betting'},
+      {url:'https://www.covers.com/feeds/news',source:'Covers.com',tag:'betting'},
+      {url:'https://www.vegasinsider.com/rss/sports/',source:'Vegas Insider',tag:'betting'},
+      {url:'https://www.bettingpros.com/feed/',source:'BettingPros',tag:'betting'},
+      {url:'https://www.espn.com/espn/rss/news',source:'ESPN',tag:'general'},
+      {url:'https://sports.yahoo.com/rss/',source:'Yahoo Sports',tag:'general'},
+      {url:'https://www.cbssports.com/rss/headlines/',source:'CBS Sports',tag:'general'},
+    ]
+  },
+  fashion: {
+    name: 'FASHION DRIVE', color: '#e8c4d0', icon: '👔', tickerLabel: 'Drops',
+    filters: ['all','editorial','luxury','runway','streetwear','sneakers','athleisure','celebrity','news'],
+    filterLabels: {all:'All',editorial:'Editorial',luxury:'Luxury',runway:'Runway',streetwear:'Streetwear',sneakers:'Sneakers',athleisure:'Athleisure',celebrity:'Celebrity',news:'News'},
+    feeds: [
+      {url:'https://www.vogue.com/feed/rss',source:'Vogue',tag:'editorial'},
+      {url:'https://www.elle.com/rss/all.xml/',source:'Elle',tag:'editorial'},
+      {url:'https://www.wmagazine.com/rss',source:'W Magazine',tag:'editorial'},
+      {url:'https://i-d.vice.com/en_us/rss',source:'i-D Magazine',tag:'editorial'},
+      {url:'https://www.businessoffashion.com/rss',source:'Business of Fashion',tag:'luxury'},
+      {url:'https://wwd.com/feed/',source:'WWD',tag:'luxury'},
+      {url:'https://www.luxurydaily.com/feed/',source:'Luxury Daily',tag:'luxury'},
+      {url:'https://www.purseblog.com/feed/',source:'PurseBlog',tag:'luxury'},
+      {url:'https://www.fashiongonerogue.com/feed/',source:'Fashion Gone Rogue',tag:'runway'},
+      {url:'https://hypebeast.com/feed',source:'Hypebeast',tag:'streetwear'},
+      {url:'https://www.highsnobiety.com/feed/',source:'Highsnobiety',tag:'streetwear'},
+      {url:'https://www.complex.com/style/feed',source:'Complex Style',tag:'streetwear'},
+      {url:'https://sneakernews.com/feed/',source:'Sneaker News',tag:'sneakers'},
+      {url:'https://www.kicksonfire.com/feed/',source:'Kicks on Fire',tag:'sneakers'},
+      {url:'https://solecollector.com/feed/',source:'Sole Collector',tag:'sneakers'},
+      {url:'https://www.whowatwear.com/feed',source:'Who What Wear',tag:'celebrity'},
+      {url:'https://people.com/style/rss/',source:'People Style',tag:'celebrity'},
+      {url:'https://wwd.com/business-news/feed/',source:'WWD Business',tag:'news'},
+      {url:'https://fashionista.com/feed',source:'Fashionista',tag:'news'},
+    ]
+  },
+  nightlife: {
+    name: 'NIGHTLIFE DRIVE', color: '#d946a8', icon: '🌃', tickerLabel: 'Scene',
+    filters: ['all','miami','nyc','houston','la','scottsdale','vegas','chicago','tampa','austin'],
+    filterLabels: {all:'All',miami:'Miami',nyc:'NYC',houston:'Houston',la:'LA',scottsdale:'Scottsdale',vegas:'Vegas',chicago:'Chicago',tampa:'Tampa',austin:'Austin'},
+    feeds: [
+      {url:'https://miami.eater.com/rss/index.xml',source:'Eater Miami',tag:'miami'},
+      {url:'https://www.miaminewtimes.com/restaurants/rss.xml',source:'Miami New Times',tag:'miami'},
+      {url:'https://thehoneycombers.com/miami/feed/',source:'Honeycombers Miami',tag:'miami'},
+      {url:'https://ny.eater.com/rss/index.xml',source:'Eater NY',tag:'nyc'},
+      {url:'https://www.timeout.com/newyork/nightlife/rss',source:'Time Out NY',tag:'nyc'},
+      {url:'https://gothamist.com/arts-entertainment/feed',source:'Gothamist',tag:'nyc'},
+      {url:'https://www.nytimes.com/section/dining/rss.xml',source:'NY Times Dining',tag:'nyc'},
+      {url:'https://houston.eater.com/rss/index.xml',source:'Eater Houston',tag:'houston'},
+      {url:'https://www.houstonpress.com/restaurants/rss.xml',source:'Houston Press',tag:'houston'},
+      {url:'https://culturemap.com/houston/feed/',source:'CultureMap Houston',tag:'houston'},
+      {url:'https://la.eater.com/rss/index.xml',source:'Eater LA',tag:'la'},
+      {url:'https://www.timeout.com/los-angeles/nightlife/rss',source:'Time Out LA',tag:'la'},
+      {url:'https://www.laweekly.com/category/nightlife/feed/',source:'LA Weekly',tag:'la'},
+      {url:'https://phoenix.eater.com/rss/index.xml',source:'Eater Phoenix/Scottsdale',tag:'scottsdale'},
+      {url:'https://scottsdalemag.com/feed/',source:'Scottsdale Magazine',tag:'scottsdale'},
+      {url:'https://azfoothills.com/feed/',source:'AZ Foothills',tag:'scottsdale'},
+      {url:'https://vegas.eater.com/rss/index.xml',source:'Eater Vegas',tag:'vegas'},
+      {url:'https://www.reviewjournal.com/entertainment/nightlife/rss.xml',source:'LV Review Journal',tag:'vegas'},
+      {url:'https://lasvegasweekly.com/feed/',source:'Las Vegas Weekly',tag:'vegas'},
+      {url:'https://chicago.eater.com/rss/index.xml',source:'Eater Chicago',tag:'chicago'},
+      {url:'https://www.timeout.com/chicago/nightlife/rss',source:'Time Out Chicago',tag:'chicago'},
+      {url:'https://tampa.eater.com/rss/index.xml',source:'Eater Tampa',tag:'tampa'},
+      {url:'https://www.tampabay.com/entertainment/food/rss.xml',source:'Tampa Bay Times',tag:'tampa'},
+      {url:'https://austin.eater.com/rss/index.xml',source:'Eater Austin',tag:'austin'},
+      {url:'https://www.austinchronicle.com/rss/food/',source:'Austin Chronicle',tag:'austin'},
+    ]
+  },
+  finance: {
+    name: 'FINANCE DRIVE', color: '#00c27a', icon: '💰', tickerLabel: 'Markets',
+    filters: ['all','stocks','crypto','etf','trading','economy','general'],
+    filterLabels: {all:'All',stocks:'Stocks',crypto:'Crypto',etf:'ETFs',trading:'Trading',economy:'Economy',general:'General'},
+    feeds: [
+      {url:'https://feeds.finance.yahoo.com/rss/2.0/headline?s=SPY,QQQ,AAPL,TSLA&region=US&lang=en-US',source:'Yahoo Finance',tag:'stocks'},
+      {url:'https://www.cnbc.com/id/100003114/device/rss/rss.html',source:'CNBC Markets',tag:'stocks'},
+      {url:'https://feeds.marketwatch.com/marketwatch/topstories/',source:'MarketWatch',tag:'stocks'},
+      {url:'https://seekingalpha.com/market_currents.xml',source:'Seeking Alpha',tag:'stocks'},
+      {url:'https://cointelegraph.com/rss',source:'CoinTelegraph',tag:'crypto'},
+      {url:'https://coindesk.com/arc/outboundfeeds/rss/',source:'CoinDesk',tag:'crypto'},
+      {url:'https://decrypt.co/feed',source:'Decrypt',tag:'crypto'},
+      {url:'https://bitcoinmagazine.com/.rss/full/',source:'Bitcoin Magazine',tag:'crypto'},
+      {url:'https://etfdb.com/feed/',source:'ETF Database',tag:'etf'},
+      {url:'https://www.etftrends.com/feed/',source:'ETF Trends',tag:'etf'},
+      {url:'https://www.benzinga.com/feed',source:'Benzinga',tag:'trading'},
+      {url:'https://www.thestreet.com/rss/index.xml',source:'The Street',tag:'trading'},
+      {url:'https://www.investopedia.com/feeds/news.aspx',source:'Investopedia',tag:'trading'},
+      {url:'https://feeds.bloomberg.com/economics/news.rss',source:'Bloomberg Economics',tag:'economy'},
+      {url:'https://www.ft.com/rss/home',source:'Financial Times',tag:'economy'},
+      {url:'https://www.wsj.com/xml/rss/3_7031.xml',source:'WSJ Economy',tag:'economy'},
+      {url:'https://www.cnbc.com/id/20910258/device/rss/rss.html',source:'CNBC Economy',tag:'economy'},
+      {url:'https://www.forbes.com/investing/feed2/',source:'Forbes Investing',tag:'general'},
+      {url:'https://www.kiplinger.com/rss/investing',source:'Kiplinger',tag:'general'},
+    ]
+  },
+  beverage: {
+    name: 'BEVERAGE DRIVE', color: '#c8820a', icon: '🥂', tickerLabel: 'Pours',
+    filters: ['all','whiskey','tequila','wine','beer','rtd','industry','deals','insights'],
+    filterLabels: {all:'All',whiskey:'Whiskey',tequila:'Tequila',wine:'Wine',beer:'Beer',rtd:'RTD',industry:'Industry',deals:'Deals',insights:'Insights'},
+    feeds: [
+      {url:'https://www.whiskyadvocate.com/feed/',source:'Whisky Advocate',tag:'whiskey'},
+      {url:'https://whiskycast.com/feed/',source:'WhiskyCast',tag:'whiskey'},
+      {url:'https://scotchwhisky.com/feed/',source:'Scotch Whisky',tag:'whiskey'},
+      {url:'https://www.bourbonblog.com/feed/',source:'Bourbon Blog',tag:'whiskey'},
+      {url:'https://punchdrink.com/feed/',source:'Punch Drink',tag:'whiskey'},
+      {url:'https://tequilaaficionado.com/feed/',source:'Tequila Aficionado',tag:'tequila'},
+      {url:'https://mezcalistas.com/feed/',source:'Mezcalistas',tag:'tequila'},
+      {url:'https://www.wine-searcher.com/rss/news',source:'Wine Searcher',tag:'wine'},
+      {url:'https://www.decanter.com/feed/',source:'Decanter',tag:'wine'},
+      {url:'https://winefolly.com/feed/',source:'Wine Folly',tag:'wine'},
+      {url:'https://vinepair.com/feed/',source:'VinePair',tag:'wine'},
+      {url:'https://www.craftbeer.com/feed',source:'CraftBeer.com',tag:'beer'},
+      {url:'https://www.brewbound.com/feed/',source:'Brewbound',tag:'beer'},
+      {url:'https://draftmag.com/feed/',source:'Draft Magazine',tag:'beer'},
+      {url:'https://www.beveragedaily.com/feed/',source:'Beverage Daily',tag:'industry'},
+      {url:'https://www.thedrinksbusiness.com/feed/',source:'The Drinks Business',tag:'industry'},
+      {url:'https://spiritsbusiness.com/feed/',source:'The Spirits Business',tag:'industry'},
+      {url:'https://www.thedrinksbusiness.com/category/mergers-acquisitions/feed/',source:'Drinks Business M&A',tag:'deals'},
+      {url:'https://vinepair.com/category/news/feed/',source:'VinePair News',tag:'deals'},
+      {url:'https://www.iwsr.com/latest-news/feed/',source:'IWSR',tag:'insights'},
+    ]
+  },
+  aviation: {
+    name: 'AVIATION DRIVE', color: '#00aaff', icon: '✈️', tickerLabel: 'ATC',
+    filters: ['all','commercial','military','generalav','space','industry','training','tech'],
+    filterLabels: {all:'All',commercial:'Commercial',military:'Military',generalav:'General Aviation',space:'Space',industry:'Industry',training:'Training',tech:'Tech'},
+    feeds: [
+      {url:'https://simpleflying.com/feed/',source:'Simple Flying',tag:'commercial'},
+      {url:'https://thepointsguy.com/feed/',source:'The Points Guy',tag:'commercial'},
+      {url:'https://onemileatatime.com/feed/',source:'One Mile at a Time',tag:'commercial'},
+      {url:'https://viewfromthewing.com/feed/',source:'View From The Wing',tag:'commercial'},
+      {url:'https://www.airlinegeeks.com/feed/',source:'Airline Geeks',tag:'commercial'},
+      {url:'https://www.thedrive.com/the-war-zone/feed',source:'The War Zone',tag:'military'},
+      {url:'https://www.defensenews.com/rss/air/',source:'Defense News Air',tag:'military'},
+      {url:'https://breakingdefense.com/feed/',source:'Breaking Defense',tag:'military'},
+      {url:'https://www.aopa.org/news-and-media/all-news/rss',source:'AOPA',tag:'generalav'},
+      {url:'https://www.avweb.com/rss/',source:'AVweb',tag:'generalav'},
+      {url:'https://www.flyingmag.com/feed/',source:'Flying Magazine',tag:'generalav'},
+      {url:'https://www.nasa.gov/rss/dyn/breaking_news.rss',source:'NASA',tag:'space'},
+      {url:'https://spaceflightnow.com/feed/',source:'Spaceflight Now',tag:'space'},
+      {url:'https://www.spacenews.com/feed/',source:'Space News',tag:'space'},
+      {url:'https://aviationweek.com/rss/commercial-aviation',source:'Aviation Week',tag:'industry'},
+      {url:'https://airwaysmag.com/feed/',source:'Airways Magazine',tag:'industry'},
+      {url:'https://skift.com/category/airlines/feed/',source:'Skift Airlines',tag:'industry'},
+      {url:'https://www.boldmethod.com/feed/',source:'Boldmethod',tag:'training'},
+      {url:'https://www.aviationtoday.com/feed/',source:'Aviation Today',tag:'tech'},
+      {url:'https://dronelife.com/feed/',source:'DroneLife',tag:'tech'},
+    ]
+  },
+  gaming: {
+    name: 'GAMING DRIVE', color: '#7b5cf0', icon: '🎮', tickerLabel: 'Now Playing',
+    filters: ['all','ps5','xbox','pc','nintendo','arcade','handheld','multiplayer'],
+    filterLabels: {all:'All',ps5:'PS5',xbox:'Xbox',pc:'PC',nintendo:'Nintendo',arcade:'Arcade',handheld:'Handheld',multiplayer:'Multiplayer'},
+    feeds: [
+      {url:'https://blog.playstation.com/feed/',source:'PlayStation Blog',tag:'ps5'},
+      {url:'https://www.pushsquare.com/feeds/latest',source:'Push Square',tag:'ps5'},
+      {url:'https://www.ign.com/articles/tag/ps5.rss',source:'IGN PS5',tag:'ps5'},
+      {url:'https://gamerant.com/category/playstation/feed/',source:'Game Rant PS',tag:'ps5'},
+      {url:'https://news.xbox.com/en-us/feed/',source:'Xbox Wire',tag:'xbox'},
+      {url:'https://www.purexbox.com/feeds/latest',source:'Pure Xbox',tag:'xbox'},
+      {url:'https://www.ign.com/articles/tag/xbox-series-x.rss',source:'IGN Xbox',tag:'xbox'},
+      {url:'https://www.pcgamer.com/rss/',source:'PC Gamer',tag:'pc'},
+      {url:'https://www.rockpapershotgun.com/feed',source:'Rock Paper Shotgun',tag:'pc'},
+      {url:'https://store.steampowered.com/feeds/news/',source:'Steam News',tag:'pc'},
+      {url:'https://www.nintendolife.com/feeds/latest',source:'Nintendo Life',tag:'nintendo'},
+      {url:'https://mynintendonews.com/feed/',source:'My Nintendo News',tag:'nintendo'},
+      {url:'https://retrorgb.com/feed',source:'RetroRGB',tag:'arcade'},
+      {url:'https://arcadeheroes.com/feed/',source:'Arcade Heroes',tag:'arcade'},
+      {url:'https://www.gbatemp.net/forums/-/index.rss',source:'GBAtemp',tag:'handheld'},
+      {url:'https://www.ign.com/articles/tag/nintendo-switch-2.rss',source:'IGN Switch 2',tag:'handheld'},
+      {url:'https://dotesports.com/feed',source:'Dot Esports',tag:'multiplayer'},
+      {url:'https://www.dexerto.com/feed/',source:'Dexerto',tag:'multiplayer'},
+      {url:'https://www.esportsinsider.com/feed/',source:'Esports Insider',tag:'multiplayer'},
+    ]
+  }
+};
+
+var driveState = { channel: null, filter: 'all', articles: [] };
+
+function openDriveChannel(channelId) {
+  var ch = DRIVE_CHANNELS[channelId];
+  if(!ch) return;
+  driveState.channel = channelId;
+  driveState.filter = 'all';
+  driveState.articles = [];
+
+  document.getElementById('drive-home').style.display = 'none';
+  document.getElementById('drive-feed-wrap').classList.add('active');
+
+  // Set channel name + accent
+  document.getElementById('df-channel-name').textContent = ch.name;
+  var dot = document.getElementById('df-live-dot');
+  dot.style.background = ch.color;
+
+  // Build filters
+  var filtersEl = document.getElementById('df-filters');
+  filtersEl.innerHTML = ch.filters.map(function(f){
+    var isAll = f === 'all';
+    var btnStyle = isAll ? 'border-color:'+ch.color+';color:'+ch.color+';background:'+ch.color+'18' : '';
+    var btnClass = 'df-filter' + (isAll ? ' on' : '');
+    var label = ch.filterLabels[f] || f;
+    return '<button class="' + btnClass + '" onclick="driveFilter(\'' + f + '\',this)" style="' + btnStyle + '">' + label + '</button>';
+  }).join('');
+
+  document.getElementById('df-status').textContent = 'Connecting to ' + ch.feeds.length + ' feeds...';
+  document.getElementById('df-grid').innerHTML = '<div class="df-empty">Loading feeds...</div>';
+
+  // Load all feeds
+  var loaded = 0;
+  ch.feeds.forEach(function(feed) {
+    var apiUrl = DRIVE_API + encodeURIComponent(feed.url);
+    fetch(apiUrl)
+      .then(function(r){ return r.json(); })
+      .then(function(data) {
+        if(data.items) {
+          data.items.slice(0,6).forEach(function(item){
+            driveState.articles.push({
+              title: item.title,
+              link: item.link,
+              desc: driveStripHtml(item.description || item.content || '').slice(0,200),
+              date: item.pubDate,
+              source: feed.source,
+              tag: feed.tag
+            });
+          });
+        }
+      })
+      .catch(function(){})
+      .finally(function(){
+        loaded++;
+        document.getElementById('df-status').textContent = 'Loading feeds — ' + loaded + '/' + ch.feeds.length + ' connected';
+        driveRender();
+        if(loaded === ch.feeds.length) {
+          document.getElementById('df-status').textContent = driveState.articles.length + ' articles from ' + loaded + ' sources';
+        }
+      });
+  });
+}
+
+function closeDriveChannel() {
+  document.getElementById('drive-feed-wrap').classList.remove('active');
+  document.getElementById('drive-home').style.display = '';
+  driveState.channel = null;
+  driveState.articles = [];
+}
+
+function driveFilter(tag, btn) {
+  driveState.filter = tag;
+  var ch = DRIVE_CHANNELS[driveState.channel];
+  document.querySelectorAll('.df-filter').forEach(function(b){
+    b.classList.remove('on');
+    b.style.borderColor='';b.style.color='';b.style.background='';
+  });
+  btn.classList.add('on');
+  btn.style.borderColor = ch.color;
+  btn.style.color = ch.color;
+  btn.style.background = ch.color + '18';
+  driveRender();
+}
+
+function driveRender() {
+  var grid = document.getElementById('df-grid');
+  var color = DRIVE_CHANNELS[driveState.channel] ? DRIVE_CHANNELS[driveState.channel].color : '#fff';
+  var filtered = driveState.filter === 'all' ? driveState.articles : driveState.articles.filter(function(a){ return a.tag === driveState.filter; });
+  var sorted = filtered.slice().sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+  // Dedupe by title
+  var seen = {}; sorted = sorted.filter(function(a){ if(seen[a.title]) return false; seen[a.title]=1; return true; });
+
+  if(sorted.length === 0) {
+    grid.innerHTML = '<div class="df-empty">No articles yet — feeds loading...</div>';
+    return;
+  }
+  var f = sorted[0], s1 = sorted[1], s2 = sorted[2], rest = sorted.slice(3);
+  var side = [s1,s2].filter(Boolean);
+
+  var html = '<div class="df-featured">' +
+    '<a class="df-feat-main" href="' + f.link + '" target="_blank" rel="noopener">' +
+      '<div class="df-card-meta"><div class="df-card-source" style="color:'+color+'">' + f.source + '</div><div class="df-card-age">' + driveTimeAgo(f.date) + ' ago</div></div>' +
+      '<div class="df-feat-title">' + f.title + '</div>' +
+      '<div class="df-card-desc">' + f.desc + '</div>' +
+      '<div class="df-card-tag">' + f.tag + '</div>' +
+    '</a>' +
+    '<div class="df-feat-side">' +
+      side.map(function(a){
+        return '<a class="df-card" href="'+a.link+'" target="_blank" rel="noopener">' +
+          '<div class="df-card-meta"><div class="df-card-source" style="color:'+color+'">'+a.source+'</div><div class="df-card-age">'+driveTimeAgo(a.date)+' ago</div></div>' +
+          '<div class="df-card-title">'+a.title+'</div>' +
+          '<div class="df-card-desc">'+a.desc+'</div>' +
+          '<div class="df-card-tag">'+a.tag+'</div>' +
+        '</a>';
+      }).join('') +
+    '</div>' +
+  '</div>' +
+  rest.map(function(a){
+    return '<a class="df-card" href="'+a.link+'" target="_blank" rel="noopener">' +
+      '<div class="df-card-meta"><div class="df-card-source" style="color:'+color+'">'+a.source+'</div><div class="df-card-age">'+driveTimeAgo(a.date)+' ago</div></div>' +
+      '<div class="df-card-title">'+a.title+'</div>' +
+      '<div class="df-card-desc">'+a.desc+'</div>' +
+      '<div class="df-card-tag">'+a.tag+'</div>' +
+    '</a>';
+  }).join('');
+
+  grid.innerHTML = html;
+}
+
+function driveTimeAgo(ds) {
+  var d = (Date.now() - new Date(ds)) / 1000;
+  if(d < 3600) return Math.floor(d/60) + 'm';
+  if(d < 86400) return Math.floor(d/3600) + 'h';
+  return Math.floor(d/86400) + 'd';
+}
+
+function driveStripHtml(html) {
+  var d = document.createElement('div');
+  d.innerHTML = html;
+  return d.textContent || '';
+}
+
+// ── CLASSIFIEDS / THE PLUG ────────────────────────────────────
+var SB_URL  = 'https://prhoinuqnrwbqezemwux.supabase.co';
+var SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByaG9pbnVxbnJ3YnFlemVtd3V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4ODgyNDAsImV4cCI6MjA4OTQ2NDI0MH0.PxLnp_iQkGXffF3mHPUhCUnCzjBFjFz_RszCg_lV7S0';
+// ^ Go to: Supabase Dashboard → Project Settings → API → anon/public key
+
+var CL_LABELS = {
+  gigs:'Gigs / Services', events:'Events', jobs:'Jobs / Collabs',
+  gear:'Gear', housing:'Housing', offers:'Offers',
+  requests:'Random Requests', questions:'Questions'
+};
+
+var clListings     = [];
+var clAdminLoaded  = false;
+
+function sbH() {
+  return {
+    'apikey':        SB_ANON,
+    'Authorization': 'Bearer ' + SB_ANON,
+    'Content-Type':  'application/json',
+    'Prefer':        'return=representation'
+  };
+}
+
+function clTab(tab) {
+  var isPost  = tab === 'post';
+  var isAdmin = tab === 'admin';
+  document.getElementById('cl-panel-post').style.display  = isPost  ? 'block' : 'none';
+  document.getElementById('cl-panel-admin').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('cl-panel-feed').style.display  = isPost  ? 'block' : 'none';
+
+  document.getElementById('cl-tab-post').style.background  = isPost  ? 'var(--red)' : 'var(--bg3)';
+  document.getElementById('cl-tab-post').style.color       = isPost  ? '#fff'       : 'var(--dim)';
+  document.getElementById('cl-tab-admin').style.background = isAdmin ? 'var(--bg3)' : 'var(--bg3)';
+  document.getElementById('cl-tab-admin').style.borderColor= isAdmin ? 'var(--border2)' : 'var(--border)';
+  document.getElementById('cl-tab-admin').style.color      = isAdmin ? 'var(--text)' : 'var(--dim)';
+
+  if (isAdmin && !clAdminLoaded) renderAdminList();
+}
+
+async function loadClassifieds() {
+  var feedGrid    = document.getElementById('cl-feed-grid');
+  var feedLoading = document.getElementById('cl-feed-loading');
+  var feedEmpty   = document.getElementById('cl-feed-empty');
+  var feedCount   = document.getElementById('cl-feed-count');
+
+  feedLoading.style.display = 'flex';
+  feedGrid.style.display    = 'none';
+  feedEmpty.style.display   = 'none';
+
+  try {
+    var res = await fetch(
+      SB_URL + '/rest/v1/classifieds?status=eq.active&order=created_at.desc',
+      { headers: sbH() }
+    );
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    clListings = await res.json();
+
+    feedLoading.style.display = 'none';
+    feedCount.textContent     = clListings.length + ' active listing' + (clListings.length !== 1 ? 's' : '');
+
+    if (clListings.length === 0) {
+      feedEmpty.style.display = 'block';
+      return;
+    }
+
+    feedGrid.innerHTML = clListings.map(function(item) {
+      var cat   = item.category || 'requests';
+      var label = CL_LABELS[cat] || cat;
+      var date  = item.created_at ? new Date(item.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '';
+      return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:13px 14px;display:flex;flex-direction:column;gap:7px">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px">' +
+          '<span style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-family:var(--font-m)">' + label + '</span>' +
+          '<span style="font-size:10px;color:var(--muted);font-family:var(--font-m)">' + date + '</span>' +
+        '</div>' +
+        '<div style="font-size:13px;font-weight:600;color:var(--text);line-height:1.3">' + escCl(item.title) + '</div>' +
+        '<div style="font-size:11px;color:var(--dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">' + escCl(item.description) + '</div>' +
+        (item.poster ? '<div style="font-size:10px;color:var(--muted);font-family:var(--font-m)">by ' + escCl(item.poster) + '</div>' : '') +
+      '</div>';
+    }).join('');
+    feedGrid.style.display = 'grid';
+
+  } catch(e) {
+    feedLoading.innerHTML = '<div style="color:var(--red);font-size:12px">Could not load listings — check Supabase anon key</div>';
+    console.error('Classifieds load error:', e);
+  }
+}
+
+async function renderAdminList() {
+  clAdminLoaded = true;
+  var listEl = document.getElementById('cl-admin-list');
+  document.getElementById('cl-admin-loading').style.display = 'flex';
+  listEl.innerHTML = '';
+
+  try {
+    var res = await fetch(
+      SB_URL + '/rest/v1/classifieds?order=created_at.desc',
+      { headers: sbH() }
+    );
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    var all = await res.json();
+    document.getElementById('cl-admin-loading').style.display = 'none';
+
+    if (all.length === 0) {
+      listEl.innerHTML = '<div style="padding:20px 16px;text-align:center;font-size:12px;color:var(--dim)">No listings yet.</div>';
+      return;
+    }
+
+    listEl.innerHTML = '';
+    all.forEach(function(item) {
+      var cat   = item.category || 'requests';
+      var label = CL_LABELS[cat] || cat;
+      var date  = item.created_at ? new Date(item.created_at).toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+      var statusColor = item.status === 'active' ? 'var(--green)' : 'var(--red)';
+      var row = document.createElement('div');
+      row.id = 'cl-row-' + item.id;
+      row.style.cssText = 'display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)';
+      
+      var info = document.createElement('div');
+      info.style.cssText = 'flex:1;min-width:0';
+      info.innerHTML = 
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap">' +
+          '<span style="font-size:12px;font-weight:600;color:var(--text)">' + escCl(item.title) + '</span>' +
+          '<span style="font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-family:var(--font-m)">' + label + '</span>' +
+          '<span style="font-size:9px;color:' + statusColor + ';font-family:var(--font-m)">' + item.status + '</span>' +
+        '</div>' +
+        '<div style="font-size:11px;color:var(--dim);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + escCl((item.description||'').substring(0,100)) + ((item.description||'').length>100?'...':'') + '</div>' +
+        '<div style="font-size:10px;color:var(--muted);font-family:var(--font-m)">' +
+          (item.poster ? 'by ' + escCl(item.poster) + ' · ' : '') +
+          (item.contact ? escCl(item.contact) + ' · ' : '') + date +
+        '</div>';
+
+      var btn = document.createElement('button');
+      btn.textContent = 'Delete';
+      btn.dataset.id  = item.id;
+      btn.style.cssText = 'flex-shrink:0;padding:5px 12px;background:rgba(214,48,48,0.15);border:1px solid rgba(214,48,48,0.3);border-radius:5px;color:#D63030;font-size:11px;font-family:var(--font-m);cursor:pointer';
+      btn.addEventListener('click', function() { clDelete(this.dataset.id); });
+
+      row.appendChild(info);
+      row.appendChild(btn);
+      listEl.appendChild(row);
+    });
+
+  } catch(e) {
+    document.getElementById('cl-admin-loading').style.display = 'none';
+    listEl.innerHTML = '<div style="padding:16px;color:var(--red);font-size:12px">Error: ' + e.message + '</div>';
+  }
+}
+
+async function clDelete(id) {
+  if (!confirm('Delete this listing? This cannot be undone.')) return;
+
+  var btn = document.querySelector('#cl-row-' + id + ' button');
+  if (btn) { btn.textContent = 'Deleting...'; btn.disabled = true; }
+
+  try {
+    var res = await fetch(
+      SB_URL + '/rest/v1/classifieds?id=eq.' + id,
+      { method: 'DELETE', headers: sbH() }
+    );
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+
+    // Remove row from DOM
+    var row = document.getElementById('cl-row-' + id);
+    if (row) {
+      row.style.opacity     = '0';
+      row.style.transition  = 'opacity 0.3s';
+      setTimeout(function(){ row.remove(); }, 300);
+    }
+
+    // Refresh feed count
+    loadClassifieds();
+
+  } catch(e) {
+    alert('Delete failed: ' + e.message);
+    if (btn) { btn.textContent = 'Delete'; btn.disabled = false; }
+  }
+}
+
+async function clSubmit() {
+  var title   = document.getElementById('cl-title').value.trim();
+  var cat     = document.getElementById('cl-cat').value;
+  var desc    = document.getElementById('cl-desc').value.trim();
+  var contact = document.getElementById('cl-contact').value.trim();
+  var msg     = document.getElementById('cl-submit-msg');
+
+  if (!title || !cat || !desc || !contact) {
+    msg.style.color   = 'var(--red)';
+    msg.textContent   = 'Fill in all required fields.';
+    return;
+  }
+
+  var btn = document.getElementById('cl-submit-btn');
+  btn.disabled    = true;
+  btn.textContent = 'Posting...';
+  msg.textContent = '';
+
+  try {
+    var res = await fetch(
+      SB_URL + '/rest/v1/classifieds',
+      {
+        method:  'POST',
+        headers: sbH(),
+        body: JSON.stringify({
+          title:       title,
+          category:    cat,
+          description: desc,
+          location:    document.getElementById('cl-loc').value.trim(),
+          price:       document.getElementById('cl-price').value.trim(),
+          contact:     contact,
+          poster:      document.getElementById('cl-poster').value.trim() || (repData ? repData.full_name : ''),
+          wix_member_id: WIX_MEMBER_ID,
+          status:      'active'
+        })
+      }
+    );
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+
+    // Clear form
+    ['cl-title','cl-cat','cl-desc','cl-loc','cl-price','cl-contact','cl-poster'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+
+    msg.style.color = 'var(--green)';
+    msg.textContent = '✓ Posted! Reloading feed...';
+
+    setTimeout(function(){
+      msg.textContent = '';
+      loadClassifieds();
+      clAdminLoaded = false; // force admin refresh next time
+    }, 1200);
+
+  } catch(e) {
+    msg.style.color = 'var(--red)';
+    msg.textContent = 'Post failed — check Supabase key.';
+    console.error(e);
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = 'Post Listing →';
+  }
+}
+
+function escCl(str) {
+  return String(str || '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+</script>
+</body>
+</html>
