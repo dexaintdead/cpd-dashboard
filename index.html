@@ -260,6 +260,92 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
   .df-feat-main{border-right:none;border-bottom:1px solid var(--border);padding:16px}
   .df-feat-title{font-size:22px}
 }
+
+/* ── COMMUNITY CRM ─────────────────────────────────────────── */
+/* Profile cards */
+.mem-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;padding:2px}
+.mem-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:10px}
+.mem-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.mem-avatar{width:44px;height:44px;border-radius:50%;background:var(--red-lo);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:18px;flex-shrink:0}
+.mem-name{font-size:13px;font-weight:600;color:var(--text)}
+.mem-handle{font-size:11px;color:var(--dim);font-family:var(--font-m)}
+.mem-bio{font-size:11px;color:var(--dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mem-socials{display:flex;gap:6px;flex-wrap:wrap}
+.mem-social-tag{font-size:10px;font-family:var(--font-m);color:var(--muted);background:var(--bg3);padding:2px 7px;border-radius:10px;letter-spacing:.04em}
+.mem-badge{font-size:10px;padding:2px 8px;border-radius:10px;background:var(--green-lo);color:var(--green);border:1px solid var(--green-border);font-family:var(--font-m)}
+
+/* Profile modal */
+.prof-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+.prof-modal-overlay.open{display:flex}
+.prof-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;width:100%;max-width:520px;padding:28px;position:relative}
+.prof-modal-close{position:absolute;top:14px;right:14px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;width:28px;height:28px;color:var(--dim);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+
+/* Inbox */
+.inbox-layout{display:grid;grid-template-columns:260px 1fr;height:calc(100vh - 140px);background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.inbox-threads{border-right:1px solid var(--border);overflow-y:auto}
+.inbox-thread-item{padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.inbox-thread-item:hover{background:var(--bg3)}
+.inbox-thread-item.active{background:var(--red-lo);border-left:2px solid var(--red)}
+.it-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.it-preview{font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.it-time{font-size:10px;color:var(--muted);font-family:var(--font-m);margin-bottom:3px}
+.it-unread{width:7px;height:7px;border-radius:50%;background:var(--red);flex-shrink:0}
+.inbox-chat{display:flex;flex-direction:column;height:100%}
+.inbox-chat-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.inbox-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.inbox-empty-state{flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;font-family:var(--font-m)}
+.msg-bubble{max-width:75%;padding:10px 13px;border-radius:10px;font-size:12px;line-height:1.5}
+.msg-bubble.sent{background:var(--red-lo);border:1px solid var(--red-border);color:var(--text);align-self:flex-end;border-radius:10px 10px 2px 10px}
+.msg-bubble.recv{background:var(--bg3);border:1px solid var(--border);color:var(--text);align-self:flex-start;border-radius:10px 10px 10px 2px}
+.msg-meta{font-size:10px;color:var(--muted);font-family:var(--font-m);margin-top:3px}
+.inbox-compose{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px}
+.inbox-input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none;resize:none;min-height:36px;max-height:100px}
+.inbox-input:focus{border-color:var(--border2)}
+.inbox-send{padding:8px 16px;background:var(--red);color:#fff;border:none;border-radius:6px;font-family:var(--font-m);font-size:11px;cursor:pointer;flex-shrink:0}
+
+/* Forum */
+.forum-cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.forum-cat{background:none;border:1px solid var(--border);color:var(--dim);font-family:var(--font-b);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;cursor:pointer;border-radius:3px;transition:all .15s}
+.forum-cat:hover{border-color:var(--border2);color:var(--text)}
+.forum-cat.on{border-color:var(--red-border);color:var(--red);background:var(--red-lo)}
+.forum-post-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all .15s}
+.forum-post-card:hover{border-color:var(--border2)}
+.forum-post-card.pinned{border-color:var(--gold);background:rgba(191,154,66,0.05)}
+.fp-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.fp-cat-tag{font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:10px;background:var(--red-lo);color:var(--red);border:1px solid var(--red-border)}
+.fp-pin{font-size:10px;color:var(--gold);font-family:var(--font-m)}
+.fp-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.3}
+.fp-preview{font-size:12px;color:var(--dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fp-footer{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.fp-author{font-size:11px;color:var(--dim);font-family:var(--font-m)}
+.fp-replies{font-size:11px;color:var(--muted);font-family:var(--font-m)}
+.fp-time{font-size:10px;color:var(--muted);font-family:var(--font-m);margin-left:auto}
+
+/* Forum thread view */
+.forum-thread-back{font-family:var(--font-m);font-size:11px;color:var(--dim);background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:5px 10px;cursor:pointer;margin-bottom:14px}
+.forum-thread-back:hover{color:var(--text)}
+.forum-reply-form{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:16px}
+.forum-reply-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none;resize:vertical;min-height:80px;margin-bottom:10px}
+.forum-reply-input:focus{border-color:var(--border2)}
+
+/* Members CRM */
+.crm-mem-row{display:grid;grid-template-columns:36px 1fr 120px 100px 80px 80px;gap:10px;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);font-size:12px;transition:background .15s}
+.crm-mem-row:hover{background:var(--bg3)}
+.crm-mem-row.header{font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;background:var(--bg3);font-weight:600;cursor:default}
+.crm-mem-row.header:hover{background:var(--bg3)}
+.crm-tag-chip{font-size:10px;padding:2px 7px;border-radius:10px;border:1px solid var(--border2);color:var(--dim);background:var(--bg3);font-family:var(--font-m);margin-right:3px}
+.crm-tag-chip.gold{border-color:var(--gold);color:var(--gold);background:var(--gold-lo)}
+.crm-tag-chip.green{border-color:var(--green-border);color:var(--green);background:var(--green-lo)}
+.crm-tag-chip.red{border-color:var(--red-border);color:var(--red);background:var(--red-lo)}
+
+/* Edit profile form */
+.profile-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.pf-group{display:flex;flex-direction:column;gap:5px}
+.pf-group label{font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
+.pf-group input,.pf-group textarea,.pf-group select{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none;width:100%}
+.pf-group input:focus,.pf-group textarea:focus{border-color:var(--border2)}
+.pf-group textarea{resize:vertical;min-height:70px}
+.pf-full{grid-column:1/-1}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px}
 @media(max-width:860px){.sidebar{display:none}.stats{grid-template-columns:repeat(2,1fr)}.crm-cols{grid-template-columns:repeat(2,1fr)}.earn-top{grid-template-columns:1fr}}
@@ -306,6 +392,18 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <div class="s-sec">Community</div>
     <button class="nav-i" onclick="showPage('classifieds',this)">
       <svg viewBox="0 0 14 14" fill="currentColor"><path d="M1 1h12v2H1V1zm0 4h8v1H1V5zm0 3h12v2H1V8zm0 4h6v1H1v-1z"/></svg>The Plug
+    </button>
+    <button class="nav-i" onclick="showPage('directory',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M5 7a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm-4 5c0-2.2 1.8-4 4-4s4 1.8 4 4H1zm8-9h4v1.5H9V3zm0 3h3v1.5H9V6zm0 3h4v1.5H9V9z"/></svg>Directory
+    </button>
+    <button class="nav-i" onclick="showPage('inbox',this)" id="nav-inbox">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M1 2h12a1 1 0 011 1v7a1 1 0 01-1 1H1a1 1 0 01-1-1V3a1 1 0 011-1zm6 5l5-3H2l5 3z"/></svg>Inbox<span id="inbox-badge" style="display:none;background:var(--red);color:#fff;font-size:9px;border-radius:8px;padding:1px 5px;margin-left:auto;font-family:var(--font-m)">0</span>
+    </button>
+    <button class="nav-i" onclick="showPage('forum',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M1 1h12v8H8l-3 3V9H1V1zm2 2v1h8V3H3zm0 3v1h6V6H3z"/></svg>Forum
+    </button>
+    <button class="nav-i" onclick="showPage('members_crm',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M1 11c0-2 1.5-3 3-3h6c1.5 0 3 1 3 3H1zm6-4a3 3 0 100-6 3 3 0 000 6z"/></svg>Members CRM
     </button>
   </nav>
   <div class="s-user">
@@ -660,6 +758,121 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     </div>
 
   </div>
+
+  <!-- ═══ MEMBER DIRECTORY ═══ -->
+  <div class="page" id="pg-directory">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Community</div>
+        <div style="font-family:var(--font-d);font-size:22px;letter-spacing:.06em">MEMBER DIRECTORY</div>
+      </div>
+      <button onclick="openEditProfile()" style="padding:8px 18px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:11px;cursor:pointer;letter-spacing:.04em">Edit My Profile</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <input id="dir-search" type="text" placeholder="Search members..." oninput="filterDirectory()" style="flex:1;max-width:320px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none"/>
+    </div>
+    <div id="dir-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading members...</div></div>
+    <div class="mem-grid" id="dir-grid" style="display:none"></div>
+    <div id="dir-empty" style="display:none;padding:40px;text-align:center;font-size:12px;color:var(--dim)">No members found.</div>
+  </div>
+
+  <!-- ═══ INBOX ═══ -->
+  <div class="page" id="pg-inbox">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Community</div>
+        <div style="font-family:var(--font-d);font-size:22px;letter-spacing:.06em">INBOX</div>
+      </div>
+      <button onclick="openNewMessage()" style="padding:8px 18px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:11px;cursor:pointer;letter-spacing:.04em">+ New Message</button>
+    </div>
+    <div class="inbox-layout">
+      <div class="inbox-threads" id="inbox-threads">
+        <div style="padding:12px 14px;border-bottom:1px solid var(--border);font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase">Conversations</div>
+        <div id="thread-list"></div>
+        <div id="thread-empty" style="padding:24px 14px;font-size:11px;color:var(--muted);font-family:var(--font-m);text-align:center">No messages yet</div>
+      </div>
+      <div class="inbox-chat" id="inbox-chat">
+        <div class="inbox-empty-state" id="inbox-placeholder">Select a conversation or start a new one</div>
+        <div id="inbox-active-chat" style="display:none;flex-direction:column;height:100%">
+          <div class="inbox-chat-header">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--red-lo);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:13px;flex-shrink:0" id="chat-avatar">—</div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text)" id="chat-name">—</div>
+              <div style="font-size:10px;color:var(--dim);font-family:var(--font-m)" id="chat-sub">Member</div>
+            </div>
+          </div>
+          <div class="inbox-messages" id="inbox-messages"></div>
+          <div class="inbox-compose">
+            <textarea class="inbox-input" id="inbox-msg-input" placeholder="Type a message..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
+            <button class="inbox-send" onclick="sendMessage()">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FORUM ═══ -->
+  <div class="page" id="pg-forum">
+    <div id="forum-list-view">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+        <div>
+          <div style="font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Community</div>
+          <div style="font-family:var(--font-d);font-size:22px;letter-spacing:.06em">FORUM</div>
+        </div>
+        <button onclick="openNewPost()" style="padding:8px 18px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:11px;cursor:pointer;letter-spacing:.04em">+ New Post</button>
+      </div>
+      <div class="forum-cats">
+        <button class="forum-cat on" data-cat="all" onclick="setForumCat('all',this)">All</button>
+        <button class="forum-cat" data-cat="general" onclick="setForumCat('general',this)">General</button>
+        <button class="forum-cat" data-cat="collabs" onclick="setForumCat('collabs',this)">Collabs</button>
+        <button class="forum-cat" data-cat="opportunities" onclick="setForumCat('opportunities',this)">Opportunities</button>
+        <button class="forum-cat" data-cat="questions" onclick="setForumCat('questions',this)">Questions</button>
+        <button class="forum-cat" data-cat="wins" onclick="setForumCat('wins',this)">Wins</button>
+        <button class="forum-cat" data-cat="announcements" onclick="setForumCat('announcements',this)">Announcements</button>
+      </div>
+      <div id="forum-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading forum...</div></div>
+      <div id="forum-posts-list"></div>
+      <div id="forum-empty" style="display:none;padding:40px;text-align:center;font-size:12px;color:var(--dim)">No posts yet. Be the first to post!</div>
+    </div>
+    <div id="forum-thread-view" style="display:none">
+      <button class="forum-thread-back" onclick="closeForumThread()">← Back to Forum</button>
+      <div id="forum-thread-content"></div>
+      <div class="forum-reply-form">
+        <div style="font-size:11px;color:var(--dim);margin-bottom:8px;letter-spacing:.06em;text-transform:uppercase">Add a Reply</div>
+        <textarea class="forum-reply-input" id="forum-reply-input" placeholder="Share your thoughts..."></textarea>
+        <button onclick="submitReply()" style="padding:8px 20px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:11px;cursor:pointer">Post Reply</button>
+        <span id="forum-reply-msg" style="margin-left:10px;font-size:11px;color:var(--dim)"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MEMBERS CRM ═══ -->
+  <div class="page" id="pg-members_crm">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Admin</div>
+        <div style="font-family:var(--font-d);font-size:22px;letter-spacing:.06em">MEMBERS CRM</div>
+      </div>
+      <span id="crm-count" style="font-size:11px;color:var(--dim)"></span>
+    </div>
+    <div class="panel">
+      <div class="ph">
+        <span class="ph-title">All Members</span>
+        <button class="ph-action" onclick="loadMembersCRM()">↻ Refresh</button>
+      </div>
+      <div style="padding:10px 16px;border-bottom:1px solid var(--border)">
+        <input id="crm-mem-search" type="text" placeholder="Search members..." oninput="filterCRMMembers()" style="width:100%;max-width:320px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 12px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none"/>
+      </div>
+      <div id="crm-mem-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading members...</div></div>
+      <div id="crm-mem-table" style="display:none">
+        <div class="crm-mem-row header">
+          <div></div><div>Member</div><div>Location</div><div>Industry</div><div>Tags</div><div>Actions</div>
+        </div>
+        <div id="crm-mem-rows"></div>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <!-- BRAND DRAWER -->
@@ -714,7 +927,7 @@ function showPage(id, btn) {
   document.querySelectorAll('.nav-i').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById('pg-' + id).classList.add('active');
   if(btn) btn.classList.add('active');
-  var titles = {overview:'DASHBOARD',earnings:'EARNINGS & PAYOUTS',catalog:'PRODUCT CATALOG',crm:'PIPELINE / CRM',brands:'BRAND INTEL',scanner:'CULTURE SCANNER',brief:'BLACKBOOK BRIEF',drive:'CPD DRIVE',team:'MY TEAM',classifieds:'THE PLUG — CLASSIFIEDS'};
+  var titles = {overview:'DASHBOARD',earnings:'EARNINGS & PAYOUTS',catalog:'PRODUCT CATALOG',crm:'PIPELINE / CRM',brands:'BRAND INTEL',scanner:'CULTURE SCANNER',brief:'BLACKBOOK BRIEF',drive:'CPD DRIVE',team:'MY TEAM',classifieds:'THE PLUG — CLASSIFIEDS',directory:'MEMBER DIRECTORY',inbox:'INBOX',forum:'FORUM',members_crm:'MEMBERS CRM'};
   document.getElementById('page-title').textContent = titles[id] || 'DASHBOARD';
   if(id === 'catalog' && allProducts.length === 0) loadCatalog();
   if(id === 'crm') loadCRM();
@@ -722,6 +935,10 @@ function showPage(id, btn) {
   if(id === 'earnings') loadEarnings();
   if(id === 'team') loadTeam();
   if(id === 'classifieds') loadClassifieds();
+  if(id === 'directory') loadDirectory();
+  if(id === 'inbox') loadInbox();
+  if(id === 'forum') loadForum();
+  if(id === 'members_crm') loadMembersCRM();
 }
 
 // ── FETCH HELPER ─────────────────────────────────────────────
@@ -1647,6 +1864,607 @@ function escCl(str) {
   return String(str || '')
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ══════════════════════════════════════════════════════════════
+// COMMUNITY CRM
+// ══════════════════════════════════════════════════════════════
+var SB_URL2  = 'https://prhoinuqnrwbqezemwux.supabase.co';
+var SB_ANON2 = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByaG9pbnVxbnJ3YnFlemVtd3V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4ODgyNDAsImV4cCI6MjA4OTQ2NDI0MH0.PxLnp_iQkGXffF3mHPUhCUnCzjBFjFz_RszCg_lV7S0';
+
+function sbH2() {
+  return { 'apikey': SB_ANON2, 'Authorization': 'Bearer ' + SB_ANON2, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
+}
+function escC(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function tAgo(ds) {
+  if(!ds) return '';
+  var d=(Date.now()-new Date(ds))/1000;
+  if(d<60) return 'just now';
+  if(d<3600) return Math.floor(d/60)+'m ago';
+  if(d<86400) return Math.floor(d/3600)+'h ago';
+  return Math.floor(d/86400)+'d ago';
+}
+function initials(n) { return String(n||'?').split(' ').map(function(x){return x[0]||'';}).join('').slice(0,2).toUpperCase(); }
+
+// ── MEMBER DIRECTORY ─────────────────────────────────────────
+var allMembers = [];
+
+async function loadDirectory() {
+  document.getElementById('dir-loading').style.display = 'flex';
+  document.getElementById('dir-grid').style.display = 'none';
+  document.getElementById('dir-empty').style.display = 'none';
+  try {
+    var res = await fetch(SB_URL2+'/rest/v1/member_profiles?status=eq.active&order=created_at.desc', {headers:sbH2()});
+    allMembers = await res.json();
+    document.getElementById('dir-loading').style.display = 'none';
+    renderDirectory(allMembers);
+  } catch(e) {
+    document.getElementById('dir-loading').innerHTML = '<div style="color:var(--red);font-size:12px">Run community-crm-setup.sql in Supabase first.</div>';
+  }
+}
+
+function renderDirectory(members) {
+  var grid = document.getElementById('dir-grid');
+  if(!members||members.length===0) { document.getElementById('dir-empty').style.display='block'; return; }
+  grid.innerHTML = members.map(function(m) {
+    var soc = [];
+    if(m.instagram) soc.push('IG');
+    if(m.twitter) soc.push('X');
+    if(m.tiktok) soc.push('TK');
+    if(m.linkedin) soc.push('LI');
+    if(m.website) soc.push('WEB');
+    return '<div class="mem-card" onclick="openMemberProfile(\''+m.id+'\')">'+
+      '<div style="display:flex;align-items:center;gap:10px">'+
+        '<div class="mem-avatar">'+initials(m.full_name||m.handle)+'</div>'+
+        '<div style="min-width:0">'+
+          '<div class="mem-name">'+escC(m.full_name||'Member')+'</div>'+
+          '<div class="mem-handle">'+(m.handle?'@'+escC(m.handle):'')+'</div>'+
+        '</div>'+
+      '</div>'+
+      (m.industry?'<div style="font-size:10px;color:var(--gold);font-family:var(--font-m)">'+escC(m.industry)+'</div>':'')+
+      (m.bio?'<div class="mem-bio">'+escC(m.bio)+'</div>':'')+
+      (m.location?'<div style="font-size:10px;color:var(--muted);font-family:var(--font-m)">📍 '+escC(m.location)+'</div>':'')+
+      (soc.length?'<div class="mem-socials">'+soc.map(function(s){return '<span class="mem-social-tag">'+s+'</span>';}).join('')+'</div>':'')+
+      '<button onclick="event.stopPropagation();startMessageWith(\''+m.wix_member_id+'\',\''+escC(m.full_name||m.handle||'Member')+'\')" style="font-size:10px;padding:4px 10px;background:var(--bg4);border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-family:var(--font-m)">Message</button>'+
+    '</div>';
+  }).join('');
+  grid.style.display = 'grid';
+}
+
+function filterDirectory() {
+  var q = document.getElementById('dir-search').value.toLowerCase().trim();
+  if(!q) { renderDirectory(allMembers); return; }
+  renderDirectory(allMembers.filter(function(m){
+    return [(m.full_name||''),(m.handle||''),(m.industry||''),(m.location||''),(m.bio||'')].join(' ').toLowerCase().includes(q);
+  }));
+}
+
+function openMemberProfile(id) {
+  var m = allMembers.find(function(x){return x.id===id;});
+  if(!m) return;
+  var sLinks = '';
+  if(m.instagram) sLinks += '<a href="https://instagram.com/'+m.instagram.replace('@','')+'" target="_blank" style="font-size:11px;font-family:var(--font-m);color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:4px 10px;border-radius:10px;text-decoration:none">IG @'+escC(m.instagram.replace('@',''))+'</a>';
+  if(m.twitter) sLinks += '<a href="https://x.com/'+m.twitter.replace('@','')+'" target="_blank" style="font-size:11px;font-family:var(--font-m);color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:4px 10px;border-radius:10px;text-decoration:none">X @'+escC(m.twitter.replace('@',''))+'</a>';
+  if(m.tiktok) sLinks += '<a href="https://tiktok.com/@'+m.tiktok.replace('@','')+'" target="_blank" style="font-size:11px;font-family:var(--font-m);color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:4px 10px;border-radius:10px;text-decoration:none">TK @'+escC(m.tiktok.replace('@',''))+'</a>';
+  if(m.linkedin) sLinks += '<a href="'+m.linkedin+'" target="_blank" style="font-size:11px;font-family:var(--font-m);color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:4px 10px;border-radius:10px;text-decoration:none">LinkedIn</a>';
+  if(m.website) sLinks += '<a href="'+m.website+'" target="_blank" style="font-size:11px;font-family:var(--font-m);color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:4px 10px;border-radius:10px;text-decoration:none">Website</a>';
+  var html = '<div class="prof-modal-overlay open" id="prof-modal" onclick="if(event.target===this)closeProfModal()">'+
+    '<div class="prof-modal">'+
+      '<button class="prof-modal-close" onclick="closeProfModal()">×</button>'+
+      '<div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">'+
+        '<div class="mem-avatar" style="width:56px;height:56px;font-size:22px">'+initials(m.full_name||m.handle)+'</div>'+
+        '<div><div style="font-family:var(--font-d);font-size:22px;letter-spacing:.05em">'+escC(m.full_name||'Member')+'</div>'+
+        '<div style="font-size:12px;color:var(--dim);font-family:var(--font-m)">'+(m.handle?'@'+escC(m.handle):'')+'</div></div>'+
+      '</div>'+
+      (m.bio?'<div style="font-size:13px;color:var(--dim);line-height:1.7;margin-bottom:16px;padding:12px;background:var(--bg3);border-radius:6px;border:1px solid var(--border)">'+escC(m.bio)+'</div>':'')+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">'+
+        (m.location?'<div><div style="font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Location</div><div style="font-size:12px">'+escC(m.location)+'</div></div>':'')+
+        (m.industry?'<div><div style="font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Industry</div><div style="font-size:12px;color:var(--gold)">'+escC(m.industry)+'</div></div>':'')+
+        (m.skills?'<div style="grid-column:1/-1"><div style="font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Skills</div><div style="font-size:12px">'+escC(m.skills)+'</div></div>':'')+
+      '</div>'+
+      (sLinks?'<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">'+sLinks+'</div>':'')+
+      '<button onclick="startMessageWith(\''+m.wix_member_id+'\',\''+escC(m.full_name||m.handle||'Member')+'\');closeProfModal()" style="width:100%;padding:10px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:12px;cursor:pointer">Send Message</button>'+
+    '</div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+function closeProfModal() { var m=document.getElementById('prof-modal'); if(m) m.remove(); }
+
+function openEditProfile() {
+  fetch(SB_URL2+'/rest/v1/member_profiles?wix_member_id=eq.'+WIX_MEMBER_ID, {headers:sbH2()})
+    .then(function(r){return r.json();})
+    .then(function(data) {
+      var p = data[0]||{};
+      var html = '<div class="prof-modal-overlay open" id="edit-prof-modal" onclick="if(event.target===this)closeEditProfile()">'+
+        '<div class="prof-modal" style="max-width:620px">'+
+          '<button class="prof-modal-close" onclick="closeEditProfile()">×</button>'+
+          '<div style="font-family:var(--font-d);font-size:22px;letter-spacing:.05em;margin-bottom:18px">MY PROFILE</div>'+
+          '<div class="profile-form-grid">'+
+            '<div class="pf-group"><label>Full Name</label><input id="ep-name" type="text" value="'+escC(p.full_name||'')+'" placeholder="Your full name"/></div>'+
+            '<div class="pf-group"><label>Handle</label><input id="ep-handle" type="text" value="'+escC(p.handle||'')+'" placeholder="yourhandle"/></div>'+
+            '<div class="pf-group pf-full"><label>Bio</label><textarea id="ep-bio" placeholder="Tell the community about yourself...">'+escC(p.bio||'')+'</textarea></div>'+
+            '<div class="pf-group"><label>Location</label><input id="ep-location" type="text" value="'+escC(p.location||'')+'" placeholder="City, State"/></div>'+
+            '<div class="pf-group"><label>Industry</label><input id="ep-industry" type="text" value="'+escC(p.industry||'')+'" placeholder="Music, Fashion, Sports..."/></div>'+
+            '<div class="pf-group pf-full"><label>Skills / What You Do</label><input id="ep-skills" type="text" value="'+escC(p.skills||'')+'" placeholder="DJ, Brand Consulting, Photography..."/></div>'+
+            '<div style="grid-column:1/-1;font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;padding-top:4px;border-top:1px solid var(--border);margin-top:4px">Social Handles</div>'+
+            '<div class="pf-group"><label>Instagram</label><input id="ep-ig" type="text" value="'+escC(p.instagram||'')+'" placeholder="handle (no @)"/></div>'+
+            '<div class="pf-group"><label>Twitter / X</label><input id="ep-tw" type="text" value="'+escC(p.twitter||'')+'" placeholder="handle (no @)"/></div>'+
+            '<div class="pf-group"><label>TikTok</label><input id="ep-tk" type="text" value="'+escC(p.tiktok||'')+'" placeholder="handle (no @)"/></div>'+
+            '<div class="pf-group"><label>LinkedIn URL</label><input id="ep-li" type="text" value="'+escC(p.linkedin||'')+'" placeholder="https://linkedin.com/in/..."/></div>'+
+            '<div class="pf-group pf-full"><label>Website</label><input id="ep-web" type="text" value="'+escC(p.website||'')+'" placeholder="https://..."/></div>'+
+          '</div>'+
+          '<button onclick="saveMyProfile()" style="width:100%;padding:10px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:12px;cursor:pointer;margin-top:4px">Save Profile</button>'+
+          '<span id="ep-msg" style="display:block;text-align:center;font-size:11px;margin-top:8px;color:var(--dim)"></span>'+
+        '</div></div>';
+      document.body.insertAdjacentHTML('beforeend', html);
+    });
+}
+
+function closeEditProfile() { var m=document.getElementById('edit-prof-modal'); if(m) m.remove(); }
+
+async function saveMyProfile() {
+  var btn = document.querySelector('#edit-prof-modal button[onclick="saveMyProfile()"]');
+  var msg = document.getElementById('ep-msg');
+  if(btn){btn.disabled=true;btn.textContent='Saving...';}
+  var payload = {
+    wix_member_id: WIX_MEMBER_ID,
+    full_name: document.getElementById('ep-name').value.trim(),
+    handle: document.getElementById('ep-handle').value.trim().replace('@',''),
+    bio: document.getElementById('ep-bio').value.trim(),
+    location: document.getElementById('ep-location').value.trim(),
+    industry: document.getElementById('ep-industry').value.trim(),
+    skills: document.getElementById('ep-skills').value.trim(),
+    instagram: document.getElementById('ep-ig').value.trim().replace('@',''),
+    twitter: document.getElementById('ep-tw').value.trim().replace('@',''),
+    tiktok: document.getElementById('ep-tk').value.trim().replace('@',''),
+    linkedin: document.getElementById('ep-li').value.trim(),
+    website: document.getElementById('ep-web').value.trim(),
+    updated_at: new Date().toISOString(), status: 'active'
+  };
+  try {
+    // Try update first, then insert
+    var r = await fetch(SB_URL2+'/rest/v1/member_profiles?wix_member_id=eq.'+WIX_MEMBER_ID, {method:'PATCH',headers:sbH2(),body:JSON.stringify(payload)});
+    var updated = await r.json();
+    if(!updated||updated.length===0) {
+      await fetch(SB_URL2+'/rest/v1/member_profiles', {method:'POST',headers:sbH2(),body:JSON.stringify(payload)});
+    }
+    if(msg){msg.style.color='var(--green)';msg.textContent='✓ Profile saved!';}
+    setTimeout(function(){closeEditProfile();loadDirectory();},1200);
+  } catch(e) {
+    if(msg){msg.style.color='var(--red)';msg.textContent='Save failed.';}
+  } finally {
+    if(btn){btn.disabled=false;btn.textContent='Save Profile';}
+  }
+}
+
+// ── INBOX ─────────────────────────────────────────────────────
+var activeThreadId = null;
+var activeThreadRecipient = null;
+
+async function loadInbox() {
+  try {
+    var res = await fetch(SB_URL2+'/rest/v1/message_threads?or=(participant_a.eq.'+WIX_MEMBER_ID+',participant_b.eq.'+WIX_MEMBER_ID+')&order=last_message_at.desc', {headers:sbH2()});
+    var threads = await res.json();
+    renderThreadList(threads);
+    // Count unread
+    var unread = threads.filter(function(t){ return t.unread_for && t.unread_for===WIX_MEMBER_ID; }).length;
+    updateInboxBadge(unread);
+  } catch(e) {
+    document.getElementById('thread-list').innerHTML = '<div style="padding:14px;font-size:11px;color:var(--red)">Run community-crm-setup.sql first.</div>';
+  }
+}
+
+function updateInboxBadge(count) {
+  var badge = document.getElementById('inbox-badge');
+  if(!badge) return;
+  if(count>0) { badge.style.display='inline-block'; badge.textContent=count; }
+  else { badge.style.display='none'; }
+}
+
+function renderThreadList(threads) {
+  var el = document.getElementById('thread-list');
+  var empty = document.getElementById('thread-empty');
+  if(!threads||threads.length===0) { el.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  el.innerHTML = threads.map(function(t) {
+    var otherName = t.participant_a===WIX_MEMBER_ID ? (t.participant_b_name||'Member') : (t.participant_a_name||'Member');
+    var preview = t.last_message ? (t.last_message.length>40?t.last_message.substring(0,40)+'...':t.last_message) : 'No messages yet';
+    var active = activeThreadId===t.id ? ' active' : '';
+    return '<div class="inbox-thread-item'+active+'" onclick="openThread(\''+t.id+'\',\''+escC(otherName)+'\',\''+t.participant_a+'\',\''+t.participant_b+'\')">'+
+      '<div style="display:flex;justify-content:space-between;align-items:center">'+
+        '<div class="it-name">'+escC(otherName)+'</div>'+
+        '<div class="it-time">'+tAgo(t.last_message_at)+'</div>'+
+      '</div>'+
+      '<div class="it-preview">'+escC(preview)+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+async function openThread(threadId, recipientName, participantA, participantB) {
+  activeThreadId = threadId;
+  activeThreadRecipient = participantA===WIX_MEMBER_ID ? participantB : participantA;
+  document.getElementById('inbox-placeholder').style.display = 'none';
+  var chat = document.getElementById('inbox-active-chat');
+  chat.style.display = 'flex';
+  document.getElementById('chat-name').textContent = recipientName;
+  document.getElementById('chat-avatar').textContent = initials(recipientName);
+  // Highlight active thread
+  document.querySelectorAll('.inbox-thread-item').forEach(function(el){ el.classList.remove('active'); });
+  event.currentTarget.classList.add('active');
+  // Load messages
+  await loadThreadMessages(threadId);
+}
+
+async function loadThreadMessages(threadId) {
+  var msgsEl = document.getElementById('inbox-messages');
+  msgsEl.innerHTML = '<div style="text-align:center;padding:20px;font-size:11px;color:var(--muted)">Loading...</div>';
+  try {
+    var res = await fetch(SB_URL2+'/rest/v1/messages?thread_id=eq.'+threadId+'&order=created_at.asc', {headers:sbH2()});
+    var msgs = await res.json();
+    if(!msgs||msgs.length===0) {
+      msgsEl.innerHTML = '<div style="text-align:center;padding:40px;font-size:12px;color:var(--muted)">Start the conversation</div>';
+      return;
+    }
+    msgsEl.innerHTML = msgs.map(function(m) {
+      var isMine = m.sender_id===WIX_MEMBER_ID;
+      return '<div style="display:flex;flex-direction:column;align-items:'+(isMine?'flex-end':'flex-start')+'">'+
+        '<div class="msg-bubble '+(isMine?'sent':'recv')+'">'+escC(m.body)+'</div>'+
+        '<div class="msg-meta">'+escC(m.sender_name||'Member')+' · '+tAgo(m.created_at)+'</div>'+
+      '</div>';
+    }).join('');
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+  } catch(e) { msgsEl.innerHTML = '<div style="padding:20px;font-size:11px;color:var(--red)">Error loading messages.</div>'; }
+}
+
+async function sendMessage() {
+  var input = document.getElementById('inbox-msg-input');
+  var body = input.value.trim();
+  if(!body||!activeThreadId||!activeThreadRecipient) return;
+  input.value = '';
+  var senderName = repData ? repData.full_name : 'Member';
+  try {
+    await fetch(SB_URL2+'/rest/v1/messages', {
+      method:'POST', headers:sbH2(),
+      body: JSON.stringify({thread_id:activeThreadId, sender_id:WIX_MEMBER_ID, sender_name:senderName, recipient_id:activeThreadRecipient, body:body})
+    });
+    // Update thread last message
+    await fetch(SB_URL2+'/rest/v1/message_threads?id=eq.'+activeThreadId, {
+      method:'PATCH', headers:sbH2(),
+      body: JSON.stringify({last_message:body, last_message_at:new Date().toISOString()})
+    });
+    await loadThreadMessages(activeThreadId);
+    await loadInbox();
+  } catch(e) { console.error('Send failed', e); }
+}
+
+async function startMessageWith(recipientId, recipientName) {
+  // Find or create thread
+  showPage('inbox', document.querySelector('[onclick*="inbox"]'));
+  setTimeout(async function(){
+    try {
+      var res = await fetch(SB_URL2+'/rest/v1/message_threads?or=(and(participant_a.eq.'+WIX_MEMBER_ID+',participant_b.eq.'+recipientId+'),and(participant_a.eq.'+recipientId+',participant_b.eq.'+WIX_MEMBER_ID+'))', {headers:sbH2()});
+      var threads = await res.json();
+      var thread;
+      if(threads&&threads.length>0) {
+        thread = threads[0];
+      } else {
+        var cr = await fetch(SB_URL2+'/rest/v1/message_threads', {
+          method:'POST', headers:sbH2(),
+          body: JSON.stringify({participant_a:WIX_MEMBER_ID, participant_a_name:repData?repData.full_name:'Member', participant_b:recipientId, participant_b_name:recipientName, last_message_at:new Date().toISOString()})
+        });
+        var created = await cr.json();
+        thread = created[0];
+      }
+      if(thread) {
+        await loadInbox();
+        openThread(thread.id, recipientName, thread.participant_a, thread.participant_b);
+      }
+    } catch(e) { console.error('startMessageWith error', e); }
+  }, 500);
+}
+
+function openNewMessage() {
+  var html = '<div class="prof-modal-overlay open" id="new-msg-modal" onclick="if(event.target===this)closeNewMessage()">'+
+    '<div class="prof-modal" style="max-width:440px">'+
+      '<button class="prof-modal-close" onclick="closeNewMessage()">×</button>'+
+      '<div style="font-family:var(--font-d);font-size:20px;letter-spacing:.05em;margin-bottom:16px">NEW MESSAGE</div>'+
+      '<div style="font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px">To</div>'+
+      '<select id="nm-recipient" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none;margin-bottom:12px">'+
+        '<option value="">Select a member...</option>'+
+        '<option value="TEAM">CPD Blackbook Team</option>'+
+        allMembers.filter(function(m){return m.wix_member_id!==WIX_MEMBER_ID;}).map(function(m){
+          return '<option value="'+m.wix_member_id+'">'+escC(m.full_name||m.handle||'Member')+'</option>';
+        }).join('')+
+      '</select>'+
+      '<div style="font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px">Message</div>'+
+      '<textarea id="nm-body" placeholder="Type your message..." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none;resize:vertical;min-height:100px;margin-bottom:12px"></textarea>'+
+      '<button onclick="sendNewMessage()" style="width:100%;padding:10px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:12px;cursor:pointer">Send Message</button>'+
+      '<span id="nm-msg" style="display:block;text-align:center;font-size:11px;margin-top:8px;color:var(--dim)"></span>'+
+    '</div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+function closeNewMessage() { var m=document.getElementById('new-msg-modal'); if(m) m.remove(); }
+
+async function sendNewMessage() {
+  var recipientId = document.getElementById('nm-recipient').value;
+  var body = document.getElementById('nm-body').value.trim();
+  var msgEl = document.getElementById('nm-msg');
+  if(!recipientId||!body) { if(msgEl){msgEl.style.color='var(--red)';msgEl.textContent='Fill in all fields.';} return; }
+  var recipientName = document.getElementById('nm-recipient').options[document.getElementById('nm-recipient').selectedIndex].text;
+  if(recipientId==='TEAM') recipientId = 'TEAM_CPD';
+  await startMessageWith(recipientId, recipientName);
+  // Send the first message after thread created
+  setTimeout(async function(){
+    if(activeThreadId) {
+      document.getElementById('inbox-msg-input').value = body;
+      await sendMessage();
+    }
+  }, 800);
+  closeNewMessage();
+}
+
+// ── FORUM ─────────────────────────────────────────────────────
+var forumFilter = 'all';
+var activeForum = null;
+
+async function loadForum() {
+  document.getElementById('forum-loading').style.display = 'flex';
+  document.getElementById('forum-posts-list').innerHTML = '';
+  document.getElementById('forum-empty').style.display = 'none';
+  try {
+    var url = SB_URL2+'/rest/v1/forum_posts?status=eq.active&order=is_pinned.desc,created_at.desc';
+    if(forumFilter!=='all') url += '&category=eq.'+forumFilter;
+    var res = await fetch(url, {headers:sbH2()});
+    var posts = await res.json();
+    document.getElementById('forum-loading').style.display = 'none';
+    renderForumPosts(posts);
+  } catch(e) {
+    document.getElementById('forum-loading').innerHTML = '<div style="color:var(--red);font-size:12px">Run community-crm-setup.sql first.</div>';
+  }
+}
+
+function renderForumPosts(posts) {
+  var el = document.getElementById('forum-posts-list');
+  if(!posts||posts.length===0) { document.getElementById('forum-empty').style.display='block'; return; }
+  el.innerHTML = posts.map(function(p) {
+    return '<div class="forum-post-card'+(p.is_pinned?' pinned':'')+'" onclick="openForumThread(\''+p.id+'\')">'+
+      '<div class="fp-top">'+
+        '<span class="fp-cat-tag">'+escC(p.category)+'</span>'+
+        (p.is_pinned?'<span class="fp-pin">📌 Pinned</span>':'')+
+      '</div>'+
+      '<div class="fp-title">'+escC(p.title)+'</div>'+
+      '<div class="fp-preview">'+escC(p.body)+'</div>'+
+      '<div class="fp-footer">'+
+        '<span class="fp-author">'+escC(p.author_name||'Member')+(p.author_handle?' · @'+escC(p.author_handle):'')+'</span>'+
+        '<span class="fp-replies">'+p.reply_count+' '+(p.reply_count===1?'reply':'replies')+'</span>'+
+        '<span class="fp-time">'+tAgo(p.created_at)+'</span>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function setForumCat(cat, btn) {
+  forumFilter = cat;
+  document.querySelectorAll('.forum-cat').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  loadForum();
+}
+
+async function openForumThread(postId) {
+  activeForum = postId;
+  document.getElementById('forum-list-view').style.display = 'none';
+  var tv = document.getElementById('forum-thread-view');
+  tv.style.display = 'block';
+  var tc = document.getElementById('forum-thread-content');
+  tc.innerHTML = '<div class="loading-wrap"><div class="loading-spinner"></div></div>';
+  try {
+    var pr = await fetch(SB_URL2+'/rest/v1/forum_posts?id=eq.'+postId, {headers:sbH2()});
+    var posts = await pr.json();
+    var p = posts[0];
+    var rr = await fetch(SB_URL2+'/rest/v1/forum_replies?post_id=eq.'+postId+'&status=eq.active&order=created_at.asc', {headers:sbH2()});
+    var replies = await rr.json();
+    var isAdmin = WIX_MEMBER_ID === '9204920e-edf6-48ca-9cef-f20f57480152';
+    tc.innerHTML =
+      '<div class="forum-post-card" style="margin-bottom:16px">'+
+        '<div class="fp-top">'+
+          '<span class="fp-cat-tag">'+escC(p.category)+'</span>'+
+          (p.is_pinned?'<span class="fp-pin">📌 Pinned</span>':'')+
+          (isAdmin?'<button onclick="deleteForumPost(\''+p.id+'\')" style="margin-left:auto;font-size:10px;padding:3px 8px;background:var(--red-lo);border:1px solid var(--red-border);border-radius:4px;color:var(--red);cursor:pointer;font-family:var(--font-m)">Delete Post</button>':'')+
+          (isAdmin?'<button onclick="togglePin(\''+p.id+'\','+(!p.is_pinned)+')" style="font-size:10px;padding:3px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-family:var(--font-m)">'+(p.is_pinned?'Unpin':'Pin')+'</button>':'')+
+        '</div>'+
+        '<div style="font-family:var(--font-d);font-size:24px;letter-spacing:.03em;margin-bottom:10px">'+escC(p.title)+'</div>'+
+        '<div style="font-size:13px;color:var(--dim);line-height:1.7;white-space:pre-wrap">'+escC(p.body)+'</div>'+
+        '<div class="fp-footer" style="margin-top:14px">'+
+          '<span class="fp-author">'+escC(p.author_name||'Member')+(p.author_handle?' · @'+escC(p.author_handle):'')+'</span>'+
+          '<span class="fp-time">'+tAgo(p.created_at)+'</span>'+
+        '</div>'+
+      '</div>'+
+      '<div style="font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">'+replies.length+' '+(replies.length===1?'Reply':'Replies')+'</div>'+
+      (replies.length===0?'<div style="padding:20px;text-align:center;font-size:12px;color:var(--muted)">No replies yet — be the first!</div>':
+        replies.map(function(r) {
+          return '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px">'+
+            '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px">'+
+              '<span style="font-size:12px;font-weight:600;color:var(--text)">'+escC(r.author_name||'Member')+(r.author_handle?' · <span style="color:var(--dim);font-family:var(--font-m)">@'+escC(r.author_handle)+'</span>':'')+'</span>'+
+              '<div style="display:flex;align-items:center;gap:8px">'+
+                '<span style="font-size:10px;color:var(--muted);font-family:var(--font-m)">'+tAgo(r.created_at)+'</span>'+
+                (isAdmin?'<button onclick="deleteForumReply(\''+r.id+'\')" style="font-size:10px;padding:2px 7px;background:var(--red-lo);border:1px solid var(--red-border);border-radius:4px;color:var(--red);cursor:pointer;font-family:var(--font-m)">Delete</button>':'')+
+              '</div>'+
+            '</div>'+
+            '<div style="font-size:13px;color:var(--dim);line-height:1.6;white-space:pre-wrap">'+escC(r.body)+'</div>'+
+          '</div>';
+        }).join('')
+      );
+  } catch(e) { tc.innerHTML = '<div style="color:var(--red);font-size:12px;padding:20px">Error loading thread.</div>'; }
+}
+
+function closeForumThread() {
+  activeForum = null;
+  document.getElementById('forum-thread-view').style.display = 'none';
+  document.getElementById('forum-list-view').style.display = 'block';
+  document.getElementById('forum-reply-input').value = '';
+  document.getElementById('forum-reply-msg').textContent = '';
+}
+
+async function submitReply() {
+  var body = document.getElementById('forum-reply-input').value.trim();
+  var msgEl = document.getElementById('forum-reply-msg');
+  if(!body||!activeForum) { if(msgEl){msgEl.style.color='var(--red)';msgEl.textContent='Write a reply first.';} return; }
+  var authorName = repData ? repData.full_name : 'Member';
+  var profile = await fetch(SB_URL2+'/rest/v1/member_profiles?wix_member_id=eq.'+WIX_MEMBER_ID, {headers:sbH2()}).then(function(r){return r.json();});
+  var handle = profile&&profile[0] ? profile[0].handle : '';
+  try {
+    await fetch(SB_URL2+'/rest/v1/forum_replies', {
+      method:'POST', headers:sbH2(),
+      body: JSON.stringify({post_id:activeForum, author_id:WIX_MEMBER_ID, author_name:authorName, author_handle:handle, body:body})
+    });
+    // Increment reply count
+    await fetch(SB_URL2+'/rest/v1/forum_posts?id=eq.'+activeForum, {
+      method:'PATCH', headers:sbH2(),
+      body: JSON.stringify({reply_count: 999}) // Will fix with RPC if needed
+    });
+    document.getElementById('forum-reply-input').value = '';
+    if(msgEl){msgEl.style.color='var(--green)';msgEl.textContent='✓ Reply posted!';}
+    setTimeout(function(){if(msgEl)msgEl.textContent='';openForumThread(activeForum);},1000);
+  } catch(e) { if(msgEl){msgEl.style.color='var(--red)';msgEl.textContent='Failed to post reply.';} }
+}
+
+function openNewPost() {
+  var html = '<div class="prof-modal-overlay open" id="new-post-modal" onclick="if(event.target===this)closeNewPost()">'+
+    '<div class="prof-modal" style="max-width:560px">'+
+      '<button class="prof-modal-close" onclick="closeNewPost()">×</button>'+
+      '<div style="font-family:var(--font-d);font-size:22px;letter-spacing:.05em;margin-bottom:18px">NEW POST</div>'+
+      '<div class="pf-group pf-full" style="margin-bottom:12px"><label>Category</label>'+
+        '<select id="np-cat" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none">'+
+          '<option value="general">General</option><option value="collabs">Collabs</option><option value="opportunities">Opportunities</option><option value="questions">Questions</option><option value="wins">Wins</option><option value="announcements">Announcements</option>'+
+        '</select>'+
+      '</div>'+
+      '<div class="pf-group pf-full" style="margin-bottom:12px"><label>Title</label><input id="np-title" type="text" placeholder="What\'s this about?" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none"/></div>'+
+      '<div class="pf-group pf-full" style="margin-bottom:12px"><label>Body</label><textarea id="np-body" placeholder="Share the details..." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none;resize:vertical;min-height:120px"></textarea></div>'+
+      '<button onclick="submitNewPost()" style="width:100%;padding:10px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:12px;cursor:pointer">Post to Forum</button>'+
+      '<span id="np-msg" style="display:block;text-align:center;font-size:11px;margin-top:8px;color:var(--dim)"></span>'+
+    '</div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+function closeNewPost() { var m=document.getElementById('new-post-modal'); if(m) m.remove(); }
+
+async function submitNewPost() {
+  var cat = document.getElementById('np-cat').value;
+  var title = document.getElementById('np-title').value.trim();
+  var body = document.getElementById('np-body').value.trim();
+  var msgEl = document.getElementById('np-msg');
+  if(!title||!body) { if(msgEl){msgEl.style.color='var(--red)';msgEl.textContent='Fill in title and body.';} return; }
+  var authorName = repData ? repData.full_name : 'Member';
+  var profile = await fetch(SB_URL2+'/rest/v1/member_profiles?wix_member_id=eq.'+WIX_MEMBER_ID, {headers:sbH2()}).then(function(r){return r.json();});
+  var handle = profile&&profile[0] ? profile[0].handle : '';
+  try {
+    await fetch(SB_URL2+'/rest/v1/forum_posts', {
+      method:'POST', headers:sbH2(),
+      body: JSON.stringify({author_id:WIX_MEMBER_ID, author_name:authorName, author_handle:handle, category:cat, title:title, body:body, reply_count:0})
+    });
+    closeNewPost();
+    loadForum();
+  } catch(e) { if(msgEl){msgEl.style.color='var(--red)';msgEl.textContent='Post failed.';} }
+}
+
+async function deleteForumPost(id) {
+  if(!confirm('Delete this post and all its replies?')) return;
+  await fetch(SB_URL2+'/rest/v1/forum_posts?id=eq.'+id, {method:'DELETE',headers:sbH2()});
+  closeForumThread();
+  loadForum();
+}
+
+async function deleteForumReply(id) {
+  if(!confirm('Delete this reply?')) return;
+  await fetch(SB_URL2+'/rest/v1/forum_replies?id=eq.'+id, {method:'DELETE',headers:sbH2()});
+  if(activeForum) openForumThread(activeForum);
+}
+
+async function togglePin(id, pinState) {
+  await fetch(SB_URL2+'/rest/v1/forum_posts?id=eq.'+id, {method:'PATCH',headers:sbH2(),body:JSON.stringify({is_pinned:pinState})});
+  openForumThread(id);
+}
+
+// ── MEMBERS CRM (Admin) ────────────────────────────────────────
+var allCRMMembers = [];
+
+async function loadMembersCRM() {
+  document.getElementById('crm-mem-loading').style.display = 'flex';
+  document.getElementById('crm-mem-table').style.display = 'none';
+  try {
+    var res = await fetch(SB_URL2+'/rest/v1/member_profiles?order=created_at.desc', {headers:sbH2()});
+    allCRMMembers = await res.json();
+    document.getElementById('crm-count').textContent = allCRMMembers.length + ' members';
+    document.getElementById('crm-mem-loading').style.display = 'none';
+    renderCRMMembers(allCRMMembers);
+    document.getElementById('crm-mem-table').style.display = 'block';
+  } catch(e) {
+    document.getElementById('crm-mem-loading').innerHTML = '<div style="color:var(--red);font-size:12px">Run community-crm-setup.sql first.</div>';
+  }
+}
+
+function renderCRMMembers(members) {
+  var rows = document.getElementById('crm-mem-rows');
+  if(!members||members.length===0) {
+    rows.innerHTML = '<div style="padding:20px;text-align:center;font-size:12px;color:var(--dim)">No members yet — members appear here when they fill out their profile.</div>';
+    return;
+  }
+  rows.innerHTML = members.map(function(m) {
+    var tags = (m.admin_tags||[]).map(function(t){return '<span class="crm-tag-chip">'+escC(t)+'</span>';}).join('');
+    return '<div class="crm-mem-row" id="crm-row-'+m.id+'">'+
+      '<div class="mem-avatar" style="width:32px;height:32px;font-size:12px">'+initials(m.full_name||m.handle)+'</div>'+
+      '<div>'+
+        '<div style="font-size:12px;font-weight:600;color:var(--text)">'+escC(m.full_name||'Member')+'</div>'+
+        '<div style="font-size:10px;color:var(--dim);font-family:var(--font-m)">'+(m.handle?'@'+escC(m.handle):'')+'</div>'+
+      '</div>'+
+      '<div style="font-size:11px;color:var(--dim)">'+escC(m.location||'—')+'</div>'+
+      '<div style="font-size:11px;color:var(--gold)">'+escC(m.industry||'—')+'</div>'+
+      '<div>'+tags+'</div>'+
+      '<div style="display:flex;gap:5px">'+
+        '<button onclick="openCRMNotes(\''+m.id+'\',\''+escC(m.full_name||'Member')+'\')" style="font-size:10px;padding:3px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-family:var(--font-m)">Notes</button>'+
+        '<button onclick="startMessageWith(\''+m.wix_member_id+'\',\''+escC(m.full_name||'Member')+'\')" style="font-size:10px;padding:3px 8px;background:var(--red-lo);border:1px solid var(--red-border);border-radius:4px;color:var(--red);cursor:pointer;font-family:var(--font-m)">Msg</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function filterCRMMembers() {
+  var q = document.getElementById('crm-mem-search').value.toLowerCase().trim();
+  if(!q) { renderCRMMembers(allCRMMembers); return; }
+  renderCRMMembers(allCRMMembers.filter(function(m){
+    return [(m.full_name||''),(m.handle||''),(m.industry||''),(m.location||'')].join(' ').toLowerCase().includes(q);
+  }));
+}
+
+function openCRMNotes(id, name) {
+  var m = allCRMMembers.find(function(x){return x.id===id;});
+  if(!m) return;
+  var html = '<div class="prof-modal-overlay open" id="notes-modal" onclick="if(event.target===this)closeNotesModal()">'+
+    '<div class="prof-modal" style="max-width:440px">'+
+      '<button class="prof-modal-close" onclick="closeNotesModal()">×</button>'+
+      '<div style="font-family:var(--font-d);font-size:20px;letter-spacing:.05em;margin-bottom:4px">'+escC(name)+'</div>'+
+      '<div style="font-size:10px;color:var(--dim);margin-bottom:16px">Admin Notes</div>'+
+      '<textarea id="notes-input" placeholder="Add private notes about this member..." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none;resize:vertical;min-height:120px;margin-bottom:12px">'+escC(m.admin_notes||'')+'</textarea>'+
+      '<button onclick="saveNotes(\''+id+'\')" style="width:100%;padding:10px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:12px;cursor:pointer">Save Notes</button>'+
+      '<span id="notes-msg" style="display:block;text-align:center;font-size:11px;margin-top:8px;color:var(--dim)"></span>'+
+    '</div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+function closeNotesModal() { var m=document.getElementById('notes-modal'); if(m) m.remove(); }
+
+async function saveNotes(id) {
+  var notes = document.getElementById('notes-input').value.trim();
+  var msg = document.getElementById('notes-msg');
+  try {
+    await fetch(SB_URL2+'/rest/v1/member_profiles?id=eq.'+id, {method:'PATCH',headers:sbH2(),body:JSON.stringify({admin_notes:notes})});
+    if(msg){msg.style.color='var(--green)';msg.textContent='✓ Saved!';}
+    // Update local data
+    var m = allCRMMembers.find(function(x){return x.id===id;});
+    if(m) m.admin_notes = notes;
+    setTimeout(function(){closeNotesModal();},1000);
+  } catch(e) { if(msg){msg.style.color='var(--red)';msg.textContent='Save failed.';} }
 }
 
 </script>
