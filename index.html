@@ -466,6 +466,20 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     </div>
   </div>
 
+  <!-- OVERVIEW / INTELLIGENCE BOARD -->
+  <div class="page active" id="pg-overview">
+    <div id="pg-greeting" style="padding:18px 24px 0 24px;display:flex;align-items:baseline;gap:10px">
+      <span id="greeting-text" style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.06em;color:#E8E4DF">GOOD MORNING,</span>
+      <span id="greeting-name" style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.06em;color:#D63030">REP</span>
+    </div>
+    <iframe 
+      src="https://dexaintdead.github.io/cpd-intelligence/" 
+      id="intel-frame"
+      style="width:100%;height:calc(100vh - 94px);border:none;display:block;margin-top:0"
+      frameborder="0">
+    </iframe>
+  </div>
+
   <!-- EARNINGS -->
   <div class="page" id="pg-earnings">
     <div id="earn-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading earnings...</div></div>
@@ -960,6 +974,13 @@ function loadOverview() {
 
       // Sidebar
       document.getElementById('sb-name').textContent = data.rep.full_name;
+
+      // Update overview greeting
+      var _h = new Date().getHours();
+      var _g = _h < 12 ? 'GOOD MORNING,' : _h < 17 ? 'GOOD AFTERNOON,' : 'GOOD EVENING,';
+      var _fn = data.rep.full_name ? data.rep.full_name.split(' ')[0].toUpperCase() : 'REP';
+      document.getElementById('greeting-text').textContent = _g;
+      document.getElementById('greeting-name').textContent = _fn;
       document.getElementById('sb-avatar').textContent = data.rep.full_name.split(' ').map(function(n){ return n[0]; }).join('').slice(0,2).toUpperCase();
       document.getElementById('sb-tier').textContent = '★ ' + (data.rep.tier || 'Rep').replace('_',' ');
       document.getElementById('ov-welcome').textContent = data.rep.full_name.toUpperCase() + ' — ' + new Date().toLocaleString('en-US',{month:'long',year:'numeric'}).toUpperCase();
