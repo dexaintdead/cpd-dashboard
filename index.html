@@ -1005,15 +1005,15 @@ function loadCRM() {
   document.getElementById('crm-loading').style.display = 'flex';
   document.getElementById('crm-board').style.display = 'none';
 
-  api('/leads?wix_member_id=' + WIX_MEMBER_ID).then(function(leads) {
-    allLeads = leads || [];
-    renderCRM(allLeads);
-    document.getElementById('crm-loading').style.display = 'none';
-    document.getElementById('crm-board').style.display = 'grid';
-  }).catch(function(e){ showError('crm-loading', e.message); });
+  // CRM runs purely from local state — no backend dependency
+  allLeads = allLeads && allLeads.length ? allLeads : [];
+  renderCRM(allLeads);
+  document.getElementById('crm-loading').style.display = 'none';
+  document.getElementById('crm-board').style.display = 'grid';
 }
 
 function renderCRM(leads) {
+  if (!Array.isArray(leads)) leads = [];
   var stages = ['prospecting','pitched','negotiating','closed_won'];
   var stageLabels = {prospecting:'Prospecting',pitched:'Pitched',negotiating:'Negotiating',closed_won:'Closed'};
   var stageColors = {prospecting:'#555',pitched:'#3478C8',negotiating:'#BF9A42',closed_won:'#28B870'};
@@ -1032,7 +1032,8 @@ function renderCRM(leads) {
 
 function filterLeads() {
   var q = document.getElementById('crm-search').value.toLowerCase();
-  var filtered = allLeads.filter(function(l){ return l.contact_name.toLowerCase().includes(q) || (l.notes||'').toLowerCase().includes(q); });
+  var safe = Array.isArray(allLeads) ? allLeads : [];
+  var filtered = q ? safe.filter(function(l){ return (l.contact_name||'').toLowerCase().includes(q) || (l.notes||'').toLowerCase().includes(q); }) : safe;
   renderCRM(filtered);
 }
 
