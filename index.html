@@ -434,37 +434,12 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 
     <!-- EARNINGS -->
   <div class="page" id="pg-earnings">
-    <div id="earn-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading earnings...</div></div>
-    <div id="earn-content" style="display:none">
-      <div class="payout-strip">
-        <div><div class="ps-lbl">Available to withdraw</div><div class="ps-amt" id="ps-amt">$0</div><div class="ps-sub">Request anytime · $20 minimum</div></div>
-        <div class="ps-div"></div>
-        <div class="ps-info">
-          <div class="ps-row"><span class="ps-row-l">Total earned (all time)</span><span class="ps-row-v" id="ps-total">$0</span></div>
-          <div class="ps-row"><span class="ps-row-l">This month</span><span class="ps-row-v" id="ps-mtd">$0</span></div>
-          <div class="ps-row"><span class="ps-row-l">Total sales closed</span><span class="ps-row-v" id="ps-count">0</span></div>
-        </div>
-        <button class="ps-btn" onclick="requestPayout()">Request Payout</button>
-      </div>
-      <div class="earn-top">
-        <div class="earn-chart-wrap">
-          <div class="earn-chart-head">
-            <span class="earn-chart-title">Monthly earnings</span>
-            <span class="earn-total-val" id="earn-total-val">$0</span>
-          </div>
-          <div class="bar-chart" id="earn-bars"></div>
-          <div style="display:flex;gap:8px;margin-top:6px" id="earn-lbls"></div>
-        </div>
-        <div class="earn-breakdown">
-          <div class="eb-title">By product</div>
-          <div id="earn-by-product"></div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="ph"><span class="ph-title">Recent sales</span></div>
-        <div id="earn-txns"></div>
-      </div>
-    </div>
+    <iframe
+      src="https://dexaintdead.github.io/cpd-earnings/"
+      style="width:100%;height:calc(100vh - 40px);border:none;display:block;"
+      title="Earnings & Payouts"
+      allowfullscreen
+    ></iframe>
   </div>
 
   <!-- CATALOG -->
@@ -1085,66 +1060,7 @@ function closeDrawer() { document.getElementById('drawer').classList.remove('ope
 
 // ── EARNINGS ─────────────────────────────────────────────────
 function loadEarnings() {
-  document.getElementById('earn-loading').style.display = 'flex';
-  document.getElementById('earn-content').style.display = 'none';
-
-  Promise.all([
-    api('/earnings?wix_member_id=' + WIX_MEMBER_ID),
-    api('/sales?wix_member_id=' + WIX_MEMBER_ID + '&limit=20')
-  ]).then(function(results) {
-    var data = results[0];
-    var sales = results[1] || [];
-
-    var s = data.summary || {};
-    document.getElementById('ps-amt').textContent = '$' + ((s.pending_payout_cents||0)/100).toFixed(2);
-    document.getElementById('ps-total').textContent = '$' + ((s.total_commission_cents||0)/100).toFixed(2);
-    document.getElementById('ps-mtd').textContent = '$' + ((s.mtd_commission_cents||0)/100).toFixed(2);
-    document.getElementById('ps-count').textContent = s.total_sales || 0;
-
-    // Chart
-    var chart = data.monthly_chart || {};
-    var months = Object.keys(chart);
-    var vals = months.map(function(m){ return chart[m]; });
-    var maxVal = Math.max.apply(null, vals) || 1;
-    var total = vals.reduce(function(a,b){ return a+b; }, 0);
-    var barsEl = document.getElementById('earn-bars');
-    var lblsEl = document.getElementById('earn-lbls');
-    barsEl.innerHTML = '';
-    lblsEl.innerHTML = '';
-    months.forEach(function(month, i) {
-      var h = Math.round((vals[i] / maxVal) * 100);
-      var isLast = i === months.length - 1;
-      var wrap = document.createElement('div'); wrap.className = 'bar-wrap';
-      var bar = document.createElement('div'); bar.className = 'bar';
-      bar.style.background = isLast ? 'var(--green)' : '#3A3A3A';
-      bar.style.height = '0px';
-      bar.title = '$' + (vals[i]/100).toFixed(2);
-      wrap.appendChild(bar); barsEl.appendChild(wrap);
-      var lbl = document.createElement('div'); lbl.className = 'bar-lbl'; lbl.style.flex='1'; lbl.style.textAlign='center'; lbl.textContent = month;
-      lblsEl.appendChild(lbl);
-      setTimeout(function(){ bar.style.transition='height .8s ease'; bar.style.height = h + 'px'; }, 300 + i * 60);
-    });
-    document.getElementById('earn-total-val').textContent = '$' + (total/100).toFixed(2);
-
-    // By product
-    var byProd = data.by_product || {};
-    var prodEl = document.getElementById('earn-by-product');
-    prodEl.innerHTML = Object.keys(byProd).map(function(name) {
-      return '<div class="eb-row"><span class="eb-label">' + name + '</span><span class="eb-val">$' + (byProd[name]/100).toFixed(2) + '</span></div>';
-    }).join('') || '<div style="padding:10px 0;font-size:12px;color:var(--dim)">No sales yet</div>';
-
-    // Transactions
-    var txnEl = document.getElementById('earn-txns');
-    txnEl.innerHTML = (sales || []).map(function(s) {
-      var comm = Math.round(s.sale_amount_cents * s.commission_pct / 100);
-      var prodName = s.products ? s.products.name : 'Product';
-      var date = new Date(s.sold_at).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-      return '<div class="txn-row"><div class="txn-dot" style="background:var(--green)"></div><div class="txn-info"><div class="txn-name">' + prodName + '</div><div class="txn-meta">' + (s.source||'direct') + ' · ' + (s.buyer_email||'anonymous') + '</div></div><div><div class="txn-amt">+$' + (comm/100).toFixed(2) + '</div><div class="txn-date">' + date + '</div></div></div>';
-    }).join('') || '<div style="padding:20px 16px;font-size:12px;color:var(--dim);text-align:center">No transactions yet</div>';
-
-    document.getElementById('earn-loading').style.display = 'none';
-    document.getElementById('earn-content').style.display = 'block';
-  }).catch(function(e){ showError('earn-loading', e.message); });
+  // Earnings & Payouts loaded via iframe
 }
 
 // ── TEAM ─────────────────────────────────────────────────────
