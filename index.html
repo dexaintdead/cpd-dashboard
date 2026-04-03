@@ -423,50 +423,6 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
   </div>
 
   <!-- OVERVIEW -->
-  <div class="page active" id="pg-overview">
-    <div id="ov-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading your dashboard...</div></div>
-    <div id="ov-content" style="display:none">
-      <div style="margin-bottom:18px;padding-top:4px">
-        <div style="font-size:11px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">Welcome back</div>
-        <div style="font-family:var(--font-d);font-size:26px;letter-spacing:.06em" id="ov-welcome">— APRIL 2026</div>
-      </div>
-      <div class="stats">
-        <div class="sc g"><div class="sc-lbl">Total earned (MTD)</div><div class="sc-val" id="sc-earned">—</div><div class="sc-delta up">Commission this month</div></div>
-        <div class="sc r"><div class="sc-lbl">Open pipeline</div><div class="sc-val" id="sc-pipe">—</div><div class="sc-delta" id="sc-pipe-leads" style="color:var(--dim)">Active leads</div></div>
-        <div class="sc go"><div class="sc-lbl">Total sales</div><div class="sc-val" id="sc-sales">—</div><div class="sc-delta" style="color:var(--dim)">All time</div></div>
-        <div class="sc b"><div class="sc-lbl">Pending payout</div><div class="sc-val" id="sc-payout">—</div><div class="sc-delta" style="color:var(--dim)">Available to withdraw</div></div>
-      </div>
-
-      <!-- Sales link -->
-      <div class="panel">
-        <div class="ph"><span class="ph-title">Your sales link</span></div>
-        <div class="pb">
-          <div style="display:flex;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;overflow:hidden;margin-bottom:12px">
-            <div style="flex:1;padding:9px 12px;font-family:var(--font-m);font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="ov-link">Loading...</div>
-            <button id="main-copy-btn" onclick="copyMainLink()" style="padding:9px 13px;background:var(--red);color:#fff;border:none;font-size:11px;font-family:var(--font-b);font-weight:600;cursor:pointer">COPY</button>
-          </div>
-          <div style="display:flex;gap:6px">
-            <button class="prod-btn" style="flex:1" onclick="shareToIG()">Share to IG</button>
-            <button class="prod-btn" style="flex:1" onclick="shareToX()">Share to X</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Recent activity -->
-      <div class="panel">
-        <div class="ph"><span class="ph-title">Recent sales</span></div>
-        <div id="ov-activity"></div>
-      </div>
-
-      <!-- Top products -->
-      <div class="panel">
-        <div class="ph"><span class="ph-title">Top products</span><button class="ph-action" onclick="showPage('catalog',document.querySelector('[onclick*=catalog]'))">Full catalog →</button></div>
-        <div style="padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px" id="ov-top-prods"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- OVERVIEW / INTELLIGENCE BOARD -->
   <div class="page active" id="pg-overview" style="padding:0;display:flex;flex-direction:column">
     <div id="pg-greeting" style="padding:14px 24px 0;display:flex;align-items:baseline;gap:7px;flex-shrink:0">
       <span id="greeting-time" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.07em;color:#807C78">GOOD MORNING,</span>
@@ -475,7 +431,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <iframe id="intel-frame" src="https://dexaintdead.github.io/cpd-intelligence/" style="flex:1;width:100%;border:none;display:block;min-height:0;margin-top:6px" frameborder="0"></iframe>
   </div>
 
-  <!-- EARNINGS -->
+    <!-- EARNINGS -->
   <div class="page" id="pg-earnings">
     <div id="earn-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading earnings...</div></div>
     <div id="earn-content" style="display:none">
@@ -970,15 +926,12 @@ function loadOverview() {
       // Sidebar
       document.getElementById('sb-name').textContent = data.rep.full_name;
 
-      // Dashboard greeting
-      var _hr=new Date().getHours();var _gt=_hr<12?'GOOD MORNING,':_hr<17?'GOOD AFTERNOON,':'GOOD EVENING,';
+            // Dashboard greeting
+      var _hr=new Date().getHours();
+      var _gt=_hr<12?'GOOD MORNING,':_hr<17?'GOOD AFTERNOON,':'GOOD EVENING,';
       var _nm=(data.rep&&data.rep.full_name)?data.rep.full_name.split(' ')[0].toUpperCase():'REP';
       if(document.getElementById('greeting-time'))document.getElementById('greeting-time').textContent=_gt;
       if(document.getElementById('greeting-name'))document.getElementById('greeting-name').textContent=_nm;
-      document.getElementById('sb-avatar').textContent = data.rep.full_name.split(' ').map(function(n){ return n[0]; }).join('').slice(0,2).toUpperCase();
-      document.getElementById('sb-tier').textContent = '★ ' + (data.rep.tier || 'Rep').replace('_',' ');
-      document.getElementById('ov-welcome').textContent = data.rep.full_name.toUpperCase() + ' — ' + new Date().toLocaleString('en-US',{month:'long',year:'numeric'}).toUpperCase();
-      document.getElementById('ov-link').textContent = 'cpdblackbook.com/s/' + repSlug;
 
       // Stat cards
       var e = data.earnings;
