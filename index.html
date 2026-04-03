@@ -426,7 +426,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
   <div class="page active" id="pg-overview" style="padding:0">
     <div id="pg-greeting" style="padding:14px 24px 0;display:flex;align-items:baseline;gap:7px;flex-shrink:0">
       <span id="greeting-time" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.07em;color:#807C78">GOOD MORNING,</span>
-      <span id="greeting-name" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.07em;color:#D63030">...</span>
+      <span id="greeting-name" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.07em;color:#D63030"></span>
     </div>
     <iframe id="intel-frame" src="https://dexaintdead.github.io/cpd-intelligence/" style="flex:1;width:100%;border:none;display:block;min-height:0;margin-top:6px" frameborder="0"></iframe>
   </div>
@@ -929,9 +929,10 @@ function loadOverview() {
             // Dashboard greeting
       var _hr=new Date().getHours();
       var _gt=_hr<12?'GOOD MORNING,':_hr<17?'GOOD AFTERNOON,':'GOOD EVENING,';
-      var _nm=(data.rep&&data.rep.full_name)?data.rep.full_name.split(' ')[0].toUpperCase():'REP';
-      if(document.getElementById('greeting-time'))document.getElementById('greeting-time').textContent=_gt;
-      if(document.getElementById('greeting-name'))document.getElementById('greeting-name').textContent=_nm;
+      var _nm=(data.rep&&data.rep.full_name)?data.rep.full_name.split(' ')[0].toUpperCase():'';
+      var _gtEl=document.getElementById('greeting-time');var _gnEl=document.getElementById('greeting-name');
+      if(_gtEl&&_nm)_gtEl.textContent=_gt;
+      if(_gnEl&&_nm)_gnEl.textContent=_nm;
 
       // Stat cards
       var e = data.earnings;
