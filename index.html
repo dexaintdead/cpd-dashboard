@@ -233,6 +233,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 .df-status{font-size:11px;color:var(--muted);font-family:var(--font-m);letter-spacing:.04em;margin-bottom:12px;min-height:18px}
 
 .df-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:14px}
+.df-iframe-wrap{flex:1;overflow:hidden;border-radius:6px;border:1px solid var(--border);position:relative;min-height:0}
 
 .df-featured{grid-column:1 / -1;display:grid;grid-template-columns:1.4fr 1fr;background:var(--bg2)}
 .df-feat-main{padding:22px 20px;border-right:1px solid var(--border);text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:10px;transition:background .15s}
@@ -577,9 +578,9 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
           <span id="df-live-label">LIVE</span>
         </div>
       </div>
-      <div class="df-filters" id="df-filters"></div>
-      <div class="df-status" id="df-status">Connecting to feeds...</div>
-      <div class="df-grid" id="df-grid"></div>
+      <div class="df-iframe-wrap">
+        <iframe id="drive-iframe" src="" style="width:100%;height:calc(100% + 90px);border:none;display:block;margin-top:-90px;" allowfullscreen></iframe>
+      </div>
     </div>
 
   </div>
@@ -1235,70 +1236,33 @@ var DRIVE_API = 'https://api.rss2json.com/v1/api.json?api_key=fhprejwbwbyanfwhph
 
 
 function openDriveChannel(channelId) {
-  var ch = DRIVE_CHANNELS[channelId];
-  if(!ch) return;
-  driveState.channel = channelId;
-  driveState.filter = 'all';
-  driveState.articles = [];
+  var urls = {
+    culture: 'https://www.cpdblackbook.com/culturedrive',
+    sports: 'https://www.cpdblackbook.com/sportsdrive',
+    fashion: 'https://www.cpdblackbook.com/fashiondrive',
+    nightlife: 'https://www.cpdblackbook.com/nightlifedrive',
+    finance: 'https://www.cpdblackbook.com/financedrive',
+    beverage: 'https://www.cpdblackbook.com/beveragedrive',
+    aviation: 'https://www.cpdblackbook.com/aviationdrive',
+    gaming: 'https://www.cpdblackbook.com/gamingdrive'
+  };
+  var names = {
+    culture: 'CULTURE DRIVE', sports: 'SPORTS DRIVE', fashion: 'FASHION DRIVE',
+    nightlife: 'NIGHTLIFE DRIVE', finance: 'FINANCE DRIVE', beverage: 'BEVERAGE DRIVE',
+    aviation: 'AVIATION DRIVE', gaming: 'GAMING DRIVE'
+  };
+  var url = urls[channelId];
+  if (!url) return;
 
   document.getElementById('drive-home').style.display = 'none';
   document.getElementById('drive-feed-wrap').classList.add('active');
-
-  // Set channel name + accent
-  document.getElementById('df-channel-name').textContent = ch.name;
-  var dot = document.getElementById('df-live-dot');
-  dot.style.background = ch.color;
-
-  // Build filters
-  var filtersEl = document.getElementById('df-filters');
-  filtersEl.innerHTML = ch.filters.map(function(f){
-    var isAll = f === 'all';
-    var btnStyle = isAll ? 'border-color:'+ch.color+';color:'+ch.color+';background:'+ch.color+'18' : '';
-    var btnClass = 'df-filter' + (isAll ? ' on' : '');
-    var label = ch.filterLabels[f] || f;
-    return '<button class="' + btnClass + '" onclick="driveFilter(\'' + f + '\',this)" style="' + btnStyle + '">' + label + '</button>';
-  }).join('');
-
-  document.getElementById('df-status').textContent = 'Connecting to ' + ch.feeds.length + ' feeds...';
-  document.getElementById('df-grid').innerHTML = '<div class="df-empty">Loading feeds...</div>';
-
-  // Load all feeds
-  var loaded = 0;
-  ch.feeds.forEach(function(feed) {
-    var apiUrl = DRIVE_API + encodeURIComponent(feed.url);
-    fetch(apiUrl)
-      .then(function(r){ return r.json(); })
-      .then(function(data) {
-        if(data.items) {
-          data.items.slice(0,6).forEach(function(item){
-            driveState.articles.push({
-              title: item.title,
-              link: item.link,
-              desc: driveStripHtml(item.description || item.content || '').slice(0,200),
-              date: item.pubDate,
-              source: feed.source,
-              tag: feed.tag
-            });
-          });
-        }
-      })
-      .catch(function(){})
-      .finally(function(){
-        loaded++;
-        document.getElementById('df-status').textContent = 'Loading feeds — ' + loaded + '/' + ch.feeds.length + ' connected';
-        driveRender();
-        if(loaded === ch.feeds.length) {
-          document.getElementById('df-status').textContent = driveState.articles.length + ' articles from ' + loaded + ' sources';
-        }
-      });
-  });
+  document.getElementById('df-channel-name').textContent = names[channelId] || '';
+  document.getElementById('drive-iframe').src = url;
 }
-
 function closeDriveChannel() {
   document.getElementById('drive-feed-wrap').classList.remove('active');
   document.getElementById('drive-home').style.display = '';
-  driveState.channel = null;
-  driveState.articles = [];
+  document.getElementById('drive-iframe').src = '';
 }
 
 function driveFilter(tag, btn) {
@@ -2442,3 +2406,4 @@ window.driveState = { channel: null, filter: 'all', articles: [] };
 </script>
 </body>
 </html>
+
