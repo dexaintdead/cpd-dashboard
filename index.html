@@ -466,16 +466,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 
   <!-- CRM -->
   <div class="page" id="pg-crm">
-    <div class="panel">
-      <div class="ph"><span class="ph-title">Pipeline tracker</span>
-        <button class="ph-action" onclick="showAddLead()">+ Add lead</button>
-      </div>
-      <div class="crm-toolbar">
-        <input class="crm-search" placeholder="Search contacts..." type="text" id="crm-search" oninput="filterLeads()">
-      </div>
-      <div id="crm-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading pipeline...</div></div>
-      <div class="crm-cols" id="crm-board" style="display:none"></div>
-    </div>
+    <iframe src="https://dexaintdead.github.io/cpd-pipeline/" style="width:100%;height:calc(100vh - 40px);border:none;display:block;" title="Pipeline / CRM" allowfullscreen></iframe>
   </div>
 
   <!-- BRANDS -->
