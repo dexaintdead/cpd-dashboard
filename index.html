@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CPD Blackbook — Sales Dashboard</title>
+<title>CPD Blackbook â Sales Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -20,7 +20,7 @@
 html{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:14px}
 body{display:flex;min-height:100vh;overflow-x:hidden}
 
-/* ── SIDEBAR ── */
+/* ââ SIDEBAR ââ */
 .sidebar{width:210px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;position:sticky;top:0}
 .s-logo{padding:22px 18px 18px;border-bottom:1px solid var(--border)}
 .s-logo-mark{font-family:var(--font-d);font-size:20px;letter-spacing:.06em;line-height:1}
@@ -39,7 +39,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 .s-uname{font-size:12px;font-weight:600}
 .s-urole{font-size:10px;color:var(--gold);letter-spacing:.04em;margin-top:1px}
 
-/* ── MAIN ── */
+/* ââ MAIN ââ */
 .main{flex:1;min-width:0;display:flex;flex-direction:column}
 .topbar{display:flex;align-items:center;padding:14px 24px;border-bottom:1px solid var(--border);background:var(--bg2);position:sticky;top:0;z-index:20;gap:12px}
 .topbar-title{font-family:var(--font-d);font-size:18px;letter-spacing:.07em;flex:1}
@@ -47,20 +47,20 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 .tb-status{width:auto;padding:0 10px;font-size:11px;color:var(--green);border:1px solid var(--green-border);background:var(--green-lo);border-radius:6px;height:32px;display:flex;align-items:center;gap:6px}
 .tb-dot-live{width:6px;height:6px;border-radius:50%;background:var(--green)}
 
-/* ── PAGES ── */
+/* ââ PAGES ââ */
 .page{display:none;padding:22px 24px;flex:1}
 .page.active{display:block}#pg-overview.active{display:flex;flex-direction:column}
 
-/* ── LOADING STATE ── */
+/* ââ LOADING STATE ââ */
 .loading-wrap{display:flex;align-items:center;justify-content:center;padding:60px;flex-direction:column;gap:12px}
 .loading-spinner{width:28px;height:28px;border:2px solid var(--border2);border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite}
 .loading-text{font-size:12px;color:var(--dim)}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── ERROR STATE ── */
+/* ââ ERROR STATE ââ */
 .error-box{background:var(--red-lo);border:1px solid var(--red-border);border-radius:8px;padding:14px 16px;font-size:12px;color:#E07070;margin-bottom:16px}
 
-/* ── STAT CARDS ── */
+/* ââ STAT CARDS ââ */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
 .sc{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;position:relative;overflow:hidden;animation:fadeUp .4s ease both}
 .sc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--ac,var(--border))}
@@ -70,14 +70,14 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 .sc-delta{font-size:11px;font-family:var(--font-m);color:var(--dim)}
 .sc-delta.up{color:var(--green)}
 
-/* ── PANELS ── */
+/* ââ PANELS ââ */
 .panel{background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:16px;overflow:hidden}
 .ph{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
 .ph-title{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600}
 .ph-action{font-size:11px;color:var(--red);cursor:pointer;background:none;border:none;font-family:var(--font-b);letter-spacing:.04em}
 .pb{padding:16px}
 
-/* ── PRODUCT CATALOG ── */
+/* ââ PRODUCT CATALOG ââ */
 .cat-filters{display:flex;gap:6px;padding:12px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .cf{padding:4px 12px;border-radius:20px;font-size:11px;cursor:pointer;border:1px solid var(--border);background:none;color:var(--dim);font-family:var(--font-b);transition:all .15s}
 .cf.on{background:var(--red-lo);border-color:var(--red-border);color:var(--text)}
@@ -94,7 +94,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 .prod-btn{width:100%;padding:6px;background:var(--bg4);border:1px solid var(--border);border-radius:5px;color:var(--dim);font-size:11px;font-family:var(--font-b);cursor:pointer;transition:all .15s;font-weight:500}
 .prod-btn:hover{background:var(--red-lo);border-color:var(--red-border);color:var(--text)}
 
-/* ── CRM ── */
+/* ââ CRM ââ */
 .crm-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px 16px}
 .crm-col-head{font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border-radius:6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
 .crm-card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 11px;margin-bottom:7px;cursor:pointer;transition:border-color .15s}
@@ -111,7 +111,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 .crm-search{flex:1;padding:7px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none}
 .crm-search::placeholder{color:var(--muted)}
 
-/* ── BRAND INTEL ── */
+/* ââ BRAND INTEL ââ */
 .brand-row{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
 .brand-row:hover{background:var(--bg3)}
 .brand-row:last-child{border-bottom:none}
@@ -123,7 +123,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 .bcr-pct{font-family:var(--font-d);font-size:22px;color:var(--green);line-height:1}
 .bcr-lbl{font-size:10px;color:var(--dim)}
 
-/* ── DRAWER ── */
+/* ââ DRAWER ââ */
 .drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center}
 .drawer-overlay.open{display:flex}
 .drawer{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;width:520px;max-width:95vw;max-height:80vh;overflow-y:auto}
@@ -140,7 +140,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 .d-stat-lbl{font-size:10px;color:var(--dim);margin-top:2px}
 .d-points{display:flex;flex-direction:column;gap:6px}
 .d-point{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text);line-height:1.5}
-.d-point::before{content:'—';color:var(--red);flex-shrink:0;margin-top:1px}
+.d-point::before{content:'â';color:var(--red);flex-shrink:0;margin-top:1px}
 .d-prods{display:flex;flex-direction:column;gap:6px}
 .d-prod-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg3);border-radius:6px;font-size:12px}
 .d-prod-name{color:var(--text)}
@@ -152,7 +152,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 .d-btn-s{background:none;color:var(--dim);border:1px solid var(--border2)}
 .d-btn-s:hover{background:var(--bg3);color:var(--text)}
 
-/* ── EARNINGS ── */
+/* ââ EARNINGS ââ */
 .earn-top{display:grid;grid-template-columns:1fr 280px;gap:14px;margin-bottom:16px}
 .earn-chart-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px}
 .earn-chart-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
@@ -189,7 +189,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 .txn-amt{font-family:var(--font-m);color:var(--green);font-size:12px}
 .txn-date{font-size:10px;color:var(--muted);font-family:var(--font-m)}
 
-/* ── TEAM ── */
+/* ââ TEAM ââ */
 .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
 .team-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px}
 .tc-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
@@ -205,7 +205,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 .tc-override span{color:var(--green)}
 
 
-/* ── CPD DRIVE INLINE ─────────────────────────────────────────── */
+/* ââ CPD DRIVE INLINE âââââââââââââââââââââââââââââââââââââââââââ */
 .drive-home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:24px}
 .drive-channel-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:26px 22px;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;gap:14px;min-height:160px}
 .drive-channel-card:hover{transform:translateY(-3px);border-color:var(--border2);background:var(--bg3)}
@@ -261,7 +261,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
   .df-feat-title{font-size:22px}
 }
 
-/* ── COMMUNITY CRM ─────────────────────────────────────────── */
+/* ââ COMMUNITY CRM âââââââââââââââââââââââââââââââââââââââââââ */
 /* Profile cards */
 .mem-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;padding:2px}
 .mem-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:10px}
@@ -407,10 +407,10 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     </button>
   </nav>
   <div class="s-user">
-    <div class="s-avatar" id="sb-avatar">—</div>
+    <div class="s-avatar" id="sb-avatar">â</div>
     <div>
       <div class="s-uname" id="sb-name">Loading...</div>
-      <div class="s-urole" id="sb-tier">★ Rep</div>
+      <div class="s-urole" id="sb-tier">â Rep</div>
     </div>
   </div>
 </aside>
@@ -436,7 +436,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <div id="earn-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading earnings...</div></div>
     <div id="earn-content" style="display:none">
       <div class="payout-strip">
-        <div><div class="ps-lbl">Available to withdraw</div><div class="ps-amt" id="ps-amt">$0</div><div class="ps-sub">Request anytime · $20 minimum</div></div>
+        <div><div class="ps-lbl">Available to withdraw</div><div class="ps-amt" id="ps-amt">$0</div><div class="ps-sub">Request anytime Â· $20 minimum</div></div>
         <div class="ps-div"></div>
         <div class="ps-info">
           <div class="ps-row"><span class="ps-row-l">Total earned (all time)</span><span class="ps-row-v" id="ps-total">$0</span></div>
@@ -506,7 +506,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
   </div>
 
   <!-- TEAM -->
-  <!-- CPD DRIVE — INLINE FEEDS -->
+  <!-- CPD DRIVE â INLINE FEEDS -->
   <div class="page" id="pg-drive">
 
     <!-- CHANNEL HOME GRID -->
@@ -517,52 +517,52 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
       </div>
       <div class="drive-home-grid">
         <div class="drive-channel-card" onclick="openDriveChannel('culture')" style="--ch:#c8102e;border-color:rgba(200,16,46,0.2)">
-          <div class="dc-icon">🎭</div>
+          <div class="dc-icon">ð­</div>
           <div class="dc-name">CULTURE DRIVE</div>
-          <div class="dc-desc">Music · Arts · Street · Entertainment</div>
-          <div class="dc-cta" style="color:#c8102e"><span class="dc-dot" style="background:#c8102e"></span>LIVE FEED →</div>
+          <div class="dc-desc">Music Â· Arts Â· Street Â· Entertainment</div>
+          <div class="dc-cta" style="color:#c8102e"><span class="dc-dot" style="background:#c8102e"></span>LIVE FEED â</div>
         </div>
         <div class="drive-channel-card" onclick="openDriveChannel('sports')" style="--ch:#e8a100;border-color:rgba(232,161,0,0.2)">
-          <div class="dc-icon">🏆</div>
+          <div class="dc-icon">ð</div>
           <div class="dc-name">SPORTS DRIVE</div>
-          <div class="dc-desc">NBA · NFL · MLB · NHL · Betting</div>
-          <div class="dc-cta" style="color:#e8a100"><span class="dc-dot" style="background:#e8a100"></span>LIVE FEED →</div>
+          <div class="dc-desc">NBA Â· NFL Â· MLB Â· NHL Â· Betting</div>
+          <div class="dc-cta" style="color:#e8a100"><span class="dc-dot" style="background:#e8a100"></span>LIVE FEED â</div>
         </div>
         <div class="drive-channel-card" onclick="openDriveChannel('fashion')" style="--ch:#e8c4d0;border-color:rgba(232,196,208,0.2)">
-          <div class="dc-icon">👔</div>
+          <div class="dc-icon">ð</div>
           <div class="dc-name">FASHION DRIVE</div>
-          <div class="dc-desc">Luxury · Runway · Streetwear · Drops</div>
-          <div class="dc-cta" style="color:#e8c4d0"><span class="dc-dot" style="background:#e8c4d0"></span>LIVE FEED →</div>
+          <div class="dc-desc">Luxury Â· Runway Â· Streetwear Â· Drops</div>
+          <div class="dc-cta" style="color:#e8c4d0"><span class="dc-dot" style="background:#e8c4d0"></span>LIVE FEED â</div>
         </div>
         <div class="drive-channel-card" onclick="openDriveChannel('nightlife')" style="--ch:#d946a8;border-color:rgba(217,70,168,0.2)">
-          <div class="dc-icon">🌃</div>
+          <div class="dc-icon">ð</div>
           <div class="dc-name">NIGHTLIFE DRIVE</div>
-          <div class="dc-desc">Miami · NYC · Houston · LA · Vegas</div>
-          <div class="dc-cta" style="color:#d946a8"><span class="dc-dot" style="background:#d946a8"></span>LIVE FEED →</div>
+          <div class="dc-desc">Miami Â· NYC Â· Houston Â· LA Â· Vegas</div>
+          <div class="dc-cta" style="color:#d946a8"><span class="dc-dot" style="background:#d946a8"></span>LIVE FEED â</div>
         </div>
         <div class="drive-channel-card" onclick="openDriveChannel('finance')" style="--ch:#00c27a;border-color:rgba(0,194,122,0.2)">
-          <div class="dc-icon">💰</div>
+          <div class="dc-icon">ð°</div>
           <div class="dc-name">FINANCE DRIVE</div>
-          <div class="dc-desc">Stocks · Crypto · Economy · Trading</div>
-          <div class="dc-cta" style="color:#00c27a"><span class="dc-dot" style="background:#00c27a"></span>LIVE FEED →</div>
+          <div class="dc-desc">Stocks Â· Crypto Â· Economy Â· Trading</div>
+          <div class="dc-cta" style="color:#00c27a"><span class="dc-dot" style="background:#00c27a"></span>LIVE FEED â</div>
         </div>
         <div class="drive-channel-card" onclick="openDriveChannel('beverage')" style="--ch:#c8820a;border-color:rgba(200,130,10,0.2)">
-          <div class="dc-icon">🥂</div>
+          <div class="dc-icon">ð¥</div>
           <div class="dc-name">BEVERAGE DRIVE</div>
-          <div class="dc-desc">Whiskey · Wine · Tequila · Industry</div>
-          <div class="dc-cta" style="color:#c8820a"><span class="dc-dot" style="background:#c8820a"></span>LIVE FEED →</div>
+          <div class="dc-desc">Whiskey Â· Wine Â· Tequila Â· Industry</div>
+          <div class="dc-cta" style="color:#c8820a"><span class="dc-dot" style="background:#c8820a"></span>LIVE FEED â</div>
         </div>
         <div class="drive-channel-card" onclick="openDriveChannel('aviation')" style="--ch:#00aaff;border-color:rgba(0,170,255,0.2)">
-          <div class="dc-icon">✈️</div>
+          <div class="dc-icon">âï¸</div>
           <div class="dc-name">AVIATION DRIVE</div>
-          <div class="dc-desc">Commercial · Private · Space · Tech</div>
-          <div class="dc-cta" style="color:#00aaff"><span class="dc-dot" style="background:#00aaff"></span>LIVE FEED →</div>
+          <div class="dc-desc">Commercial Â· Private Â· Space Â· Tech</div>
+          <div class="dc-cta" style="color:#00aaff"><span class="dc-dot" style="background:#00aaff"></span>LIVE FEED â</div>
         </div>
         <div class="drive-channel-card" onclick="openDriveChannel('gaming')" style="--ch:#7b5cf0;border-color:rgba(123,92,240,0.2)">
-          <div class="dc-icon">🎮</div>
+          <div class="dc-icon">ð®</div>
           <div class="dc-name">GAMING DRIVE</div>
-          <div class="dc-desc">PS5 · Xbox · PC · Nintendo · Esports</div>
-          <div class="dc-cta" style="color:#7b5cf0"><span class="dc-dot" style="background:#7b5cf0"></span>LIVE FEED →</div>
+          <div class="dc-desc">PS5 Â· Xbox Â· PC Â· Nintendo Â· Esports</div>
+          <div class="dc-cta" style="color:#7b5cf0"><span class="dc-dot" style="background:#7b5cf0"></span>LIVE FEED â</div>
         </div>
       </div>
     </div>
@@ -570,7 +570,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <!-- LIVE FEED VIEW (shown when channel opened) -->
     <div class="drive-feed-wrap" id="drive-feed-wrap">
       <div class="df-topbar">
-        <button class="df-back" onclick="closeDriveChannel()">← ALL DRIVES</button>
+        <button class="df-back" onclick="closeDriveChannel()">â ALL DRIVES</button>
         <div class="df-channel-name" id="df-channel-name"></div>
         <div class="df-live">
           <div class="df-live-dot" id="df-live-dot"></div>
@@ -624,14 +624,14 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
       <button class="ph-action" style="padding:7px 14px;background:var(--red-lo);border:1px solid var(--red-border);border-radius:6px;color:var(--text)">+ Invite rep</button>
     </div>
     <div style="background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--blue);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--dim);line-height:1.6">
-      Team building is <span style="color:var(--text)">optional</span> — you earn a <span style="color:var(--green)">5% override</span> on every sale your team closes.
+      Team building is <span style="color:var(--text)">optional</span> â you earn a <span style="color:var(--green)">5% override</span> on every sale your team closes.
     </div>
     <div id="team-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading team...</div></div>
     <div class="team-grid" id="team-grid" style="display:none"></div>
     <div id="team-empty" style="display:none;text-align:center;padding:40px;color:var(--dim);font-size:13px">No team members yet. Invite your first rep to get started.</div>
   </div>
 
-  <!-- THE PLUG — CLASSIFIEDS -->
+  <!-- THE PLUG â CLASSIFIEDS -->
   <div class="page" id="pg-classifieds">
 
     <!-- POST FORM + ADMIN PANEL TABS -->
@@ -642,7 +642,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
       </div>
       <div style="display:flex;gap:8px">
         <button id="cl-tab-post" onclick="clTab('post')" style="padding:7px 16px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:11px;cursor:pointer;letter-spacing:.04em">+ Post Listing</button>
-        <button id="cl-tab-admin" onclick="clTab('admin')" style="padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;color:var(--dim);font-family:var(--font-m);font-size:11px;cursor:pointer;letter-spacing:.04em">⚙ Admin</button>
+        <button id="cl-tab-admin" onclick="clTab('admin')" style="padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;color:var(--dim);font-family:var(--font-m);font-size:11px;cursor:pointer;letter-spacing:.04em">â Admin</button>
       </div>
     </div>
 
@@ -692,7 +692,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
           <div style="font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px">Your Name / Handle</div>
           <input id="cl-poster" type="text" placeholder="@yourhandle" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none"/>
         </div>
-        <button id="cl-submit-btn" onclick="clSubmit()" style="background:var(--red);color:#fff;border:none;border-radius:6px;padding:10px 24px;font-family:var(--font-m);font-size:12px;cursor:pointer;letter-spacing:.04em;font-weight:600">Post Listing →</button>
+        <button id="cl-submit-btn" onclick="clSubmit()" style="background:var(--red);color:#fff;border:none;border-radius:6px;padding:10px 24px;font-family:var(--font-m);font-size:12px;cursor:pointer;letter-spacing:.04em;font-weight:600">Post Listing â</button>
         <span id="cl-submit-msg" style="margin-left:12px;font-size:11px;color:var(--dim)"></span>
       </div>
     </div>
@@ -701,8 +701,8 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <div id="cl-panel-admin" style="display:none">
       <div class="panel" style="margin-bottom:16px">
         <div class="ph">
-          <span class="ph-title">All Listings — Admin View</span>
-          <button class="ph-action" onclick="loadClassifieds()">↻ Refresh</button>
+          <span class="ph-title">All Listings â Admin View</span>
+          <button class="ph-action" onclick="loadClassifieds()">â» Refresh</button>
         </div>
         <div id="cl-admin-loading" class="loading-wrap" style="display:none"><div class="loading-spinner"></div><div class="loading-text">Loading...</div></div>
         <div id="cl-admin-list"></div>
@@ -724,7 +724,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 
   </div>
 
-  <!-- ═══ MEMBER DIRECTORY ═══ -->
+  <!-- âââ MEMBER DIRECTORY âââ -->
   <div class="page" id="pg-directory">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
       <div>
@@ -741,7 +741,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <div id="dir-empty" style="display:none;padding:40px;text-align:center;font-size:12px;color:var(--dim)">No members found.</div>
   </div>
 
-  <!-- ═══ INBOX ═══ -->
+  <!-- âââ INBOX âââ -->
   <div class="page" id="pg-inbox">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
       <div>
@@ -760,9 +760,9 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
         <div class="inbox-empty-state" id="inbox-placeholder">Select a conversation or start a new one</div>
         <div id="inbox-active-chat" style="display:none;flex-direction:column;height:100%">
           <div class="inbox-chat-header">
-            <div style="width:32px;height:32px;border-radius:50%;background:var(--red-lo);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:13px;flex-shrink:0" id="chat-avatar">—</div>
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--red-lo);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:13px;flex-shrink:0" id="chat-avatar">â</div>
             <div>
-              <div style="font-size:13px;font-weight:600;color:var(--text)" id="chat-name">—</div>
+              <div style="font-size:13px;font-weight:600;color:var(--text)" id="chat-name">â</div>
               <div style="font-size:10px;color:var(--dim);font-family:var(--font-m)" id="chat-sub">Member</div>
             </div>
           </div>
@@ -776,7 +776,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     </div>
   </div>
 
-  <!-- ═══ FORUM ═══ -->
+  <!-- âââ FORUM âââ -->
   <div class="page" id="pg-forum">
     <div id="forum-list-view">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
@@ -800,7 +800,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
       <div id="forum-empty" style="display:none;padding:40px;text-align:center;font-size:12px;color:var(--dim)">No posts yet. Be the first to post!</div>
     </div>
     <div id="forum-thread-view" style="display:none">
-      <button class="forum-thread-back" onclick="closeForumThread()">← Back to Forum</button>
+      <button class="forum-thread-back" onclick="closeForumThread()">â Back to Forum</button>
       <div id="forum-thread-content"></div>
       <div class="forum-reply-form">
         <div style="font-size:11px;color:var(--dim);margin-bottom:8px;letter-spacing:.06em;text-transform:uppercase">Add a Reply</div>
@@ -811,7 +811,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     </div>
   </div>
 
-  <!-- ═══ MEMBERS CRM ═══ -->
+  <!-- âââ MEMBERS CRM âââ -->
   <div class="page" id="pg-members_crm">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
       <div>
@@ -823,7 +823,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <div class="panel">
       <div class="ph">
         <span class="ph-title">All Members</span>
-        <button class="ph-action" onclick="loadMembersCRM()">↻ Refresh</button>
+        <button class="ph-action" onclick="loadMembersCRM()">â» Refresh</button>
       </div>
       <div style="padding:10px 16px;border-bottom:1px solid var(--border)">
         <input id="crm-mem-search" type="text" placeholder="Search members..." oninput="filterCRMMembers()" style="width:100%;max-width:320px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 12px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none"/>
@@ -846,14 +846,14 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <div class="drawer-head">
       <div class="drawer-logo" id="d-logo"></div>
       <div class="drawer-title" id="d-title"></div>
-      <button class="drawer-close" onclick="closeDrawer()">×</button>
+      <button class="drawer-close" onclick="closeDrawer()">Ã</button>
     </div>
     <div class="drawer-body" id="d-body"></div>
   </div>
 </div>
 
 <script>
-// ── CONFIG ───────────────────────────────────────────────────
+// ââ CONFIG âââââââââââââââââââââââââââââââââââââââââââââââââââ
 // Replace with your actual Wix site domain
 var BASE = 'https://www.cpdblackbook.com/_functions';
 
@@ -874,25 +874,25 @@ if (!WIX_MEMBER_ID) {
   });
 }
 
-// ── STATE ────────────────────────────────────────────────────
+// ââ STATE ââââââââââââââââââââââââââââââââââââââââââââââââââââ
 var allProducts = [];
 var allLeads = [];
 var repData = null;
 var repSlug = '';
 
-// ── INIT ─────────────────────────────────────────────────────
+// ââ INIT âââââââââââââââââââââââââââââââââââââââââââââââââââââ
 document.getElementById('tb-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
 
 // Load dashboard on start
 loadOverview();
 
-// ── NAV ──────────────────────────────────────────────────────
+// ââ NAV ââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 function showPage(id, btn) {
   document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
   document.querySelectorAll('.nav-i').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById('pg-' + id).classList.add('active');
   if(btn) btn.classList.add('active');
-  var titles = {overview:'DASHBOARD',earnings:'EARNINGS & PAYOUTS',catalog:'PRODUCT CATALOG',crm:'PIPELINE / CRM',brands:'BRAND INTEL',scanner:'CULTURE SCANNER',brief:'BLACKBOOK BRIEF',drive:'CPD DRIVE',team:'MY TEAM',classifieds:'THE PLUG — CLASSIFIEDS',directory:'MEMBER DIRECTORY',inbox:'INBOX',forum:'FORUM',members_crm:'MEMBERS CRM'};
+  var titles = {overview:'DASHBOARD',earnings:'EARNINGS & PAYOUTS',catalog:'PRODUCT CATALOG',crm:'PIPELINE / CRM',brands:'BRAND INTEL',scanner:'CULTURE SCANNER',brief:'BLACKBOOK BRIEF',drive:'CPD DRIVE',team:'MY TEAM',classifieds:'THE PLUG â CLASSIFIEDS',directory:'MEMBER DIRECTORY',inbox:'INBOX',forum:'FORUM',members_crm:'MEMBERS CRM'};
   document.getElementById('page-title').textContent = titles[id] || 'DASHBOARD';
   if(id === 'catalog' && allProducts.length === 0) loadCatalog();
   if(id === 'crm') loadCRM();
@@ -906,12 +906,12 @@ function showPage(id, btn) {
   if(id === 'members_crm') loadMembersCRM();
 }
 
-// ── FETCH HELPER ─────────────────────────────────────────────
+// ââ FETCH HELPER âââââââââââââââââââââââââââââââââââââââââââââ
 function api(endpoint) {
   return fetch(BASE + endpoint).then(function(r){ return r.json(); });
 }
 
-// ── OVERVIEW ─────────────────────────────────────────────────
+// ââ OVERVIEW âââââââââââââââââââââââââââââââââââââââââââââââââ
 function loadOverview() {
   document.getElementById('ov-loading').style.display = 'flex';
   document.getElementById('ov-content').style.display = 'none';
@@ -945,7 +945,7 @@ function loadOverview() {
       // Recent sales
       var actEl = document.getElementById('ov-activity');
       if(!data.recent_sales || data.recent_sales.length === 0) {
-        actEl.innerHTML = '<div style="padding:20px 16px;font-size:12px;color:var(--dim);text-align:center">No sales yet — share your link to get started</div>';
+        actEl.innerHTML = '<div style="padding:20px 16px;font-size:12px;color:var(--dim);text-align:center">No sales yet â share your link to get started</div>';
       } else {
         actEl.innerHTML = data.recent_sales.map(function(s) {
           var comm = Math.round(s.sale_amount_cents * s.commission_pct / 100);
@@ -973,7 +973,7 @@ function loadOverview() {
     });
 }
 
-// ── CATALOG ──────────────────────────────────────────────────
+// ââ CATALOG ââââââââââââââââââââââââââââââââââââââââââââââââââ
 function loadCatalog() {
   document.getElementById('cat-loading').style.display = 'flex';
   document.getElementById('prod-grid').style.display = 'none';
@@ -1004,7 +1004,7 @@ function filterCat(cat, btn) {
   renderCatalog(filtered);
 }
 
-// ── CRM ──────────────────────────────────────────────────────
+// ââ CRM ââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 function loadCRM() {
   document.getElementById('crm-loading').style.display = 'flex';
   document.getElementById('crm-board').style.display = 'none';
@@ -1025,7 +1025,7 @@ function renderCRM(leads) {
   board.innerHTML = stages.map(function(stage) {
     var stageleads = leads.filter(function(l){ return l.stage === stage; });
     var cards = stageleads.map(function(l) {
-      var val = l.deal_value_cents ? '$' + (l.deal_value_cents/100).toFixed(0) : '—';
+      var val = l.deal_value_cents ? '$' + (l.deal_value_cents/100).toFixed(0) : 'â';
       var date = l.updated_at ? new Date(l.updated_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '';
       var prodName = l.products ? l.products.name : '';
       return '<div class="crm-card"><div class="crm-contact">' + l.contact_name + '</div><div class="crm-prod">' + prodName + '</div><div class="crm-meta"><span class="crm-val">' + val + '</span><span class="crm-date">' + date + '</span></div></div>';
@@ -1041,10 +1041,10 @@ function filterLeads() {
 }
 
 function showAddLead() {
-  alert('Add lead form — connect to your Wix Members page to capture leads directly from the dashboard.');
+  alert('Add lead form â connect to your Wix Members page to capture leads directly from the dashboard.');
 }
 
-// ── BRANDS ───────────────────────────────────────────────────
+// ââ BRANDS âââââââââââââââââââââââââââââââââââââââââââââââââââ
 var brandsData = [];
 
 function loadBrands() {
@@ -1082,7 +1082,7 @@ function openBrand(i) {
 
 function closeDrawer() { document.getElementById('drawer').classList.remove('open'); }
 
-// ── EARNINGS ─────────────────────────────────────────────────
+// ââ EARNINGS âââââââââââââââââââââââââââââââââââââââââââââââââ
 function loadEarnings() {
   document.getElementById('earn-loading').style.display = 'flex';
   document.getElementById('earn-content').style.display = 'none';
@@ -1138,7 +1138,7 @@ function loadEarnings() {
       var comm = Math.round(s.sale_amount_cents * s.commission_pct / 100);
       var prodName = s.products ? s.products.name : 'Product';
       var date = new Date(s.sold_at).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-      return '<div class="txn-row"><div class="txn-dot" style="background:var(--green)"></div><div class="txn-info"><div class="txn-name">' + prodName + '</div><div class="txn-meta">' + (s.source||'direct') + ' · ' + (s.buyer_email||'anonymous') + '</div></div><div><div class="txn-amt">+$' + (comm/100).toFixed(2) + '</div><div class="txn-date">' + date + '</div></div></div>';
+      return '<div class="txn-row"><div class="txn-dot" style="background:var(--green)"></div><div class="txn-info"><div class="txn-name">' + prodName + '</div><div class="txn-meta">' + (s.source||'direct') + ' Â· ' + (s.buyer_email||'anonymous') + '</div></div><div><div class="txn-amt">+$' + (comm/100).toFixed(2) + '</div><div class="txn-date">' + date + '</div></div></div>';
     }).join('') || '<div style="padding:20px 16px;font-size:12px;color:var(--dim);text-align:center">No transactions yet</div>';
 
     document.getElementById('earn-loading').style.display = 'none';
@@ -1146,7 +1146,7 @@ function loadEarnings() {
   }).catch(function(e){ showError('earn-loading', e.message); });
 }
 
-// ── TEAM ─────────────────────────────────────────────────────
+// ââ TEAM âââââââââââââââââââââââââââââââââââââââââââââââââââââ
 function loadTeam() {
   document.getElementById('team-loading').style.display = 'flex';
   document.getElementById('team-grid').style.display = 'none';
@@ -1170,7 +1170,7 @@ function loadTeam() {
   }).catch(function(e){ showError('team-loading', e.message); });
 }
 
-// ── PAYOUT ───────────────────────────────────────────────────
+// ââ PAYOUT âââââââââââââââââââââââââââââââââââââââââââââââââââ
 function requestPayout() {
   fetch(BASE + '/requestPayout', {
     method: 'POST',
@@ -1179,12 +1179,12 @@ function requestPayout() {
   }).then(function(r){ return r.json(); })
     .then(function(d) {
       if(d.error) { alert('Error: ' + d.error); return; }
-      alert('Payout requested — $' + (d.amount_cents/100).toFixed(2) + ' sent to your PayPal within 2 business days.');
+      alert('Payout requested â $' + (d.amount_cents/100).toFixed(2) + ' sent to your PayPal within 2 business days.');
       loadEarnings();
     }).catch(function(e){ alert('Error: ' + e.message); });
 }
 
-// ── COPY UTILS ───────────────────────────────────────────────
+// ââ COPY UTILS âââââââââââââââââââââââââââââââââââââââââââââââ
 function copyMainLink() {
   var url = 'https://cpdblackbook.com/s/' + repSlug;
   navigator.clipboard.writeText(url).catch(function(){});
@@ -1209,7 +1209,7 @@ function copyBrandLink(brandId) {
 function shareToIG() { alert('Copy your link and paste it in your Instagram bio or story.'); }
 function shareToX()  { window.open('https://twitter.com/intent/tweet?text=Check+this+out+cpdblackbook.com/s/' + repSlug, '_blank'); }
 
-// ── COUNTER ANIMATION ────────────────────────────────────────
+// ââ COUNTER ANIMATION ââââââââââââââââââââââââââââââââââââââââ
 function animateCount(el, target, prefix) {
   if(!el) return;
   var start = performance.now();
@@ -1224,18 +1224,18 @@ function animateCount(el, target, prefix) {
   requestAnimationFrame(tick);
 }
 
-// ── ERROR HELPER ─────────────────────────────────────────────
+// ââ ERROR HELPER âââââââââââââââââââââââââââââââââââââââââââââ
 function showError(loadingId, msg) {
   var el = document.getElementById(loadingId);
   el.innerHTML = '<div class="error-box" style="margin:0">Error: ' + msg + '</div>';
 }
 
-// ── CPD DRIVE — INLINE ENGINE ──────────────────────────────────
+// ââ CPD DRIVE â INLINE ENGINE ââââââââââââââââââââââââââââââââââ
 var DRIVE_API = 'https://api.rss2json.com/v1/api.json?api_key=fhprejwbwbyanfwhphl7gp7su0ckwloatbxierd5&rss_url=';
 
 var DRIVE_CHANNELS = {
   culture: {
-    name: 'CULTURE DRIVE', color: '#c8102e', icon: '🎭', tickerLabel: 'Trending',
+    name: 'CULTURE DRIVE', color: '#c8102e', icon: 'ð­', tickerLabel: 'Trending',
     filters: ['all','music','culture','street','entertainment','news'],
     filterLabels: {all:'All',music:'Music',culture:'Culture',street:'Street',entertainment:'Entertainment',news:'News'},
     feeds: [
@@ -1254,7 +1254,7 @@ var DRIVE_CHANNELS = {
     ]
   },
   sports: {
-    name: 'SPORTS DRIVE', color: '#e8a100', icon: '🏆', tickerLabel: 'Live',
+    name: 'SPORTS DRIVE', color: '#e8a100', icon: 'ð', tickerLabel: 'Live',
     filters: ['all','nba','nfl','mlb','nhl','golf','betting','general'],
     filterLabels: {all:'All',nba:'NBA',nfl:'NFL',mlb:'MLB',nhl:'NHL',golf:'Golf',betting:'Betting',general:'General'},
     feeds: [
@@ -1281,7 +1281,7 @@ var DRIVE_CHANNELS = {
     ]
   },
   fashion: {
-    name: 'FASHION DRIVE', color: '#e8c4d0', icon: '👔', tickerLabel: 'Drops',
+    name: 'FASHION DRIVE', color: '#e8c4d0', icon: 'ð', tickerLabel: 'Drops',
     filters: ['all','editorial','luxury','runway','streetwear','sneakers','athleisure','celebrity','news'],
     filterLabels: {all:'All',editorial:'Editorial',luxury:'Luxury',runway:'Runway',streetwear:'Streetwear',sneakers:'Sneakers',athleisure:'Athleisure',celebrity:'Celebrity',news:'News'},
     feeds: [
@@ -1307,7 +1307,7 @@ var DRIVE_CHANNELS = {
     ]
   },
   nightlife: {
-    name: 'NIGHTLIFE DRIVE', color: '#d946a8', icon: '🌃', tickerLabel: 'Scene',
+    name: 'NIGHTLIFE DRIVE', color: '#d946a8', icon: 'ð', tickerLabel: 'Scene',
     filters: ['all','miami','nyc','houston','la','scottsdale','vegas','chicago','tampa','austin'],
     filterLabels: {all:'All',miami:'Miami',nyc:'NYC',houston:'Houston',la:'LA',scottsdale:'Scottsdale',vegas:'Vegas',chicago:'Chicago',tampa:'Tampa',austin:'Austin'},
     feeds: [
@@ -1339,7 +1339,7 @@ var DRIVE_CHANNELS = {
     ]
   },
   finance: {
-    name: 'FINANCE DRIVE', color: '#00c27a', icon: '💰', tickerLabel: 'Markets',
+    name: 'FINANCE DRIVE', color: '#00c27a', icon: 'ð°', tickerLabel: 'Markets',
     filters: ['all','stocks','crypto','etf','trading','economy','general'],
     filterLabels: {all:'All',stocks:'Stocks',crypto:'Crypto',etf:'ETFs',trading:'Trading',economy:'Economy',general:'General'},
     feeds: [
@@ -1365,7 +1365,7 @@ var DRIVE_CHANNELS = {
     ]
   },
   beverage: {
-    name: 'BEVERAGE DRIVE', color: '#c8820a', icon: '🥂', tickerLabel: 'Pours',
+    name: 'BEVERAGE DRIVE', color: '#c8820a', icon: 'ð¥', tickerLabel: 'Pours',
     filters: ['all','whiskey','tequila','wine','beer','rtd','industry','deals','insights'],
     filterLabels: {all:'All',whiskey:'Whiskey',tequila:'Tequila',wine:'Wine',beer:'Beer',rtd:'RTD',industry:'Industry',deals:'Deals',insights:'Insights'},
     feeds: [
@@ -1392,7 +1392,7 @@ var DRIVE_CHANNELS = {
     ]
   },
   aviation: {
-    name: 'AVIATION DRIVE', color: '#00aaff', icon: '✈️', tickerLabel: 'ATC',
+    name: 'AVIATION DRIVE', color: '#00aaff', icon: 'âï¸', tickerLabel: 'ATC',
     filters: ['all','commercial','military','generalav','space','industry','training','tech'],
     filterLabels: {all:'All',commercial:'Commercial',military:'Military',generalav:'General Aviation',space:'Space',industry:'Industry',training:'Training',tech:'Tech'},
     feeds: [
@@ -1419,7 +1419,7 @@ var DRIVE_CHANNELS = {
     ]
   },
   gaming: {
-    name: 'GAMING DRIVE', color: '#7b5cf0', icon: '🎮', tickerLabel: 'Now Playing',
+    name: 'GAMING DRIVE', color: '#7b5cf0', icon: 'ð®', tickerLabel: 'Now Playing',
     filters: ['all','ps5','xbox','pc','nintendo','arcade','handheld','multiplayer'],
     filterLabels: {all:'All',ps5:'PS5',xbox:'Xbox',pc:'PC',nintendo:'Nintendo',arcade:'Arcade',handheld:'Handheld',multiplayer:'Multiplayer'},
     feeds: [
@@ -1499,7 +1499,7 @@ function openDriveChannel(channelId) {
       .catch(function(){})
       .finally(function(){
         loaded++;
-        document.getElementById('df-status').textContent = 'Loading feeds — ' + loaded + '/' + ch.feeds.length + ' connected';
+        document.getElementById('df-status').textContent = 'Loading feeds â ' + loaded + '/' + ch.feeds.length + ' connected';
         driveRender();
         if(loaded === ch.feeds.length) {
           document.getElementById('df-status').textContent = driveState.articles.length + ' articles from ' + loaded + ' sources';
@@ -1538,7 +1538,7 @@ function driveRender() {
   var seen = {}; sorted = sorted.filter(function(a){ if(seen[a.title]) return false; seen[a.title]=1; return true; });
 
   if(sorted.length === 0) {
-    grid.innerHTML = '<div class="df-empty">No articles yet — feeds loading...</div>';
+    grid.innerHTML = '<div class="df-empty">No articles yet â feeds loading...</div>';
     return;
   }
   var f = sorted[0], s1 = sorted[1], s2 = sorted[2], rest = sorted.slice(3);
@@ -1587,10 +1587,10 @@ function driveStripHtml(html) {
   return d.textContent || '';
 }
 
-// ── CLASSIFIEDS / THE PLUG ────────────────────────────────────
+// ââ CLASSIFIEDS / THE PLUG ââââââââââââââââââââââââââââââââââââ
 var SB_URL  = 'https://prhoinuqnrwbqezemwux.supabase.co';
 var SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByaG9pbnVxbnJ3YnFlemVtd3V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4ODgyNDAsImV4cCI6MjA4OTQ2NDI0MH0.PxLnp_iQkGXffF3mHPUhCUnCzjBFjFz_RszCg_lV7S0';
-// ^ Go to: Supabase Dashboard → Project Settings → API → anon/public key
+// ^ Go to: Supabase Dashboard â Project Settings â API â anon/public key
 
 var CL_LABELS = {
   gigs:'Gigs / Services', events:'Events', jobs:'Jobs / Collabs',
@@ -1669,7 +1669,7 @@ async function loadClassifieds() {
     feedGrid.style.display = 'grid';
 
   } catch(e) {
-    feedLoading.innerHTML = '<div style="color:var(--red);font-size:12px">Could not load listings — check Supabase anon key</div>';
+    feedLoading.innerHTML = '<div style="color:var(--red);font-size:12px">Could not load listings â check Supabase anon key</div>';
     console.error('Classifieds load error:', e);
   }
 }
@@ -1714,8 +1714,8 @@ async function renderAdminList() {
         '</div>' +
         '<div style="font-size:11px;color:var(--dim);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + escCl((item.description||'').substring(0,100)) + ((item.description||'').length>100?'...':'') + '</div>' +
         '<div style="font-size:10px;color:var(--muted);font-family:var(--font-m)">' +
-          (item.poster ? 'by ' + escCl(item.poster) + ' · ' : '') +
-          (item.contact ? escCl(item.contact) + ' · ' : '') + date +
+          (item.poster ? 'by ' + escCl(item.poster) + ' Â· ' : '') +
+          (item.contact ? escCl(item.contact) + ' Â· ' : '') + date +
         '</div>';
 
       var btn = document.createElement('button');
@@ -1811,7 +1811,7 @@ async function clSubmit() {
     });
 
     msg.style.color = 'var(--green)';
-    msg.textContent = '✓ Posted! Reloading feed...';
+    msg.textContent = 'â Posted! Reloading feed...';
 
     setTimeout(function(){
       msg.textContent = '';
@@ -1821,11 +1821,11 @@ async function clSubmit() {
 
   } catch(e) {
     msg.style.color = 'var(--red)';
-    msg.textContent = 'Post failed — check Supabase key.';
+    msg.textContent = 'Post failed â check Supabase key.';
     console.error(e);
   } finally {
     btn.disabled    = false;
-    btn.textContent = 'Post Listing →';
+    btn.textContent = 'Post Listing â';
   }
 }
 
@@ -1835,9 +1835,9 @@ function escCl(str) {
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ══════════════════════════════════════════════════════════════
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 // COMMUNITY CRM
-// ══════════════════════════════════════════════════════════════
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 var SB_URL2  = 'https://prhoinuqnrwbqezemwux.supabase.co';
 var SB_ANON2 = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByaG9pbnVxbnJ3YnFlemVtd3V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4ODgyNDAsImV4cCI6MjA4OTQ2NDI0MH0.PxLnp_iQkGXffF3mHPUhCUnCzjBFjFz_RszCg_lV7S0';
 
@@ -1855,7 +1855,7 @@ function tAgo(ds) {
 }
 function initials(n) { return String(n||'?').split(' ').map(function(x){return x[0]||'';}).join('').slice(0,2).toUpperCase(); }
 
-// ── MEMBER DIRECTORY ─────────────────────────────────────────
+// ââ MEMBER DIRECTORY âââââââââââââââââââââââââââââââââââââââââ
 var allMembers = [];
 
 async function loadDirectory() {
@@ -1892,7 +1892,7 @@ function renderDirectory(members) {
       '</div>'+
       (m.industry?'<div style="font-size:10px;color:var(--gold);font-family:var(--font-m)">'+escC(m.industry)+'</div>':'')+
       (m.bio?'<div class="mem-bio">'+escC(m.bio)+'</div>':'')+
-      (m.location?'<div style="font-size:10px;color:var(--muted);font-family:var(--font-m)">📍 '+escC(m.location)+'</div>':'')+
+      (m.location?'<div style="font-size:10px;color:var(--muted);font-family:var(--font-m)">ð '+escC(m.location)+'</div>':'')+
       (soc.length?'<div class="mem-socials">'+soc.map(function(s){return '<span class="mem-social-tag">'+s+'</span>';}).join('')+'</div>':'')+
       '<button onclick="event.stopPropagation();startMessageWith(\''+m.wix_member_id+'\',\''+escC(m.full_name||m.handle||'Member')+'\')" style="font-size:10px;padding:4px 10px;background:var(--bg4);border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-family:var(--font-m)">Message</button>'+
     '</div>';
@@ -1919,7 +1919,7 @@ function openMemberProfile(id) {
   if(m.website) sLinks += '<a href="'+m.website+'" target="_blank" style="font-size:11px;font-family:var(--font-m);color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:4px 10px;border-radius:10px;text-decoration:none">Website</a>';
   var html = '<div class="prof-modal-overlay open" id="prof-modal" onclick="if(event.target===this)closeProfModal()">'+
     '<div class="prof-modal">'+
-      '<button class="prof-modal-close" onclick="closeProfModal()">×</button>'+
+      '<button class="prof-modal-close" onclick="closeProfModal()">Ã</button>'+
       '<div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">'+
         '<div class="mem-avatar" style="width:56px;height:56px;font-size:22px">'+initials(m.full_name||m.handle)+'</div>'+
         '<div><div style="font-family:var(--font-d);font-size:22px;letter-spacing:.05em">'+escC(m.full_name||'Member')+'</div>'+
@@ -1946,7 +1946,7 @@ function openEditProfile() {
       var p = data[0]||{};
       var html = '<div class="prof-modal-overlay open" id="edit-prof-modal" onclick="if(event.target===this)closeEditProfile()">'+
         '<div class="prof-modal" style="max-width:620px">'+
-          '<button class="prof-modal-close" onclick="closeEditProfile()">×</button>'+
+          '<button class="prof-modal-close" onclick="closeEditProfile()">Ã</button>'+
           '<div style="font-family:var(--font-d);font-size:22px;letter-spacing:.05em;margin-bottom:18px">MY PROFILE</div>'+
           '<div class="profile-form-grid">'+
             '<div class="pf-group"><label>Full Name</label><input id="ep-name" type="text" value="'+escC(p.full_name||'')+'" placeholder="Your full name"/></div>'+
@@ -1997,7 +1997,7 @@ async function saveMyProfile() {
     if(!updated||updated.length===0) {
       await fetch(SB_URL2+'/rest/v1/member_profiles', {method:'POST',headers:sbH2(),body:JSON.stringify(payload)});
     }
-    if(msg){msg.style.color='var(--green)';msg.textContent='✓ Profile saved!';}
+    if(msg){msg.style.color='var(--green)';msg.textContent='â Profile saved!';}
     setTimeout(function(){closeEditProfile();loadDirectory();},1200);
   } catch(e) {
     if(msg){msg.style.color='var(--red)';msg.textContent='Save failed.';}
@@ -2006,7 +2006,7 @@ async function saveMyProfile() {
   }
 }
 
-// ── INBOX ─────────────────────────────────────────────────────
+// ââ INBOX âââââââââââââââââââââââââââââââââââââââââââââââââââââ
 var activeThreadId = null;
 var activeThreadRecipient = null;
 
@@ -2078,7 +2078,7 @@ async function loadThreadMessages(threadId) {
       var isMine = m.sender_id===WIX_MEMBER_ID;
       return '<div style="display:flex;flex-direction:column;align-items:'+(isMine?'flex-end':'flex-start')+'">'+
         '<div class="msg-bubble '+(isMine?'sent':'recv')+'">'+escC(m.body)+'</div>'+
-        '<div class="msg-meta">'+escC(m.sender_name||'Member')+' · '+tAgo(m.created_at)+'</div>'+
+        '<div class="msg-meta">'+escC(m.sender_name||'Member')+' Â· '+tAgo(m.created_at)+'</div>'+
       '</div>';
     }).join('');
     msgsEl.scrollTop = msgsEl.scrollHeight;
@@ -2135,7 +2135,7 @@ async function startMessageWith(recipientId, recipientName) {
 function openNewMessage() {
   var html = '<div class="prof-modal-overlay open" id="new-msg-modal" onclick="if(event.target===this)closeNewMessage()">'+
     '<div class="prof-modal" style="max-width:440px">'+
-      '<button class="prof-modal-close" onclick="closeNewMessage()">×</button>'+
+      '<button class="prof-modal-close" onclick="closeNewMessage()">Ã</button>'+
       '<div style="font-family:var(--font-d);font-size:20px;letter-spacing:.05em;margin-bottom:16px">NEW MESSAGE</div>'+
       '<div style="font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px">To</div>'+
       '<select id="nm-recipient" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none;margin-bottom:12px">'+
@@ -2173,7 +2173,7 @@ async function sendNewMessage() {
   closeNewMessage();
 }
 
-// ── FORUM ─────────────────────────────────────────────────────
+// ââ FORUM âââââââââââââââââââââââââââââââââââââââââââââââââââââ
 var forumFilter = 'all';
 var activeForum = null;
 
@@ -2200,12 +2200,12 @@ function renderForumPosts(posts) {
     return '<div class="forum-post-card'+(p.is_pinned?' pinned':'')+'" onclick="openForumThread(\''+p.id+'\')">'+
       '<div class="fp-top">'+
         '<span class="fp-cat-tag">'+escC(p.category)+'</span>'+
-        (p.is_pinned?'<span class="fp-pin">📌 Pinned</span>':'')+
+        (p.is_pinned?'<span class="fp-pin">ð Pinned</span>':'')+
       '</div>'+
       '<div class="fp-title">'+escC(p.title)+'</div>'+
       '<div class="fp-preview">'+escC(p.body)+'</div>'+
       '<div class="fp-footer">'+
-        '<span class="fp-author">'+escC(p.author_name||'Member')+(p.author_handle?' · @'+escC(p.author_handle):'')+'</span>'+
+        '<span class="fp-author">'+escC(p.author_name||'Member')+(p.author_handle?' Â· @'+escC(p.author_handle):'')+'</span>'+
         '<span class="fp-replies">'+p.reply_count+' '+(p.reply_count===1?'reply':'replies')+'</span>'+
         '<span class="fp-time">'+tAgo(p.created_at)+'</span>'+
       '</div>'+
@@ -2238,23 +2238,23 @@ async function openForumThread(postId) {
       '<div class="forum-post-card" style="margin-bottom:16px">'+
         '<div class="fp-top">'+
           '<span class="fp-cat-tag">'+escC(p.category)+'</span>'+
-          (p.is_pinned?'<span class="fp-pin">📌 Pinned</span>':'')+
+          (p.is_pinned?'<span class="fp-pin">ð Pinned</span>':'')+
           (isAdmin?'<button onclick="deleteForumPost(\''+p.id+'\')" style="margin-left:auto;font-size:10px;padding:3px 8px;background:var(--red-lo);border:1px solid var(--red-border);border-radius:4px;color:var(--red);cursor:pointer;font-family:var(--font-m)">Delete Post</button>':'')+
           (isAdmin?'<button onclick="togglePin(\''+p.id+'\','+(!p.is_pinned)+')" style="font-size:10px;padding:3px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-family:var(--font-m)">'+(p.is_pinned?'Unpin':'Pin')+'</button>':'')+
         '</div>'+
         '<div style="font-family:var(--font-d);font-size:24px;letter-spacing:.03em;margin-bottom:10px">'+escC(p.title)+'</div>'+
         '<div style="font-size:13px;color:var(--dim);line-height:1.7;white-space:pre-wrap">'+escC(p.body)+'</div>'+
         '<div class="fp-footer" style="margin-top:14px">'+
-          '<span class="fp-author">'+escC(p.author_name||'Member')+(p.author_handle?' · @'+escC(p.author_handle):'')+'</span>'+
+          '<span class="fp-author">'+escC(p.author_name||'Member')+(p.author_handle?' Â· @'+escC(p.author_handle):'')+'</span>'+
           '<span class="fp-time">'+tAgo(p.created_at)+'</span>'+
         '</div>'+
       '</div>'+
       '<div style="font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">'+replies.length+' '+(replies.length===1?'Reply':'Replies')+'</div>'+
-      (replies.length===0?'<div style="padding:20px;text-align:center;font-size:12px;color:var(--muted)">No replies yet — be the first!</div>':
+      (replies.length===0?'<div style="padding:20px;text-align:center;font-size:12px;color:var(--muted)">No replies yet â be the first!</div>':
         replies.map(function(r) {
           return '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px">'+
             '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px">'+
-              '<span style="font-size:12px;font-weight:600;color:var(--text)">'+escC(r.author_name||'Member')+(r.author_handle?' · <span style="color:var(--dim);font-family:var(--font-m)">@'+escC(r.author_handle)+'</span>':'')+'</span>'+
+              '<span style="font-size:12px;font-weight:600;color:var(--text)">'+escC(r.author_name||'Member')+(r.author_handle?' Â· <span style="color:var(--dim);font-family:var(--font-m)">@'+escC(r.author_handle)+'</span>':'')+'</span>'+
               '<div style="display:flex;align-items:center;gap:8px">'+
                 '<span style="font-size:10px;color:var(--muted);font-family:var(--font-m)">'+tAgo(r.created_at)+'</span>'+
                 (isAdmin?'<button onclick="deleteForumReply(\''+r.id+'\')" style="font-size:10px;padding:2px 7px;background:var(--red-lo);border:1px solid var(--red-border);border-radius:4px;color:var(--red);cursor:pointer;font-family:var(--font-m)">Delete</button>':'')+
@@ -2293,7 +2293,7 @@ async function submitReply() {
       body: JSON.stringify({reply_count: 999}) // Will fix with RPC if needed
     });
     document.getElementById('forum-reply-input').value = '';
-    if(msgEl){msgEl.style.color='var(--green)';msgEl.textContent='✓ Reply posted!';}
+    if(msgEl){msgEl.style.color='var(--green)';msgEl.textContent='â Reply posted!';}
     setTimeout(function(){if(msgEl)msgEl.textContent='';openForumThread(activeForum);},1000);
   } catch(e) { if(msgEl){msgEl.style.color='var(--red)';msgEl.textContent='Failed to post reply.';} }
 }
@@ -2301,7 +2301,7 @@ async function submitReply() {
 function openNewPost() {
   var html = '<div class="prof-modal-overlay open" id="new-post-modal" onclick="if(event.target===this)closeNewPost()">'+
     '<div class="prof-modal" style="max-width:560px">'+
-      '<button class="prof-modal-close" onclick="closeNewPost()">×</button>'+
+      '<button class="prof-modal-close" onclick="closeNewPost()">Ã</button>'+
       '<div style="font-family:var(--font-d);font-size:22px;letter-spacing:.05em;margin-bottom:18px">NEW POST</div>'+
       '<div class="pf-group pf-full" style="margin-bottom:12px"><label>Category</label>'+
         '<select id="np-cat" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none">'+
@@ -2355,7 +2355,7 @@ async function togglePin(id, pinState) {
   openForumThread(id);
 }
 
-// ── MEMBERS CRM (Admin) ────────────────────────────────────────
+// ââ MEMBERS CRM (Admin) ââââââââââââââââââââââââââââââââââââââââ
 var allCRMMembers = [];
 
 async function loadMembersCRM() {
@@ -2376,7 +2376,7 @@ async function loadMembersCRM() {
 function renderCRMMembers(members) {
   var rows = document.getElementById('crm-mem-rows');
   if(!members||members.length===0) {
-    rows.innerHTML = '<div style="padding:20px;text-align:center;font-size:12px;color:var(--dim)">No members yet — members appear here when they fill out their profile.</div>';
+    rows.innerHTML = '<div style="padding:20px;text-align:center;font-size:12px;color:var(--dim)">No members yet â members appear here when they fill out their profile.</div>';
     return;
   }
   rows.innerHTML = members.map(function(m) {
@@ -2387,8 +2387,8 @@ function renderCRMMembers(members) {
         '<div style="font-size:12px;font-weight:600;color:var(--text)">'+escC(m.full_name||'Member')+'</div>'+
         '<div style="font-size:10px;color:var(--dim);font-family:var(--font-m)">'+(m.handle?'@'+escC(m.handle):'')+'</div>'+
       '</div>'+
-      '<div style="font-size:11px;color:var(--dim)">'+escC(m.location||'—')+'</div>'+
-      '<div style="font-size:11px;color:var(--gold)">'+escC(m.industry||'—')+'</div>'+
+      '<div style="font-size:11px;color:var(--dim)">'+escC(m.location||'â')+'</div>'+
+      '<div style="font-size:11px;color:var(--gold)">'+escC(m.industry||'â')+'</div>'+
       '<div>'+tags+'</div>'+
       '<div style="display:flex;gap:5px">'+
         '<button onclick="openCRMNotes(\''+m.id+'\',\''+escC(m.full_name||'Member')+'\')" style="font-size:10px;padding:3px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-family:var(--font-m)">Notes</button>'+
@@ -2411,7 +2411,7 @@ function openCRMNotes(id, name) {
   if(!m) return;
   var html = '<div class="prof-modal-overlay open" id="notes-modal" onclick="if(event.target===this)closeNotesModal()">'+
     '<div class="prof-modal" style="max-width:440px">'+
-      '<button class="prof-modal-close" onclick="closeNotesModal()">×</button>'+
+      '<button class="prof-modal-close" onclick="closeNotesModal()">Ã</button>'+
       '<div style="font-family:var(--font-d);font-size:20px;letter-spacing:.05em;margin-bottom:4px">'+escC(name)+'</div>'+
       '<div style="font-size:10px;color:var(--dim);margin-bottom:16px">Admin Notes</div>'+
       '<textarea id="notes-input" placeholder="Add private notes about this member..." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 11px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none;resize:vertical;min-height:120px;margin-bottom:12px">'+escC(m.admin_notes||'')+'</textarea>'+
@@ -2428,7 +2428,7 @@ async function saveNotes(id) {
   var msg = document.getElementById('notes-msg');
   try {
     await fetch(SB_URL2+'/rest/v1/member_profiles?id=eq.'+id, {method:'PATCH',headers:sbH2(),body:JSON.stringify({admin_notes:notes})});
-    if(msg){msg.style.color='var(--green)';msg.textContent='✓ Saved!';}
+    if(msg){msg.style.color='var(--green)';msg.textContent='â Saved!';}
     // Update local data
     var m = allCRMMembers.find(function(x){return x.id===id;});
     if(m) m.admin_notes = notes;
