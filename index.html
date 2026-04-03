@@ -467,17 +467,12 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
   </div>
 
   <!-- OVERVIEW / INTELLIGENCE BOARD -->
-  <div class="page active" id="pg-overview">
-    <div id="pg-greeting" style="padding:18px 24px 0 24px;display:flex;align-items:baseline;gap:10px">
-      <span id="greeting-text" style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.06em;color:#E8E4DF">GOOD MORNING,</span>
-      <span id="greeting-name" style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.06em;color:#D63030">REP</span>
+  <div class="page active" id="pg-overview" style="padding:0;display:flex;flex-direction:column">
+    <div id="pg-greeting" style="padding:14px 24px 0;display:flex;align-items:baseline;gap:7px;flex-shrink:0">
+      <span id="greeting-time" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.07em;color:#807C78">GOOD MORNING,</span>
+      <span id="greeting-name" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.07em;color:#D63030">...</span>
     </div>
-    <iframe 
-      src="https://dexaintdead.github.io/cpd-intelligence/" 
-      id="intel-frame"
-      style="width:100%;height:calc(100vh - 94px);border:none;display:block;margin-top:0"
-      frameborder="0">
-    </iframe>
+    <iframe id="intel-frame" src="https://dexaintdead.github.io/cpd-intelligence/" style="flex:1;width:100%;border:none;display:block;min-height:0;margin-top:6px" frameborder="0"></iframe>
   </div>
 
   <!-- EARNINGS -->
@@ -975,12 +970,11 @@ function loadOverview() {
       // Sidebar
       document.getElementById('sb-name').textContent = data.rep.full_name;
 
-      // Update overview greeting
-      var _h = new Date().getHours();
-      var _g = _h < 12 ? 'GOOD MORNING,' : _h < 17 ? 'GOOD AFTERNOON,' : 'GOOD EVENING,';
-      var _fn = data.rep.full_name ? data.rep.full_name.split(' ')[0].toUpperCase() : 'REP';
-      document.getElementById('greeting-text').textContent = _g;
-      document.getElementById('greeting-name').textContent = _fn;
+      // Dashboard greeting
+      var _hr=new Date().getHours();var _gt=_hr<12?'GOOD MORNING,':_hr<17?'GOOD AFTERNOON,':'GOOD EVENING,';
+      var _nm=(data.rep&&data.rep.full_name)?data.rep.full_name.split(' ')[0].toUpperCase():'REP';
+      if(document.getElementById('greeting-time'))document.getElementById('greeting-time').textContent=_gt;
+      if(document.getElementById('greeting-name'))document.getElementById('greeting-name').textContent=_nm;
       document.getElementById('sb-avatar').textContent = data.rep.full_name.split(' ').map(function(n){ return n[0]; }).join('').slice(0,2).toUpperCase();
       document.getElementById('sb-tier').textContent = '★ ' + (data.rep.tier || 'Rep').replace('_',' ');
       document.getElementById('ov-welcome').textContent = data.rep.full_name.toUpperCase() + ' — ' + new Date().toLocaleString('en-US',{month:'long',year:'numeric'}).toUpperCase();
