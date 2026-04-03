@@ -367,6 +367,9 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <button class="nav-i" onclick="showPage('earnings',this)">
       <svg viewBox="0 0 14 14" fill="currentColor"><path d="M7 1a6 6 0 100 12A6 6 0 007 1zm1 8.5H6V6.5h2V9.5zm0-4H6V4h2v1.5z"/></svg>Earnings & Payouts
     </button>
+    <button class="nav-i" onclick="showPage('referrals',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M7 1l1.5 4h4L9.5 7.5 11 12 7 9.5 3 12l1.5-4.5L1.5 5h4z"/></svg>Referral Tracker
+    </button>
     <div class="s-sec">Sales</div>
     <button class="nav-i" onclick="showPage('catalog',this)">
       <svg viewBox="0 0 14 14" fill="currentColor"><path d="M1 1h4v4H1V1zm0 8h4v4H1V9zm8-8h4v4H9V1zm0 8h4v4H9V9z"/></svg>Product Catalog
@@ -393,6 +396,9 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <div class="s-sec">Community</div>
     <button class="nav-i" onclick="showPage('classifieds',this)">
       <svg viewBox="0 0 14 14" fill="currentColor"><path d="M1 1h12v2H1V1zm0 4h8v1H1V5zm0 3h12v2H1V8zm0 4h6v1H1v-1z"/></svg>The Plug
+    </button>
+    <button class="nav-i" onclick="showPage('classifieds_board',this)">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M1 2h12v1H1V2zm0 3h10v1H1V5zm0 3h12v1H1V8zm0 3h8v1H1v-1z"/></svg>Classifieds
     </button>
     <button class="nav-i" onclick="showPage('directory',this)">
       <svg viewBox="0 0 14 14" fill="currentColor"><path d="M5 7a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm-4 5c0-2.2 1.8-4 4-4s4 1.8 4 4H1zm8-9h4v1.5H9V3zm0 3h3v1.5H9V6zm0 3h4v1.5H9V9z"/></svg>Directory
@@ -474,10 +480,8 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 
   <!-- BRANDS -->
   <div class="page" id="pg-brands">
-    <div class="panel">
-      <div class="ph"><span class="ph-title">Brand partners & intel</span><span style="font-size:11px;color:var(--dim)">Click any brand for full brief</span></div>
-      <div id="brand-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading brands...</div></div>
-      <div id="brand-list" style="display:none"></div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;height:calc(100vh - 40px);">
+      <iframe src="https://dexaintdead.github.io/cpd-brand-intel/" style="width:100%;height:100%;border:none;display:block;" title="Brand Intel" loading="lazy"></iframe>
     </div>
   </div>
 
@@ -594,6 +598,13 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     </div>
   </div>
 
+
+  <!-- REFERRAL TRACKER -->
+  <div class="page" id="pg-referrals">
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;height:calc(100vh - 40px);">
+      <iframe id="referrals-frame" src="" style="width:100%;height:100%;border:none;display:block;" title="Referral Tracker" loading="lazy"></iframe>
+    </div>
+  </div>
 <div class="page" id="pg-team">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
       <div style="font-family:var(--font-d);font-size:20px;letter-spacing:.06em">MY TEAM</div>
@@ -700,6 +711,13 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 
   </div>
 
+
+  <!-- CLASSIFIEDS BOARD -->
+  <div class="page" id="pg-classifieds_board">
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;height:calc(100vh - 40px);">
+      <iframe id="classifieds-frame" src="" style="width:100%;height:100%;border:none;display:block;" title="Classifieds" loading="lazy"></iframe>
+    </div>
+  </div>
   <!-- ═══ MEMBER DIRECTORY ═══ -->
   <div class="page" id="pg-directory">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
@@ -868,7 +886,7 @@ function showPage(id, btn) {
   document.querySelectorAll('.nav-i').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById('pg-' + id).classList.add('active');
   if(btn) btn.classList.add('active');
-  var titles = {overview:'DASHBOARD',earnings:'EARNINGS & PAYOUTS',catalog:'PRODUCT CATALOG',crm:'PIPELINE / CRM',brands:'BRAND INTEL',scanner:'CULTURE SCANNER',brief:'BLACKBOOK BRIEF',drive:'CPD DRIVE',team:'MY TEAM',classifieds:'THE PLUG — CLASSIFIEDS',directory:'MEMBER DIRECTORY',inbox:'INBOX',forum:'FORUM',members_crm:'MEMBERS CRM'};
+  var titles = {overview:'DASHBOARD',earnings:'EARNINGS & PAYOUTS',referrals:'REFERRAL TRACKER',catalog:'PRODUCT CATALOG',crm:'PIPELINE / CRM',brands:'BRAND INTEL',scanner:'CULTURE SCANNER',brief:'BLACKBOOK BRIEF',drive:'CPD DRIVE',team:'MY TEAM',classifieds:'THE PLUG — CLASSIFIEDS',classifieds_board:'CLASSIFIEDS',directory:'MEMBER DIRECTORY',inbox:'INBOX',forum:'FORUM',members_crm:'MEMBERS CRM'};
   document.getElementById('page-title').textContent = titles[id] || 'DASHBOARD';
   if(id === 'catalog' && allProducts.length === 0) loadCatalog();
   if(id === 'crm') loadCRM();
@@ -880,6 +898,8 @@ function showPage(id, btn) {
   if(id === 'inbox') loadInbox();
   if(id === 'forum') loadForum();
   if(id === 'members_crm') loadMembersCRM();
+  if(id === 'referrals') loadReferralsFrame();
+  if(id === 'classifieds_board') loadClassifiedsFrame();
 }
 
 // ── FETCH HELPER ─────────────────────────────────────────────
@@ -1024,19 +1044,21 @@ function showAddLead() {
 var brandsData = [];
 
 function loadBrands() {
-  document.getElementById('brand-loading').style.display = 'flex';
-  document.getElementById('brand-list').style.display = 'none';
+  // Brand Intel now served via iframe
+}
 
-  api('/brands').then(function(brands) {
-    brandsData = brands || [];
-    var listEl = document.getElementById('brand-list');
-    listEl.innerHTML = brands.map(function(b, i) {
-      var maxComm = b.products && b.products.length ? Math.max.apply(null, b.products.map(function(p){ return p.commission_pct; })) : 0;
-      return '<div class="brand-row" onclick="openBrand(' + i + ')"><div class="brand-logo" style="background:' + (b.logo_bg||'#1A1A1A') + ';color:' + (b.logo_color||'#fff') + '">' + (b.logo_initials||'?') + '</div><div><div class="brand-name">' + b.name + '</div><div class="brand-cat-tag">' + (b.category||'') + '</div></div><div style="text-align:right"><div class="bcr-pct">' + maxComm + '%</div><div class="bcr-lbl">commission</div></div></div>';
-    }).join('');
-    document.getElementById('brand-loading').style.display = 'none';
-    document.getElementById('brand-list').style.display = 'block';
-  }).catch(function(e){ showError('brand-loading', e.message); });
+function loadReferralsFrame() {
+  var frame = document.getElementById('referrals-frame');
+  if (frame && !frame.src.includes('cpd-referrals')) {
+    frame.src = 'https://dexaintdead.github.io/cpd-referrals/' + (WIX_MEMBER_ID ? '?member_id=' + WIX_MEMBER_ID : '');
+  }
+}
+
+function loadClassifiedsFrame() {
+  var frame = document.getElementById('classifieds-frame');
+  if (frame && !frame.src.includes('cpd-classifieds')) {
+    frame.src = 'https://dexaintdead.github.io/cpd-classifieds/';
+  }
 }
 
 function openBrand(i) {
@@ -2322,4 +2344,3 @@ window.driveState = { channel: null, filter: 'all', articles: [] };
 </script>
 </body>
 </html>
-
