@@ -885,7 +885,7 @@ var repSlug = '';
 document.getElementById('tb-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
 
 // Load dashboard on start
-loadOverview();
+try { loadOverview(); } catch(e) { console.log('Overview skipped:', e.message); }
 
 // ── NAV ──────────────────────────────────────────────────────
 function showPage(id, btn) {
