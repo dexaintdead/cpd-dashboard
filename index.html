@@ -716,7 +716,10 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
         <div style="font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Community</div>
         <div style="font-family:var(--font-d);font-size:22px;letter-spacing:.06em">MEMBER DIRECTORY</div>
       </div>
-      <button onclick="openEditProfile()" style="padding:8px 18px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:11px;cursor:pointer;letter-spacing:.04em">Edit My Profile</button>
+      <div style="display:flex;gap:8px">
+        <button onclick="viewMyProfile()" style="padding:8px 18px;background:none;border:1px solid var(--border2);border-radius:6px;color:var(--dim);font-family:var(--font-m);font-size:11px;cursor:pointer;letter-spacing:.04em">View My Profile</button>
+        <button onclick="openEditProfile()" style="padding:8px 18px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:11px;cursor:pointer;letter-spacing:.04em">Edit My Profile</button>
+      </div>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
       <input id="dir-search" type="text" placeholder="Search members..." oninput="filterDirectory()" style="flex:1;max-width:320px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-size:12px;font-family:var(--font-b);outline:none"/>
@@ -1651,7 +1654,51 @@ function openEditProfile() {
 
 function closeEditProfile() { var m=document.getElementById('edit-prof-modal'); if(m) m.remove(); }
 
-async function saveMyProfile() {
+function viewMyProfile() {
+  fetch(SB_URL2+'/rest/v1/member_profiles?wix_member_id=eq.'+WIX_MEMBER_ID, {headers:sbH2()})
+    .then(function(r){return r.json();})
+    .then(function(data) {
+      var m = data[0];
+      if(!m) {
+        // No profile yet — prompt them to create one
+        var html = '<div class="prof-modal-overlay open" id="prof-modal" onclick="if(event.target===this)closeProfModal()">'+
+          '<div class="prof-modal" style="text-align:center;padding:40px">'+
+            '<button class="prof-modal-close" onclick="closeProfModal()">×</button>'+
+            '<div style="font-family:var(--font-d);font-size:22px;letter-spacing:.05em;margin-bottom:12px">NO PROFILE YET</div>'+
+            '<div style="font-size:12px;color:var(--dim);margin-bottom:20px">Click Edit My Profile to set up your listing in the directory.</div>'+
+            '<button onclick="closeProfModal();openEditProfile()" style="padding:10px 24px;background:var(--red);border:none;border-radius:6px;color:#fff;font-family:var(--font-m);font-size:12px;cursor:pointer">Set Up Profile →</button>'+
+          '</div></div>';
+        document.body.insertAdjacentHTML('beforeend', html);
+        return;
+      }
+      // Reuse openMemberProfile but pull from live fetch instead of allMembers cache
+      var sLinks = '';
+      if(m.instagram) sLinks += '<a href="https://instagram.com/'+m.instagram.replace('@','')+'" target="_blank" style="font-size:11px;font-family:var(--font-m);color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:4px 10px;border-radius:10px;text-decoration:none">IG @'+escC(m.instagram.replace('@',''))+'</a>';
+      if(m.twitter)   sLinks += '<a href="https://x.com/'+m.twitter.replace('@','')+'" target="_blank" style="font-size:11px;font-family:var(--font-m);color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:4px 10px;border-radius:10px;text-decoration:none">X @'+escC(m.twitter.replace('@',''))+'</a>';
+      if(m.tiktok)    sLinks += '<a href="https://tiktok.com/@'+m.tiktok.replace('@','')+'" target="_blank" style="font-size:11px;font-family:var(--font-m);color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:4px 10px;border-radius:10px;text-decoration:none">TK @'+escC(m.tiktok.replace('@',''))+'</a>';
+      if(m.linkedin)  sLinks += '<a href="'+m.linkedin+'" target="_blank" style="font-size:11px;font-family:var(--font-m);color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:4px 10px;border-radius:10px;text-decoration:none">LinkedIn</a>';
+      if(m.website)   sLinks += '<a href="'+m.website+'" target="_blank" style="font-size:11px;font-family:var(--font-m);color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:4px 10px;border-radius:10px;text-decoration:none">Website</a>';
+      var html = '<div class="prof-modal-overlay open" id="prof-modal" onclick="if(event.target===this)closeProfModal()">'+
+        '<div class="prof-modal">'+
+          '<button class="prof-modal-close" onclick="closeProfModal()">×</button>'+
+          '<div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">'+
+            '<div class="mem-avatar" style="width:56px;height:56px;font-size:22px">'+initials(m.full_name||m.handle)+'</div>'+
+            '<div><div style="font-family:var(--font-d);font-size:22px;letter-spacing:.05em">'+escC(m.full_name||'Member')+'</div>'+
+            '<div style="font-size:12px;color:var(--dim);font-family:var(--font-m)">'+(m.handle?'@'+escC(m.handle):'')+'</div></div>'+
+          '</div>'+
+          (m.bio?'<div style="font-size:13px;color:var(--dim);line-height:1.7;margin-bottom:16px;padding:12px;background:var(--bg3);border-radius:6px;border:1px solid var(--border)">'+escC(m.bio)+'</div>':'')+
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">'+
+            (m.location?'<div><div style="font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Location</div><div style="font-size:12px">'+escC(m.location)+'</div></div>':'')+
+            (m.industry?'<div><div style="font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Industry</div><div style="font-size:12px;color:var(--gold)">'+escC(m.industry)+'</div></div>':'')+
+            (m.skills?'<div style="grid-column:1/-1"><div style="font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Skills</div><div style="font-size:12px">'+escC(m.skills)+'</div></div>':'')+
+          '</div>'+
+          (sLinks?'<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">'+sLinks+'</div>':'')+
+          '<button onclick="closeProfModal();openEditProfile()" style="width:100%;padding:10px;background:none;border:1px solid var(--border2);border-radius:6px;color:var(--dim);font-family:var(--font-m);font-size:12px;cursor:pointer">Edit Profile</button>'+
+        '</div></div>';
+      document.body.insertAdjacentHTML('beforeend', html);
+    });
+}
+
   var btn = document.querySelector('#edit-prof-modal button[onclick="saveMyProfile()"]');
   var msg = document.getElementById('ep-msg');
   if(btn){btn.disabled=true;btn.textContent='Saving...';}
@@ -1668,7 +1715,7 @@ async function saveMyProfile() {
     tiktok: document.getElementById('ep-tk').value.trim().replace('@',''),
     linkedin: document.getElementById('ep-li').value.trim(),
     website: document.getElementById('ep-web').value.trim(),
-    updated_at: new Date().toISOString(), status: 'active'
+    status: 'active'
   };
   try {
     // Try update first, then insert
