@@ -596,18 +596,18 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
       <iframe id="referrals-frame" src="" style="width:100%;height:100%;border:none;display:block;" title="Referral Tracker" loading="lazy"></iframe>
     </div>
   </div>
-<div class="page" id="pg-team">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div style="font-family:var(--font-d);font-size:20px;letter-spacing:.06em">MY TEAM</div>
-      <button class="ph-action" style="padding:7px 14px;background:var(--red-lo);border:1px solid var(--red-border);border-radius:6px;color:var(--text)">+ Invite rep</button>
-    </div>
-    <div style="background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--blue);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--dim);line-height:1.6">
-      Team building is <span style="color:var(--text)">optional</span> — you earn a <span style="color:var(--green)">5% override</span> on every sale your team closes.
-    </div>
-    <div id="team-loading" class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading team...</div></div>
-    <div class="team-grid" id="team-grid" style="display:none"></div>
-    <div id="team-empty" style="display:none;text-align:center;padding:40px;color:var(--dim);font-size:13px">No team members yet. Invite your first rep to get started.</div>
+<!-- MY TEAM -->
+<div class="page" id="pg-team" style="padding:0">
+  <div style="height:100vh;overflow:hidden;">
+    <iframe
+      id="team-frame"
+      src=""
+      style="width:100%;height:100%;border:none;display:block;"
+      title="My Team"
+      loading="lazy"
+    ></iframe>
   </div>
+</div>
 
   <!-- THE PLUG — CLASSIFIEDS -->
   <div class="page" id="pg-classifieds">
@@ -1082,26 +1082,10 @@ function loadEarnings() {
 
 // ── TEAM ─────────────────────────────────────────────────────
 function loadTeam() {
-  document.getElementById('team-loading').style.display = 'flex';
-  document.getElementById('team-grid').style.display = 'none';
-  document.getElementById('team-empty').style.display = 'none';
-
-  api('/myTeam?wix_member_id=' + WIX_MEMBER_ID).then(function(team) {
-    document.getElementById('team-loading').style.display = 'none';
-    if(!team || team.length === 0) {
-      document.getElementById('team-empty').style.display = 'block';
-      return;
-    }
-    var grid = document.getElementById('team-grid');
-    grid.innerHTML = team.map(function(m) {
-      var initials = m.full_name.split(' ').map(function(n){ return n[0]; }).join('').slice(0,2).toUpperCase();
-      var e = m.earnings || {};
-      var since = new Date(m.joined_at).toLocaleDateString('en-US',{month:'short',year:'numeric'});
-      var override = ((e.total_commission_cents||0) * 0.05 / 100).toFixed(2);
-      return '<div class="team-card"><div class="tc-top"><div class="tc-avatar" style="background:var(--bg3);border:1px solid var(--border2)">' + initials + '</div><div><div class="tc-name">' + m.full_name + '</div><div class="tc-since">Since ' + since + '</div></div><div class="tc-status" style="background:' + (m.status==='active'?'var(--green)':'var(--muted)') + '"></div></div><div class="tc-stats"><div class="tc-stat"><div class="tc-stat-v">$' + ((e.total_commission_cents||0)/100).toFixed(0) + '</div><div class="tc-stat-l">Their earnings</div></div><div class="tc-stat"><div class="tc-stat-v">' + (e.total_sales||0) + '</div><div class="tc-stat-l">Sales closed</div></div></div><div class="tc-override">Your override: <span>$' + override + '</span> earned</div></div>';
-    }).join('');
-    grid.style.display = 'grid';
-  }).catch(function(e){ showError('team-loading', e.message); });
+  var frame = document.getElementById('team-frame');
+  if (frame && !frame.src.includes('cpd-team')) {
+    frame.src = 'https://dexaintdead.github.io/cpd-team/?member_id=' + WIX_MEMBER_ID;
+  }
 }
 
 // ── PAYOUT ───────────────────────────────────────────────────
