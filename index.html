@@ -1136,7 +1136,17 @@ function copyMainLink() {
 }
 
 function copyProdLink(slug, btn) {
-  var url = 'https://cpdblackbook.com/s/' + repSlug + '/' + slug;
+  // Use repSlug if loaded, otherwise fall back to WIX_MEMBER_ID as the ref param
+  var url;
+  if (repSlug) {
+    url = 'https://cpdblackbook.com/s/' + repSlug + '/' + slug;
+  } else if (WIX_MEMBER_ID) {
+    url = 'https://cpdblackbook.com/pricing?plan=' + slug + '&ref=' + WIX_MEMBER_ID;
+  } else {
+    btn.textContent = 'No member ID!'; btn.style.color = 'var(--red)';
+    setTimeout(function(){ btn.textContent = 'Copy tracked link'; btn.style.color = ''; }, 2500);
+    return;
+  }
   navigator.clipboard.writeText(url).catch(function(){});
   btn.textContent = 'Copied!'; btn.style.color = 'var(--green)';
   setTimeout(function(){ btn.textContent = 'Copy tracked link'; btn.style.color = ''; }, 2000);
@@ -1701,6 +1711,11 @@ function viewMyProfile() {
             (m.skills?'<div style="grid-column:1/-1"><div style="font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Skills</div><div style="font-size:12px">'+escC(m.skills)+'</div></div>':'')+
           '</div>'+
           (sLinks?'<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">'+sLinks+'</div>':'')+
+          '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:14px">'+
+            '<div style="font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px">Your Member ID</div>'+
+            '<div style="font-family:var(--font-m);font-size:12px;color:var(--dim);word-break:break-all;user-select:all" title="Click to select">'+escC(WIX_MEMBER_ID||'Not available')+'</div>'+
+            '<div style="font-size:10px;color:var(--muted);margin-top:4px">Provide this to support when getting help</div>'+
+          '</div>'+
           '<button onclick="closeProfModal();openEditProfile()" style="width:100%;padding:10px;background:none;border:1px solid var(--border2);border-radius:6px;color:var(--dim);font-family:var(--font-m);font-size:12px;cursor:pointer">Edit Profile</button>'+
         '</div></div>';
       document.body.insertAdjacentHTML('beforeend', html);
