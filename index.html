@@ -1699,6 +1699,7 @@ function viewMyProfile() {
     });
 }
 
+async function saveMyProfile() {
   var btn = document.querySelector('#edit-prof-modal button[onclick="saveMyProfile()"]');
   var msg = document.getElementById('ep-msg');
   if(btn){btn.disabled=true;btn.textContent='Saving...';}
