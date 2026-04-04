@@ -438,13 +438,14 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
       <span id="greeting-time" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.07em;color:#807C78">GOOD MORNING,</span>
       <span id="greeting-name" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.07em;color:#D63030"></span>
     </div>
-    <iframe id="intel-frame" src="https://dexaintdead.github.io/cpd-intelligence/" style="flex:1;width:100%;border:none;display:block;min-height:0;margin-top:6px" frameborder="0"></iframe>
+    <iframe id="intel-frame" src="" style="flex:1;width:100%;border:none;display:block;min-height:0;margin-top:6px" frameborder="0"></iframe>
   </div>
 
     <!-- EARNINGS -->
   <div class="page" id="pg-earnings">
     <iframe
-      src="https://dexaintdead.github.io/cpd-earnings/"
+      id="earnings-frame"
+      src=""
       style="width:100%;height:calc(100vh - 40px);border:none;display:block;"
       title="Earnings & Payouts"
       allowfullscreen
@@ -469,20 +470,20 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 
   <!-- CRM -->
   <div class="page" id="pg-crm">
-    <iframe src="https://dexaintdead.github.io/cpd-pipeline/" style="width:100%;height:calc(100vh - 40px);border:none;display:block;" title="Pipeline / CRM" allowfullscreen></iframe>
+    <iframe id="crm-frame" src="" style="width:100%;height:calc(100vh - 40px);border:none;display:block;" title="Pipeline / CRM" allowfullscreen></iframe>
   </div>
 
   <!-- CAMPAIGN ATTACK -->
   <div class="page" id="pg-attack">
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;height:calc(100vh - 40px);">
-      <iframe src="https://dexaintdead.github.io/cpd-attack/" style="width:100%;height:100%;border:none;display:block;" title="Campaign Attack" loading="lazy"></iframe>
+      <iframe id="attack-frame" src="" style="width:100%;height:100%;border:none;display:block;" title="Campaign Attack" loading="lazy"></iframe>
     </div>
   </div>
 
   <!-- BRANDS -->
   <div class="page" id="pg-brands">
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;height:calc(100vh - 40px);">
-      <iframe src="https://dexaintdead.github.io/cpd-brand-intel/" style="width:100%;height:100%;border:none;display:block;" title="Brand Intel" loading="lazy"></iframe>
+      <iframe id="brands-frame" src="" style="width:100%;height:100%;border:none;display:block;" title="Brand Intel" loading="lazy"></iframe>
     </div>
   </div>
 
@@ -573,7 +574,8 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     </div>
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;height:calc(100vh - 140px);">
       <iframe
-        src="https://dexaintdead.github.io/culture-scanner"
+        id="scanner-frame"
+        src=""
         style="width:100%;height:100%;border:none;display:block;"
         title="Culture Scanner"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
@@ -590,7 +592,8 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     </div>
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;height:calc(100vh - 140px);">
       <iframe
-        src="https://dexaintdead.github.io/blackbook-brief"
+        id="brief-frame"
+        src=""
         style="width:100%;height:100%;border:none;display:block;"
         title="Blackbook Brief"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
@@ -883,6 +886,7 @@ document.getElementById('tb-date').textContent = new Date().toLocaleDateString('
 
 // Load dashboard on start
 try { loadOverview(); } catch(e) { console.log('Overview skipped:', e.message); }
+try { loadIntelFrame(); } catch(e) { console.log('Intel frame skipped:', e.message); }
 
 // ── NAV ──────────────────────────────────────────────────────
 function showPage(id, btn) {
@@ -890,12 +894,15 @@ function showPage(id, btn) {
   document.querySelectorAll('.nav-i').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById('pg-' + id).classList.add('active');
   if(btn) btn.classList.add('active');
-  var titles = {overview:'DASHBOARD',earnings:'EARNINGS & PAYOUTS',referrals:'REFERRAL TRACKER',catalog:'PRODUCT CATALOG',crm:'PIPELINE / CRM',brands:'BRAND INTEL',scanner:'CULTURE SCANNER',brief:'BLACKBOOK BRIEF',drive:'CPD DRIVE',team:'MY TEAM',classifieds:'THE PLUG — CLASSIFIEDS',classifieds_board:'CLASSIFIEDS',directory:'MEMBER DIRECTORY',inbox:'INBOX',forum:'FORUM',members_crm:'MEMBERS CRM'};
+  var titles = {overview:'DASHBOARD',earnings:'EARNINGS & PAYOUTS',referrals:'REFERRAL TRACKER',catalog:'PRODUCT CATALOG',crm:'PIPELINE / CRM',attack:'CAMPAIGN ATTACK',brands:'BRAND INTEL',scanner:'CULTURE SCANNER',brief:'BLACKBOOK BRIEF',drive:'CPD DRIVE',team:'MY TEAM',classifieds:'THE PLUG — CLASSIFIEDS',classifieds_board:'CLASSIFIEDS',directory:'MEMBER DIRECTORY',inbox:'INBOX',forum:'FORUM',members_crm:'MEMBERS CRM'};
   document.getElementById('page-title').textContent = titles[id] || 'DASHBOARD';
   if(id === 'catalog' && allProducts.length === 0) loadCatalog();
   if(id === 'crm') loadCRM();
+  if(id === 'attack') loadAttack();
   if(id === 'brands') loadBrands();
   if(id === 'earnings') loadEarnings();
+  if(id === 'scanner') loadScanner();
+  if(id === 'brief') loadBrief();
   if(id === 'team') loadTeam();
   if(id === 'classifieds') loadClassifieds();
   if(id === 'directory') loadDirectory();
@@ -1005,16 +1012,6 @@ function filterCat(cat, btn) {
 }
 
 // ── CRM ──────────────────────────────────────────────────────
-function loadCRM() {
-  document.getElementById('crm-loading').style.display = 'flex';
-  document.getElementById('crm-board').style.display = 'none';
-
-  // CRM runs purely from local state — no backend dependency
-  allLeads = allLeads && allLeads.length ? allLeads : [];
-  renderCRM(allLeads);
-  document.getElementById('crm-loading').style.display = 'none';
-  document.getElementById('crm-board').style.display = 'grid';
-}
 
 function renderCRM(leads) {
   if (!Array.isArray(leads)) leads = [];
@@ -1048,22 +1045,52 @@ function showAddLead() {
 // ── BRANDS ───────────────────────────────────────────────────
 var brandsData = [];
 
-function loadBrands() {
-  // Brand Intel now served via iframe
+// ── IFRAME LOADER (always appends member_id) ─────────────────
+function loadFrame(frameId, baseUrl) {
+  var frame = document.getElementById(frameId);
+  if (!frame) return;
+  var url = baseUrl + (WIX_MEMBER_ID ? (baseUrl.includes('?') ? '&' : '?') + 'member_id=' + WIX_MEMBER_ID : '');
+  if (frame.src !== url) frame.src = url;
+}
+
+function loadIntelFrame() {
+  loadFrame('intel-frame', 'https://dexaintdead.github.io/cpd-intelligence/');
 }
 
 function loadReferralsFrame() {
-  var frame = document.getElementById('referrals-frame');
-  if (frame && !frame.src.includes('cpd-referrals')) {
-    frame.src = 'https://dexaintdead.github.io/cpd-referrals/' + (WIX_MEMBER_ID ? '?member_id=' + WIX_MEMBER_ID : '');
-  }
+  loadFrame('referrals-frame', 'https://dexaintdead.github.io/cpd-referrals/');
 }
 
 function loadClassifiedsFrame() {
-  var frame = document.getElementById('classifieds-frame');
-  if (frame && !frame.src.includes('cpd-classifieds')) {
-    frame.src = 'https://dexaintdead.github.io/cpd-classifieds/';
-  }
+  loadFrame('classifieds-frame', 'https://dexaintdead.github.io/cpd-classifieds/');
+}
+
+function loadBrands() {
+  loadFrame('brands-frame', 'https://dexaintdead.github.io/cpd-brand-intel/');
+}
+
+function loadEarnings() {
+  loadFrame('earnings-frame', 'https://dexaintdead.github.io/cpd-earnings/');
+}
+
+function loadTeam() {
+  loadFrame('team-frame', 'https://dexaintdead.github.io/cpd-team/');
+}
+
+function loadAttack() {
+  loadFrame('attack-frame', 'https://dexaintdead.github.io/cpd-attack/');
+}
+
+function loadScanner() {
+  loadFrame('scanner-frame', 'https://dexaintdead.github.io/culture-scanner');
+}
+
+function loadBrief() {
+  loadFrame('brief-frame', 'https://dexaintdead.github.io/blackbook-brief');
+}
+
+function loadCRM() {
+  loadFrame('crm-frame', 'https://dexaintdead.github.io/cpd-pipeline/');
 }
 
 function openBrand(i) {
@@ -1084,19 +1111,6 @@ function openBrand(i) {
 }
 
 function closeDrawer() { document.getElementById('drawer').classList.remove('open'); }
-
-// ── EARNINGS ─────────────────────────────────────────────────
-function loadEarnings() {
-  // Earnings & Payouts loaded via iframe
-}
-
-// ── TEAM ─────────────────────────────────────────────────────
-function loadTeam() {
-  var frame = document.getElementById('team-frame');
-  if (frame && !frame.src.includes('cpd-team')) {
-    frame.src = 'https://dexaintdead.github.io/cpd-team/?member_id=' + WIX_MEMBER_ID;
-  }
-}
 
 // ── PAYOUT ───────────────────────────────────────────────────
 function requestPayout() {
