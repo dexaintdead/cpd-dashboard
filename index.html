@@ -906,7 +906,7 @@ function showPage(id, btn) {
   document.querySelectorAll('.nav-i').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById('pg-' + id).classList.add('active');
   if(btn) btn.classList.add('active');
-  var titles = {overview:'DASHBOARD',earnings:'EARNINGS & PAYOUTS',referrals:'REFERRAL TRACKER',catalog:'PRODUCT CATALOG',crm:'PIPELINE / CRM',attack:'CAMPAIGN ATTACK',brands:'BRAND INTEL',scanner:'CULTURE SCANNER',brief:'BLACKBOOK BRIEF',drive:'CPD DRIVE',team:'MY TEAM',classifieds:'THE PLUG — CLASSIFIEDS',classifieds_board:'CLASSIFIEDS',directory:'MEMBER DIRECTORY',inbox:'INBOX',forum:'FORUM',members_crm:'MEMBERS CRM'};
+  var titles = {overview:'DASHBOARD',earnings:'EARNINGS & PAYOUTS',referrals:'REFERRAL TRACKER',catalog:'PRODUCT CATALOG',crm:'PIPELINE / CRM',attack:'QUICK CAMPAIGN ATTACK TOOL',brands:'BRAND INTEL',scanner:'CULTURE SCANNER',brief:'BLACKBOOK BRIEF',drive:'CPD DRIVE',team:'MY TEAM',classifieds:'THE PLUG — CLASSIFIEDS',classifieds_board:'CLASSIFIEDS',directory:'MEMBER DIRECTORY',inbox:'INBOX',forum:'FORUM',members_crm:'MEMBERS CRM'};
   document.getElementById('page-title').textContent = titles[id] || 'DASHBOARD';
   if(id === 'catalog' && allProducts.length === 0) loadCatalog();
   if(id === 'crm') loadCRM();
